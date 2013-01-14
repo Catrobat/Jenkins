@@ -1,5 +1,6 @@
 #!/bin/bash
+androidSdkPath=$(echo $1 | sed 's/\/$//g')
 
-/home/catroid/android-sdk-linux/platform-tools/adb kill-server
-/home/catroid/android-sdk-linux/platform-tools/adb start-server
+$androidSdkPath/platform-tools/adb kill-server
+$androidSdkPath/platform-tools/adb start-server
 

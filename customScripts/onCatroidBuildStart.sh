@@ -1,4 +1,8 @@
 #!/bin/bash         
+customScriptPath=$(echo $1 | sed 's/\/$//g')
+androidSDKPath=$(echo $2 | sed 's/\/$//g')
+bluetoothServerPath=$(echo $3 | sed 's/\/$//g')
+
 
 echo "------BTSERVER------"
 
@@ -13,7 +17,7 @@ btProcess=`ps aux | grep btserver | grep -v grep`
 # if no btserver process is found, start it
 if [ "$btProcess" = "" ]
   then echo "btserver not running, going to start it"
-       /usr/local/bin/CatroidBluetoothTest/startbtserver.sh &
+       $bluetoothServerPath/startbtserver.sh &
        #wait for btserver to start
        sleep 1
 
@@ -32,10 +36,10 @@ adbProcess=`ps aux | grep "adb fork-server server" | grep -v grep`
 adbProcessAsRoot=`ps aux | grep "adb fork-server server" | grep root | grep -v grep`
 if [ "$adbProcess" =  "" ]
   then echo "adb not running -> starting it"
-       sudo /home/jenkins/jenkins/customScripts/restartADB.sh
+       sudo $customScriptPath/restartADB.sh $androidSDKPath
 elif [ "$adbProcessAsRoot" = "" ]
   then echo "adb does NOT run as root -> restarting adb"
-       sudo /home/jenkins/jenkins/customScripts/restartADB.sh
+       sudo $customScriptPath/restartADB.sh $androidSDKPath
   else echo "adb does run as root -> OK" 
 fi
 
