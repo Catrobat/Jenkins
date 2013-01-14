@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="android_emma" default="merge_report" >
+
+   <property name="sdk.dir" location="/home/catroid/android-sdk-linux" />
+
+   <!-- Emma configuration -->
+    <property name="emma.dir" value="${sdk.dir}/tools/lib" />
+        <path id="emma.lib">
+            <pathelement location="${emma.dir}/emma.jar" />
+            <pathelement location="${emma.dir}/emma_ant.jar" />
+        </path>
+    <taskdef resource="emma_ant.properties" classpathref="emma.lib" />
+    <!-- End of emma configuration -->   
+
+   <property name="emma.merge.input.path" location="." />
+   <property name="emma.merge.input.includes" location=" ." />
+   <property name="emma.merge.output.path" location="." />
+   <property name="emma.merge.output.filename" value="coverage-0.ec" />
+   <property name="project.src.path" location="." />
+   <property name="project.report.dir" location="." />
+
+ <target name="merge_report">
+    <!-- Merge emma metadata and coverage  --> 
+   <emma>
+    <merge outfile="${emma.merge.output.path}/${emma.merge.output.filename}">
+        <fileset dir="${emma.merge.input.path}" includes="${emma.merge.input.includes}"/>
+    </merge>
+    </emma>
+   <emma>
+    <report sourcepath="${project.src.path}"  verbosity="verbose">
+       <!-- TODO: report.dir or something like should be introduced if necessary -->
+       <infileset dir="${emma.merge.output.path}">
+          <include name="${emma.merge.output.filename}" />
+       </infileset>
+       <!-- TODO: reports in other, indicated by user formats -->
+       <xml outfile="${project.report.dir}/coverage.xml" />
+    </report>
+    <report sourcepath="${project.src.path}"  verbosity="verbose">
+       <!-- TODO: report.dir or something like should be introduced if necessary -->
+       <infileset dir="${emma.merge.output.path}">
+          <include name="${emma.merge.output.filename}" />
+       </infileset>
+       <!-- TODO: reports in other, indicated by user formats -->
+       <html outfile="${project.report.dir}/coverage.html" />
+    </report>
+   </emma>
+  </target>
+</project>

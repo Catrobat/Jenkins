@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="unit-tests" default="run-tests" >
+    <property name="tests.dir" location="${test.project.root}/src"/>
+    <property name="libs.dir" location="${test.project.root}/lib"/>
+
+    <property name="out.dir" location="${test.project.root}/bin"/>
+    <property name="classes.dir" location="${out.dir}/classes"/>
+    <property name="reports.dir" location="."/>
+    <property name="tested.classes.dir" location="${tested.project.root}bin/classes"/>
+    <property name="test.classes.dir" location="${test.project.root}/build/classes"/>
+    <property name="tested.libs.dir" location="${tested.project.root}/libs"/>
+
+    <path id="run.classpath">
+        <fileset dir="${libs.dir}" includes="*.jar"/>
+        <pathelement location="${test.classes.dir}"/>
+        <pathelement location="${tested.classes.dir}"/>
+    </path>
+
+    <target name="-init">
+    	<mkdir dir="${reports.dir}"/>
+    	<mkdir dir="${test.classes.dir}"/>
+    </target>
+
+    <path id="compile.classpath">
+        <fileset dir="${libs.dir}" includes="*.jar"/>
+        <pathelement location="${tested.classes.dir}"/>
+    </path>
+
+    <target name="-compileTestClasses">
+        <mkdir dir="build/classes"/>
+        <echo>catroid classes:${tested.classes.dir}</echo>
+        <javac fork="true" srcdir="${tests.dir}" destdir="${test.classes.dir}" classpathref="compile.classpath"/>
+    </target>
+
+    <target name="run-tests" depends="-init,-compileTestClasses" >
+        <junit printsummary="yes" errorproperty="test.error" fork="yes" 
+                      dir="${test.project.root}">
+            <classpath refid="run.classpath"/>
+            <formatter type="xml"/>
+
+            <batchtest todir="${reports.dir}">
+                <fileset dir="${tests.dir}" includes="**/*.java"/>
+            </batchtest>
+        </junit>
+
+        <fail message="One or more test cases failed" if="test.error"/>
+    </target>
+</project>

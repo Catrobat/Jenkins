@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="android_build" default="change_version" >
+
+  <taskdef resource="net/sf/antcontrib/antlib.xml">
+    <classpath>
+      <pathelement location="/var/lib/jenkins/customScripts/ant-contrib-1.0b3.jar"/>
+    </classpath>
+  </taskdef>
+  
+<property name="project.root" location="." />
+  <property name="subfolder.list" value="" />
+  <property name="manifest.name" value="1.0" />
+  <property name="manifest.code" value="1" />
+
+  <target name="change_version">
+     <for list="${subfolder.list}" param="subfolder">
+        <sequential>
+           <antcall target="change_manifest_version">
+              <param name="manifest.path" value="${project.root}/@{subfolder}"/>
+           </antcall>
+        </sequential>
+     </for>
+  </target>
+
+  <target name="change_manifest_version">
+     <xslt in='${manifest.path}/AndroidManifest.xml' 
+                  out='${manifest.path}/AndroidManifestNew.xml' 
+                  style='configureManifestAnton.xsl' 
+                  force='true'> 
+               <param name='NAME' expression="${manifest.name}"/> 
+               <param name='CODE' expression="${manifest.code}"/> 
+            </xslt>
+     <exec executable="mv">
+                <arg value="${manifest.path}/AndroidManifestNew.xml" />
+                <arg value="${manifest.path}/AndroidManifest.xml" />
+     </exec>
+  </target>
+</project>
