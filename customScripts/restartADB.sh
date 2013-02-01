@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$#" -ne 3 ] 
+if [ "$#" -ne 1 ] 
 then
   echo "Usage: ./restartADB.sh androidSdkPath "
   exit 1

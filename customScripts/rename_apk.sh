@@ -1,6 +1,6 @@
 #!/bin/bash
 #!/bin/bash
-if [ "$#" -ne 3 ] 
+if [ "$#" -ne 4 ] 
 then
   echo "Usage: ./rename_apk.sh path_to_bin apk_temp_name apk_prefix android_sdk_path"
   exit 1
