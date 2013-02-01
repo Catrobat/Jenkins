@@ -1,5 +1,9 @@
 #!/bin/bash
-
+if [ "$#" -ne 3 ] 
+then
+  echo "Usage: ./init.sh customScriptPath androidSDKPath bluetoothServerPath"
+  exit 1
+fi
 customScriptPath=$(echo $1 | sed 's/\/$//g')
 androidSDKPath=$(echo $2 | sed 's/\/$//g')
 bluetoothServerPath=$(echo $3 | sed 's/\/$//g')

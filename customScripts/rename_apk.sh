@@ -1,4 +1,10 @@
 #!/bin/bash
+#!/bin/bash
+if [ "$#" -ne 3 ] 
+then
+  echo "Usage: ./rename_apk.sh path_to_bin apk_temp_name apk_prefix android_sdk_path"
+  exit 1
+fi
 PATH_TO_BIN=$1
 APK_TEMP_NAME=$2
 APK_PREFIX=$3

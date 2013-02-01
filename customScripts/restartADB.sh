@@ -1,4 +1,10 @@
 #!/bin/bash
+
+if [ "$#" -ne 3 ] 
+then
+  echo "Usage: ./restartADB.sh androidSdkPath "
+  exit 1
+fi
 androidSdkPath=$(echo $1 | sed 's/\/$//g')
 
 $androidSdkPath/platform-tools/adb kill-server
