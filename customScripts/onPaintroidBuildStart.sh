@@ -2,7 +2,7 @@
 
 if [ "$#" -ne 1 ] 
 then
-  echo "Usage: ./onPaintroidBuildStart.sh customScriptPath"
+  echo "Usage: ./onPaintroidBuildStart.sh customScriptPath androidSDKPath"
   exit 1
 fi 
 customScriptPath=$(echo $1 | sed 's/\/$//g')
@@ -12,10 +12,10 @@ adbProcess=`ps aux | grep "adb fork-server server" | grep -v grep`
 adbProcessAsRoot=`ps aux | grep "adb fork-server server" | grep root | grep -v grep`
 if [ "$adbProcess" =  "" ]
   then echo "adb not running -> starting it"
-       sudo customScriptPath/restartADB.sh
+       sudo customScriptPath/restartADB.sh $androidSDKPath
 elif [ "$adbProcessAsRoot" = "" ]
   then echo "adb does NOT run as root -> restarting adb"
-       sudo customScriptPath/restartADB.sh
+       sudo customScriptPath/restartADB.sh $androidSDKPath
   else echo "adb does run as root -> OK" 
 fi
 
