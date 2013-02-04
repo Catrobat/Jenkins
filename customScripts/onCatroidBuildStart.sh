@@ -2,11 +2,11 @@
 
 if [ "$#" -ne 3 ] 
 then
-  echo "Usage: ./onCatroidBuildStart.sh customScriptPath androidSDKPath bluetoothServerPath"
+  echo "Usage: ./onCatroidBuildStart.sh customScriptsPath androidSdkPath bluetoothServerPath"
   exit 1
 fi   
-customScriptPath=$(echo $1 | sed 's/\/$//g')
-androidSDKPath=$(echo $2 | sed 's/\/$//g')
+customScriptsPath=$(echo $1 | sed 's/\/$//g')
+androidSdkPath=$(echo $2 | sed 's/\/$//g')
 bluetoothServerPath=$(echo $3 | sed 's/\/$//g')
 
 
@@ -42,10 +42,10 @@ adbProcess=`ps aux | grep "adb fork-server server" | grep -v grep`
 adbProcessAsRoot=`ps aux | grep "adb fork-server server" | grep root | grep -v grep`
 if [ "$adbProcess" =  "" ]
   then echo "adb not running -> starting it"
-       sudo $customScriptPath/restartADB.sh $androidSDKPath
+       sudo $customScriptsPath/restartADB.sh $androidSdkPath
 elif [ "$adbProcessAsRoot" = "" ]
   then echo "adb does NOT run as root -> restarting adb"
-       sudo $customScriptPath/restartADB.sh $androidSDKPath
+       sudo $customScriptsPath/restartADB.sh $androidSdkPath
   else echo "adb does run as root -> OK" 
 fi
 
