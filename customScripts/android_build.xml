@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="android_build" default="change_version" >
-
+  
+  <property name="custom_scripts_path" location="." />
+  
   <taskdef resource="net/sf/antcontrib/antlib.xml">
     <classpath>
-      <pathelement location="/home/jenkins/jenkins/customScripts/ant-contrib-1.0b3.jar"/>
+      <pathelement location="${custom_scripts_path}/ant-contrib-1.0b3.jar"/>
     </classpath>
   </taskdef>
   
-<property name="project.root" location="." />
+  <property name="project.root" location="." />
   <property name="subfolder.list" value="" />
   <property name="manifest.code" value="1" />
   <property name="xslt.style.file" value="configureManifest.xsl" />
