@@ -4,10 +4,11 @@ then
   echo "Usage: ./init.sh androidSdkPath bluetoothServerPath"
   exit 1
 fi
+customScriptsPath=$(dirname $0)
 androidSdkPath=$(echo $1 | sed 's/\/$//g')
 bluetoothServerPath=$(echo $2 | sed 's/\/$//g')
 
-./onCatroidBuildStart.sh $androidSdkPath $bluetoothServerPath
+$customScriptsPath/onCatroidBuildStart.sh $androidSdkPath $bluetoothServerPath
 sudo $androidSdkPath/platform-tools/adb uninstall -d at.tugraz.ist.catroid
 sudo $androidSdkPath/platform-tools/adb uninstall -d at.tugraz.ist.catroid.test
 sudo $androidSdkPath/platform-tools/adb uninstall -d at.tugraz.ist.catroid.uitest
