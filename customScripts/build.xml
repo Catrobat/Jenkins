@@ -355,6 +355,9 @@
                 <arg value="-e" />
                 <arg value="coverage" />
                 <arg value="@{emma.enabled}" />
+                <arg value="-e" />
+                <arg value="junitOutputDirectory" />
+                <arg value="/mnt/sdcard/testresults" />
                 <extra-instrument-args />
                 <arg value="${project.app.package}/${test.runner}" />
             </exec>
@@ -1310,8 +1313,8 @@
                    </report>
                 </emma>
                 <echo level="info">Cleaning up temporary files...</echo>
-                <delete file="${out.absolute.dir}/coverage.ec" />
-                <delete file="${tested.project.out.absolute.dir}/coverage.em" />
+                <!--<delete file="${out.absolute.dir}/coverage.ec" />
+                <delete file="${tested.project.out.absolute.dir}/coverage.em" /> -->
                 <exec executable="${adb}" failonerror="true">
                     <arg line="${adb.device.arg}" />
                     <arg value="shell" />
