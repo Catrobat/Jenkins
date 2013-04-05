@@ -1,0 +1,4 @@
+Local System:
+Address: 0026832E3342
+Name: kittyslave-1
+Bluetooth Server started. Waiting for Bluetooth test clients... 
