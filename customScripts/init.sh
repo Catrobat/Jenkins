@@ -25,4 +25,4 @@ sudo $androidSdkPath/platform-tools/adb shell rm -r /sdcard/catroid
 sudo $androidSdkPath/platform-tools/adb shell rm -r /sdcard/testresults/*
 
 #Send menu key event to wake screen
-sudo $androidSdkPath/platform-tools/adb input keyevent 82
+sudo $androidSdkPath/platform-tools/adb shell input keyevent 82
