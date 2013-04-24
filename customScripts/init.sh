@@ -24,5 +24,3 @@ sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.paintroid.test
 sudo $androidSdkPath/platform-tools/adb shell rm -r /sdcard/catroid
 sudo $androidSdkPath/platform-tools/adb shell rm -r /sdcard/testresults/*
 
-#Send menu key event to wake screen
-sudo $androidSdkPath/platform-tools/adb shell input keyevent 82
