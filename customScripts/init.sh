@@ -23,5 +23,6 @@ sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.paintroid
 sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.paintroid.test
 sudo $androidSdkPath/platform-tools/adb shell rm -r /sdcard/catroid # Legacy
 sudo $androidSdkPath/platform-tools/adb shell rm -r /sdcard/pocketcode
+sudo $androidSdkPath/platform-tools/adb shell rm -r "/sdcard/Pocket Code"
 sudo $androidSdkPath/platform-tools/adb shell rm -r /sdcard/testresults/*
 
