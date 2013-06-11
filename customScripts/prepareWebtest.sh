@@ -8,8 +8,8 @@ fi
 
 if [ "$1" == "master" ]
 then
-  echo "hello"
+  ln -s /etc/apache2/sites-enabled/catroweb-master 001-catroweb
 elif [ "$1" == "customBranch" ]
 then
-  echo "goodbye"
+  ln -s /etc/apache2/sites-enabled/catroweb-customBranch 001-catroweb
 fi  
