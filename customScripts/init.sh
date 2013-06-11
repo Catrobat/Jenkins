@@ -21,6 +21,10 @@ sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.pocketcode
 sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.pocketcode.test
 sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.pocketcode.uitest
 sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.pocketcode.nativetest
+sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.catroid.pocketcode
+sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.catroid.pocketcode.test
+sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.catroid.pocketcode.uitest
+sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.catroid.pocketcode.nativetest
 sudo $androidSdkPath/platform-tools/adb uninstall -d at.tugraz.ist.paintroid
 sudo $androidSdkPath/platform-tools/adb uninstall -d at.tugraz.ist.paintroid.test
 sudo $androidSdkPath/platform-tools/adb uninstall -d org.catrobat.paintroid
