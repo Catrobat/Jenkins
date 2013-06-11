@@ -6,6 +6,8 @@ then
   exit 1
 fi
 
+rm /etc/apache2/sites-enabled/001-catroweb
+
 if [ "$1" == "master" ]
 then
   ln -s /etc/apache2/sites-enabled/catroweb-master /etc/apache2/sites-enabled/001-catroweb
