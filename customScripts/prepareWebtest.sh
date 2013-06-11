@@ -8,8 +8,8 @@ fi
 
 if [ "$1" == "master" ]
 then
-  ln -s /etc/apache2/sites-enabled/catroweb-master 001-catroweb
+  ln -s /etc/apache2/sites-enabled/catroweb-master /etc/apache2/sites-enabled/001-catroweb
 elif [ "$1" == "customBranch" ]
 then
-  ln -s /etc/apache2/sites-enabled/catroweb-customBranch 001-catroweb
+  ln -s /etc/apache2/sites-enabled/catroweb-customBranch /etc/apache2/sites-enabled/001-catroweb
 fi  
