@@ -11,19 +11,16 @@ then
   exit 1	
 fi
 
-customScriptsPath=$(dirname $0)
 androidSdkPath=$(echo $1 | sed 's/\/$//g')
 port=$2
 port2=$((port + 1))
 
-# Wait for emulator to finish booting
-while [ ! "$($androidSdkPath/platform-tools/adb -s emulator-$port shell getprop dev.bootcomplete)" -a "1" ]
-do
-sleep 1
-done
+# Kill emulator if running. Prevents starting the same AVD multiple times.
+running=$($androidSdkPath/platform-tools/adb -s emulator-$port get-state)
+if [ "$running" != "unknown" ]; then
+  $androidSdkPath/platform-tools/adb -s emulator-$port emu kill
+fi
 
-# Unlock screen
-$androidSdkPath/platform-tools/adb -s emulator-$port shell input keyevent 82
-
-# Uninstall packages and cleanup sdcard
-$customScriptsPath/cleanup.sh $androidSdkPath emulator-$port
+# Start emulator window on Slave2 display
+export DISPLAY=:0
+$androidSdkPath/tools/emulator -ports $port,$port2 -avd NexusS_$port -gpu on -qemu -m 512 -enable-kvm &
