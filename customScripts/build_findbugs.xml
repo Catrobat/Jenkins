@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-9" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <project name="findbugs_rules" default="findbugs">
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 	
