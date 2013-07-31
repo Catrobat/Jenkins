@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="UTF-9" ?>
 <project name="findbugs_rules" default="findbugs">
-	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask">
-	</taskdef>
-	<property name="findbugs.home" value="/home/catrobat/findbugs/findbugs2.2" />
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 	
-	<target name="findbugs" depends="jar">
+	<target name="findbugs">
+		<mkdir dir="reports" />
 		<findbugs home="${findbugs.home}"
 				output="xml"
-				outputFile="catroid_findbugs.xml" >
-			<auxClasspath path="${basedir}/lib/Regex.jar" />
-			<sourcePath path="${basedir}/src/java" />
-			<class location="${basedir}/bin/catroid.apk" />
+				outputFile="reports/catroid_findbugs.xml" >
 		</findbugs>
 	</target>
 </project>
