@@ -6,7 +6,7 @@
 	<target name="findbugs">
 		<findbugs home="${findbugs.home}"
 				output="xml"
-				outputFile="${reports.dir}catroid_findbugs.xml" >
+				outputFile="${reports.dir}/catroid_findbugs.xml" >
 			<auxClasspath>
 				<pathelement location="/home/catrobat/android-sdk-linux/platforms/android-15/android.jar" />
 				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/libs">
