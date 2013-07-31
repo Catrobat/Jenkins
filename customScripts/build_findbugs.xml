@@ -11,7 +11,7 @@
 	<property name="abs.bin" location="${findbugs.workspace}/libraryProjects/actionbarsherlock/bin" />
 	<property name="android.sdk.platform" location="${android.sdk}/platforms" />
 	<property name="android.sdk.version" value="${android.sdk.version}" />
-	<property name="reports.dir" location="${findbugs.workspace}/reports" />
+	<property name="reports.dir" location="${findbugs.workspace}/catroid/reports" />
 	
 	<target name="findbugs">
 		<mkdir dir="${reports.dir}" />
