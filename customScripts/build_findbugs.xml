@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="findbugs_rules" default="findbugs">
+	
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 	
 	<target name="findbugs">
-		<mkdir dir="reports" />
 		<findbugs home="${findbugs.home}"
 				output="xml"
-				outputFile="reports/catroid_findbugs.xml" >
+				outputFile="catroid_findbugs.xml" >
+			<auxClasspath>
+				<pathelement location="/home/catrobat/android-sdk-linux/platforms/android-15/android.jar" />
+				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/libs">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/libraryProjects/actionbarsherlock/libs/">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/bin/classes/com">
+					<include name="**/*.classes" />
+				</fileset>
+				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/libraryProjects/actionbarsherlock/bin">
+					<include name="**/*.class" />
+					<include name="**/*.jar" />
+				</fileset>
+			</auxClasspath>
+			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/bin/classes/org/catrobat/catroid">
+					<include name="**/*.class" />
+			</fileset>
 		</findbugs>
 	</target>
 </project>
