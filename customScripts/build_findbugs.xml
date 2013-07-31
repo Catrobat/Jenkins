@@ -4,6 +4,7 @@
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 	
 	<target name="findbugs">
+		<mkdir dir="${reports.dir}" />
 		<findbugs home="${findbugs.home}"
 				output="xml"
 				outputFile="${reports.dir}/catroid_findbugs.xml" >
