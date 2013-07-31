@@ -3,6 +3,16 @@
 	
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
 	
+	<property name="catroid.libs" location="${findbugs.workspace}/catroid/libs" />
+	<property name="catroid.excluded.classes" location="${findbugs.workspace}/catroid/bin/classes/com" />
+	<property name="catroid.classes" location="${findbugs.workspace}/catroid/bin/classes/org/catrobat/catroid" />
+	
+	<property name="abs.libs" location="${findbugs.workspace}/libraryProjects/actionbarsherlock/libs" />
+	<property name="abs.bin" location="${findbugs.workspace}/libraryProjects/actionbarsherlock/bin" />
+	<property name="android.sdk.platform" location="${android.sdk}/platforms" />
+	<property name="android.sdk.version" value="${android.sdk.version}" />
+	<property name="reports.dir" location="${findbugs.workspace}/reports" />
+	
 	<target name="findbugs">
 		<mkdir dir="${reports.dir}" />
 		<findbugs home="${findbugs.home}"
@@ -10,22 +20,22 @@
 				outputFile="${reports.dir}/catroid_findbugs.xml" 
 				excludeFilter="build_findbugs_excludes.xml" >
 			<auxClasspath>
-				<pathelement location="/home/catrobat/android-sdk-linux/platforms/android-15/android.jar" />
-				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/libs">
+				<pathelement location="${android.sdk.platform}/${android.sdk.version}/android.jar" />
+				<fileset dir="${catroid.libs}">
 					<include name="**/*.jar" />
 				</fileset>
-				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/libraryProjects/actionbarsherlock/libs/">
-					<include name="**/*.jar" />
-				</fileset>
-				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/bin/classes/com">
+				<fileset dir="${catroid.excluded.classes}">
 					<include name="**/*.classes" />
 				</fileset>
-				<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/libraryProjects/actionbarsherlock/bin">
+				<fileset dir="${abs.libs}">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${abs.bin}">
 					<include name="**/*.class" />
 					<include name="**/*.jar" />
 				</fileset>
 			</auxClasspath>
-			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/bin/classes/org/catrobat/catroid">
+			<fileset dir="${catroid.classes}">
 					<include name="**/*.class" />
 			</fileset>
 		</findbugs>
