@@ -26,6 +26,7 @@
 	
 	<!-- taskdefs -->	
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+	<taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-5.6-all.jar" />
 	
 	<!-- TARGETS -->	
 	
@@ -58,10 +59,6 @@
 	</target>
 	
 	<target name="checkstyle">
-		<taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-5.6-all.jar" />
-		<!-- run verification of installation-->
-      <available file="${checkstyle.home}/checkstyle-all-5.6.jar"
-                   property="checkstyle.available" />
 		<mkdir dir="${reports.dir}" />
 		<checkstyle config="${customscripts.home}/checkstyle.xml"
 			failOnViolation="false">
