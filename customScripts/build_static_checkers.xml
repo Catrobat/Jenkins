@@ -63,7 +63,7 @@
 		<checkstyle config="/home/catrobat/Jenkins/customScripts/checkstyle.xml"
 			failOnViolation="false">
 			<formatter type="xml"
-				tofile="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/reports/checkstyle.xml" />
+				tofile="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/reports/checkstyle.xml" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/src" includes="**/*.java" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidUiTest/src" includes="**/*.java" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidTest/src" includes="**/*.java" />
