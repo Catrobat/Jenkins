@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="catroid_static_code_analysis">	
+	
+	<!-- common properties -->
+	<property name="job.workspace" value="${job.workspace}" />
+	<property name="ant.home" location="${ant.home}" />
+	<property name="customscripts.home" location="${customscripts.home}" />
+	<property name="android.sdk.platform" location="${android.sdk}/platforms" />
+	<property name="android.sdk.version" value="android-15" />
+	<property name="reports.dir" location="${job.workspace}/catroid/reports" />
+	
+	<!-- properties for findbugs -->
+	<property name="findbugs.home" value="${findbugs.home}" />
+	<property name="catroid.libs" location="${job.workspace}/catroid/libs" />
+	<property name="catroid.excluded.classes" location="${job.workspace}/catroid/bin/classes/com" />
+	<property name="catroid.classes" location="${job.workspace}/catroid/bin/classes/org/catrobat/catroid" />	
+	<property name="abs.libs" location="${job.workspace}/libraryProjects/actionbarsherlock/libs" />
+	<property name="abs.bin" location="${job.workspace}/libraryProjects/actionbarsherlock/bin" />	
+	
+	<!-- properties for checkstyls -->
+	<property name="checkstyle.home" value="${ant.home}/checkstyle-5.5" />
+	<property name="catroid.source.dir" value="${job.workspace}/catroid/src" />
+	
+	<!-- taskdefs -->	
+	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+	<taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-5.5-all.jar" />
+	
+	<!-- TARGETS -->	
+	
+	<target name="findbugs">
+		<mkdir dir="${reports.dir}" />
+		<findbugs home="${findbugs.home}"
+				output="xml"
+				outputFile="${reports.dir}/catroid_findbugs.xml" 
+				excludeFilter="build_findbugs_excludes.xml" >
+			<auxClasspath>
+				<pathelement location="${android.sdk.platform}/${android.sdk.version}/android.jar" />
+				<fileset dir="${catroid.libs}">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${catroid.excluded.classes}">
+					<include name="**/*.classes" />
+				</fileset>
+				<fileset dir="${abs.libs}">
+					<include name="**/*.jar" />
+				</fileset>
+				<fileset dir="${abs.bin}">
+					<include name="**/*.class" />
+					<include name="**/*.jar" />
+				</fileset>
+			</auxClasspath>
+			<fileset dir="${catroid.classes}">
+					<include name="**/*.class" />
+			</fileset>
+		</findbugs>
+	</target>
+	
+	<target name="checkstyle">
+		<checkstyle config="${customscripts.home}/checkstyle.xml"
+			failOnViolation="false">
+			<formatter type="xml"
+				tofile="{reports.dir}/checkstyle.xml" />
+			<fileset dir="{catroid.source.dir}" includes="**/*.java" />
+		</checkstyle>
+	</target>
+</project>
