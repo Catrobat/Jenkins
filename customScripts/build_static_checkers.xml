@@ -59,7 +59,6 @@
 		<mkdir dir="${reports.dir}" />
 		<checkstyle config="${customscripts.home}/checkstyle.xml"
 			failOnViolation="false">
-			<formatter type="plain" />
 			<fileset dir="{catroid.source.dir}" includes="**/*.java" />
 		</checkstyle>
 	</target>
