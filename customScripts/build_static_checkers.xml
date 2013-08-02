@@ -27,10 +27,10 @@
 	<!-- TARGETS -->	
 	
 	<target name="findbugs">
-		<mkdir dir="${reports.dir}" />
+		<mkdir dir="${reports.dir}/findbugs" />
 		<findbugs home="${findbugs.home}"
 				output="xml"
-				outputFile="${reports.dir}/catroid_findbugs.xml" 
+				outputFile="${reports.dir}/findbugs/catroid_findbugs.xml" 
 				excludeFilter="build_findbugs_excludes.xml" >
 			<auxClasspath>
 				<pathelement location="${android.sdk.platform}/${android.sdk.version}/android.jar" />
@@ -55,17 +55,17 @@
 	</target>
 	
 	<target name="checkstyle">
-		<taskdef resource="checkstyletask.properties" classpath="/home/catrobat/checkstyle/checkstyle-5.6/checkstyle-5.6-all.jar" />
+		<taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-5.6-all.jar" />
 		<!-- run verification of installation-->
-      <available file="/home/catrobat/checkstyle/checkstyle-5.6/checkstyle-all-5.6.jar"
+      <available file="${checkstyle.home}/checkstyle-all-5.6.jar"
                    property="checkstyle.available" />
-		<mkdir dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/reports" />
+		<mkdir dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/reports/checkstyle" />
 		<checkstyle config="/home/catrobat/Jenkins/customScripts/checkstyle.xml"
 			failOnViolation="false">
 			<formatter type="xml"
-				tofile="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/reports/checkstyle.xml" />
+				tofile="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/reports/checkstyle/catroid_checkstyle.xml" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/src" includes="**/*.java" />
-			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidUiTest/src" includes="**/*.java" />
+			<fileset dir="/home/catrobat/jen7kins_slave2/workspace/Catroid-Find-Bugs/catroidUiTest/src" includes="**/*.java" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidTest/src" includes="**/*.java" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidSourceTest/src" includes="**/*.java" />
 		</checkstyle>
