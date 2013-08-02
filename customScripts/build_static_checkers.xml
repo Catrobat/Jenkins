@@ -6,7 +6,7 @@
 	<property name="customscripts.home" value="${customscripts.home}" />
 	<property name="android.sdk.platform" value="${android.sdk}/platforms" />
 	<property name="android.sdk.version" value="android-15" />
-	<property name="reports.dir" value="${job.workspace}/catroid/reports" />
+	<property name="reports.dir" value="${job.workspace}/reports" />
 	
 	<!-- properties for findbugs -->
 	<property name="findbugs.home" value="${findbugs.home}" />
@@ -26,10 +26,10 @@
 	<!-- TARGETS -->	
 	
 	<target name="findbugs">
-		<mkdir dir="${reports.dir}/findbugs" />
+		<mkdir dir="${reports.dir}" />
 		<findbugs home="${findbugs.home}"
 				output="xml"
-				outputFile="${reports.dir}/findbugs/catroid_findbugs.xml" 
+				outputFile="${reports.dir}/catroid_findbugs.xml" 
 				excludeFilter="build_findbugs_excludes.xml" >
 			<auxClasspath>
 				<pathelement location="${android.sdk.platform}/${android.sdk.version}/android.jar" />
@@ -58,11 +58,11 @@
 		<!-- run verification of installation-->
       <available file="${checkstyle.home}/checkstyle-all-5.6.jar"
                    property="checkstyle.available" />
-		<mkdir dir="${reports.dir}/checkstyle" />
+		<mkdir dir="${reports.dir}" />
 		<checkstyle config="/home/catrobat/Jenkins/customScripts/checkstyle.xml"
 			failOnViolation="false">
 			<formatter type="xml"
-				tofile="${reports.dir}/checkstyle/catroid_checkstyle.xml" />
+				tofile="${reports.dir}/catroid_checkstyle.xml" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/src" includes="**/*.java" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidUiTest/src" includes="**/*.java" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidTest/src" includes="**/*.java" />
