@@ -59,7 +59,7 @@
       <available file="${checkstyle.home}/checkstyle-all-5.6.jar"
                    property="checkstyle.available" />
 		<mkdir dir="${reports.dir}" />
-		<checkstyle config="/home/catrobat/Jenkins/customScripts/checkstyle.xml"
+		<checkstyle config="${customscripts.home}/checkstyle.xml"
 			failOnViolation="false">
 			<formatter type="xml"
 				tofile="${reports.dir}/catroid_checkstyle.xml" />
