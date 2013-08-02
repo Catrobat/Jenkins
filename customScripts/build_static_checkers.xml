@@ -19,6 +19,10 @@
 	<!-- properties for checkstyls -->
 	<property name="checkstyle.home" value="${checkstyle.home}" />
 	<property name="catroid.source.dir" value="${job.workspace}/catroid/src" />
+	<property name="catroidBTServer.source.dir" value="${job.workspace}/catroidLegoNXTBTTest/src" />
+	<property name="catroidSourceTest.source.dir" value="${job.workspace}/catroidSourceTest/src" />
+	<property name="catroidTest.source.dir" value="${job.workspace}/catroidTest/src" />
+	<property name="catroidUiTest.source.dir" value="${job.workspace}/catroidUiTest/src" />
 	
 	<!-- taskdefs -->	
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
@@ -63,10 +67,11 @@
 			failOnViolation="false">
 			<formatter type="xml"
 				tofile="${reports.dir}/catroid_checkstyle.xml" />
-			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/src" includes="**/*.java" />
-			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidUiTest/src" includes="**/*.java" />
-			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidTest/src" includes="**/*.java" />
-			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidSourceTest/src" includes="**/*.java" />
+			<fileset dir="${catroid.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidBTServer.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidSourceTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidUiTest.source.dir}" includes="**/*.java" />
 		</checkstyle>
 	</target>
 </project>
