@@ -18,7 +18,7 @@
 	<property name="abs.bin" location="${job.workspace}/libraryProjects/actionbarsherlock/bin" />	
 	
 	<!-- properties for checkstyls -->
-	<property name="checkstyle.home" value="${ant.home}/checkstyle-5.5" />
+	<property name="checkstyle.home" value="${checkstyle.home}" />
 	<property name="catroid.source.dir" value="${job.workspace}/catroid/src" />
 	
 	<!-- taskdefs -->	
@@ -56,10 +56,10 @@
 	</target>
 	
 	<target name="checkstyle">
+		<mkdir dir="${reports.dir}" />
 		<checkstyle config="${customscripts.home}/checkstyle.xml"
 			failOnViolation="false">
-			<formatter type="xml"
-				tofile="{reports.dir}/checkstyle.xml" />
+			<formatter type="plain" />
 			<fileset dir="{catroid.source.dir}" includes="**/*.java" />
 		</checkstyle>
 	</target>
