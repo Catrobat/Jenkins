@@ -3,19 +3,19 @@
 	
 	<!-- common properties -->
 	<property name="job.workspace" value="${job.workspace}" />
-	<property name="ant.home" location="${ant.home}" />
-	<property name="customscripts.home" location="${customscripts.home}" />
-	<property name="android.sdk.platform" location="${android.sdk}/platforms" />
+	<property name="ant.home" value="${ant.home}" />
+	<property name="customscripts.home" value="${customscripts.home}" />
+	<property name="android.sdk.platform" value="${android.sdk}/platforms" />
 	<property name="android.sdk.version" value="android-15" />
-	<property name="reports.dir" location="${job.workspace}/catroid/reports" />
+	<property name="reports.dir" value="${job.workspace}/catroid/reports" />
 	
 	<!-- properties for findbugs -->
 	<property name="findbugs.home" value="${findbugs.home}" />
-	<property name="catroid.libs" location="${job.workspace}/catroid/libs" />
-	<property name="catroid.excluded.classes" location="${job.workspace}/catroid/bin/classes/com" />
-	<property name="catroid.classes" location="${job.workspace}/catroid/bin/classes/org/catrobat/catroid" />	
-	<property name="abs.libs" location="${job.workspace}/libraryProjects/actionbarsherlock/libs" />
-	<property name="abs.bin" location="${job.workspace}/libraryProjects/actionbarsherlock/bin" />	
+	<property name="catroid.libs" value="${job.workspace}/catroid/libs" />
+	<property name="catroid.excluded.classes" value="${job.workspace}/catroid/bin/classes/com" />
+	<property name="catroid.classes" value="${job.workspace}/catroid/bin/classes/org/catrobat/catroid" />	
+	<property name="abs.libs" value="${job.workspace}/libraryProjects/actionbarsherlock/libs" />
+	<property name="abs.bin" value="${job.workspace}/libraryProjects/actionbarsherlock/bin" />	
 	
 	<!-- properties for checkstyls -->
 	<property name="checkstyle.home" value="${checkstyle.home}" />
