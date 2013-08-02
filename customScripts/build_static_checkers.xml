@@ -59,11 +59,11 @@
 		<!-- run verification of installation-->
       <available file="${checkstyle.home}/checkstyle-all-5.6.jar"
                    property="checkstyle.available" />
-		<mkdir dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/reports/checkstyle" />
+		<mkdir dir="${reports.dir}/checkstyle" />
 		<checkstyle config="/home/catrobat/Jenkins/customScripts/checkstyle.xml"
 			failOnViolation="false">
 			<formatter type="xml"
-				tofile="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/reports/checkstyle/catroid_checkstyle.xml" />
+				tofile="${reports.dir}/checkstyle/catroid_checkstyle.xml" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/src" includes="**/*.java" />
 			<fileset dir="/home/catrobat/jen7kins_slave2/workspace/Catroid-Find-Bugs/catroidUiTest/src" includes="**/*.java" />
 			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroidTest/src" includes="**/*.java" />
