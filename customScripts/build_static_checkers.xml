@@ -23,7 +23,6 @@
 	
 	<!-- taskdefs -->	
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
-	<taskdef resource="checkstyletask.properties" classpath="${checkstyle.home}/checkstyle-5.6-all.jar" />
 	
 	<!-- TARGETS -->	
 	
@@ -56,13 +55,14 @@
 	</target>
 	
 	<target name="checkstyle">
+		<taskdef resource="checkstyletask.properties" classpath="/home/catrobat/checkstyle/checkstyle-5.6/checkstyle-5.6-all.jar" />
 		<!-- run verification of installation-->
-      <available file="${checkstyle.home}/checkstyle-all-5.6.jar"
+      <available file="/home/catrobat/checkstyle/checkstyle-5.6/checkstyle-all-5.6.jar"
                    property="checkstyle.available" />
-		<mkdir dir="${reports.dir}" />
-		<checkstyle config="${customscripts.home}/checkstyle.xml"
+		<mkdir dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/reports" />
+		<checkstyle config="/home/catrobat/Jenkins/customScripts/checkstyle.xml"
 			failOnViolation="false">
-			<fileset dir="{catroid.source.dir}" includes="**/*.java" />
+			<fileset dir="/home/catrobat/jenkins_slave2/workspace/Catroid-Find-Bugs/catroid/src" includes="**/*.java" />
 		</checkstyle>
 	</target>
 </project>
