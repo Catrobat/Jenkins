@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <!-- COMMON Lint warnings -->
     <issue id="ContentDescription" severity="ignore" />
     <issue id="ExtraTranslation" severity="ignore" />
     <issue id="InvalidPackage" severity="ignore" />
     <issue id="MissingTranslation" severity="ignore" />
 
+    <!-- CATROID and CATROIDTEST specific Lint warnings -->
     <!-- Ignore unused strings warnings in languages other than german and english -->
     <issue id="UnusedResources">
         <ignore path="res/values-ja/strings.xml" />
