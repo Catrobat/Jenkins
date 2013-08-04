@@ -17,6 +17,6 @@
     <module name="StaticVariableName"/>
     <module name="TypeName"/>
   </module>
+  
+  <module name="SuppressionCommentFilter" />
 </module>
-
-<module name="SuppressionCommentFilter"/>
