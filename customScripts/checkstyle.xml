@@ -16,6 +16,7 @@
     <module name="ParameterName"/>
     <module name="StaticVariableName"/>
     <module name="TypeName"/>
+    <!-- needed for SuppressWithNearbyCommentFilter -->
     <module name="FileContentsHolder"/>
   </module>
   
