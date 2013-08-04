@@ -16,11 +16,12 @@
     <module name="ParameterName"/>
     <module name="StaticVariableName"/>
     <module name="TypeName"/>
+    <module name="FileContentsHolder"/>
   </module>
   
   <module name="SuppressWithNearbyCommentFilter">
    <property name="commentFormat" value="CHECKSTYLE DISABLE ([\w\|]+) FOR (-?\d+) LINES"/>
    <property name="checkFormat" value="$1"/>
    <property name="influenceFormat" value="$2"/>
-</module>
+  </module>
 </module>
