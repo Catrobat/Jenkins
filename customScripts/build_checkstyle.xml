@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="catroid_checkstyle">	
+	
+	<property name="job.workspace" value="${job.workspace}" />
+	<property name="customscripts.home" value="${customscripts.home}" />
+	<property name="libs.home" value="${libs.home}" />
+	<property name="reports.dir" value="${job.workspace}/reports" />
+	
+	<property name="catroid.source.dir" value="${job.workspace}/catroid/src" />
+	<property name="catroidBTServer.source.dir" value="${job.workspace}/catroidLegoNXTBTTest/src" />
+	<property name="catroidSourceTest.source.dir" value="${job.workspace}/catroidSourceTest/src" />
+	<property name="catroidTest.source.dir" value="${job.workspace}/catroidTest/src" />
+	<property name="catroidUiTest.source.dir" value="${job.workspace}/catroidUiTest/src" />
+	
+	<taskdef resource="checkstyletask.properties" classpath="${libs.home}/checkstyle-5.6-all.jar" />
+	
+	<target name="checkstyle">
+		<mkdir dir="${reports.dir}" />
+		<checkstyle config="${customscripts.home}/checkstyle.xml"
+			failOnViolation="false">
+			<formatter type="xml"
+				tofile="${reports.dir}/catroid_checkstyle.xml" />
+			<fileset dir="${catroid.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidBTServer.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidSourceTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidUiTest.source.dir}" includes="**/*.java" />
+		</checkstyle>
+	</target>
+</project>
