@@ -25,7 +25,7 @@
 	<property name="catroidUiTest.source.dir" value="${job.workspace}/catroidUiTest/src" />
 	
 	<!-- taskdefs -->	
-	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />
+	<!-- <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" /> -->
 	<taskdef resource="checkstyletask.properties" classpath="${libs.home}/checkstyle-5.6-all.jar" />
 	
 	<!-- TARGETS -->	
