@@ -40,7 +40,7 @@
       <message key="name.invalidPattern" value="Constant name not following naming convention - Name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="ModifierOrder">
-      <message key="mod.order" value="{0}'' modifier out of order with the JLS suggestions - public-protected-private-abstract-static-final-transient-volatile-synchronzied-native-strictftp"/>
+      <message key="mod.order" value="{0}'' modifier out of order with the JLS suggestions"/>
     </module>
     <!-- needed for SuppressWithNearbyCommentFilter -->
     <module name="FileContentsHolder"/>
