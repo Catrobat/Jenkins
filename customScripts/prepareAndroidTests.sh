@@ -2,7 +2,7 @@
 
 if [ "$#" -ne 2 ] 
 then
-  echo "Usage: ./onCatroidBuildStart.sh androidSdkPath bluetoothServerPath"
+  echo "Usage: ./prepareAndroidTests.sh androidSdkPath bluetoothServerPath"
   exit 1
 fi   
 
