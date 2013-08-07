@@ -9,7 +9,7 @@ androidSdkPath=$(echo $1 | sed 's/\/$//g')
 bluetoothServerPath=$(echo $2 | sed 's/\/$//g')
 deviceSerialNumber=$3
 
-$customScriptsPath/onCatroidBuildStart.sh $androidSdkPath $bluetoothServerPath
+$customScriptsPath/prepareAndroidTests.sh $androidSdkPath $bluetoothServerPath
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall at.tugraz.ist.catroid
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall at.tugraz.ist.catroid.test
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall at.tugraz.ist.catroid.uitest
