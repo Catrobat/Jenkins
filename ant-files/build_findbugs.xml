@@ -2,7 +2,6 @@
 <project name="catroid_findbugs">	
 	
 	<property name="job.workspace" value="${job.workspace}" />
-	<property name="customscripts.home" value="${customscripts.home}" />
 	<property name="android.sdk.platform" value="${android.sdk}/platforms" />
 	<property name="android.sdk.version" value="android-15" />
 	<property name="findbugs.home" value="${findbugs.home}" />
