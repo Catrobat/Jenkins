@@ -2,7 +2,7 @@
 <project name="catroid_checkstyle">	
 	
 	<property name="job.workspace" value="${job.workspace}" />
-	<property name="customscripts.home" value="${customscripts.home}" />
+	<property name="configs.home" value="${configs.home}" />
 	<property name="libs.home" value="${libs.home}" />
 	<property name="reports.dir" value="${job.workspace}/reports" />
 	
@@ -16,7 +16,7 @@
 	
 	<target name="checkstyle">
 		<mkdir dir="${reports.dir}" />
-		<checkstyle config="${customscripts.home}/checkstyle.xml"
+		<checkstyle config="${configs.home}/checkstyle.xml"
 			failOnViolation="false">
 			<formatter type="xml"
 				tofile="${reports.dir}/catroid_checkstyle.xml" />
