@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="android_build" default="change_version" >
   
-  <property name="custom_scripts_path" location="." />
+  <property name="libs.home" location="${libs.home}" />
   
   <taskdef resource="net/sf/antcontrib/antlib.xml">
     <classpath>
-      <pathelement location="${custom_scripts_path}/ant-contrib-1.0b3.jar"/>
+      <pathelement location="${libs.home}/ant-contrib-1.0b3.jar"/>
     </classpath>
   </taskdef>
   
