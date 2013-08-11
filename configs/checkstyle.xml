@@ -11,6 +11,7 @@
       <message key="name.invalidPattern" value="Class name not following naming convention - Name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="PackageName">
+      <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
       <message key="name.invalidPattern" value="Package name not following naming convention - Name ''{0}'' must match pattern ''{1}''."/>
     </module>
     <module name="ParameterName">
@@ -42,6 +43,15 @@
     <module name="ModifierOrder">
       <message key="mod.order" value="{0}'' modifier out of order with the JLS suggestions"/>
     </module>
+    <module name="PackageDeclaration"/>
+    <module name="ImportOrder">
+      <property name="option" value="top"/>
+      <property name="groups" value="android,com,junit,net,org,java,javax"/>
+      <property name="ordered" value="true"/>
+      <property name="separated" value="true"/>
+    </module>
+    <module name="UnusedImports"/>
+    <module name="RedundantImport"/>
     <!-- needed for SuppressWithNearbyCommentFilter -->
     <module name="FileContentsHolder"/>
   </module>
