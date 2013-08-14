@@ -14,5 +14,6 @@
         <ignore path="res/values-pt/strings.xml" />
         <ignore path="res/values-ro/strings.xml" />
         <ignore path="res/values-ru/strings.xml" />
+        <ignore path="res/values-nl/strings.xml" />
     </issue>
 </lint>
