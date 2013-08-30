@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="run-tests">
+	<property name="jenkins.libs.dir" value="${jenkins.libs.dir}"/>
+	<property name="project.root" value="${project.root}"/>
+	<property name="test.project.root" value="${test.project.root}"/>
+	<property name="reports.dir" value="${reports.dir}"/>
+	
+	<property name="src.dir" value="${project.root}/src"/>
+	<property name="classes.dir" value="${project.root}/classes"/>
+	<property name="libs.dir" value="${project.root}/libs"/>
+
+	<property name="test.src.dir" value="${test.project.root}/src"/>
+	<property name="test.classes.dir" value="${test.project.root}/classes"/>
+	<property name="test.libs.dir" value="${test.project.root}/libs"/>
+
+
+	<path id="classpath">
+		<!-- needed for bug with junit 4.11 -->
+		<fileset dir="${jenkins.libs.dir}" includes="**/*.jar"/>
+
+		<fileset dir="${libs.dir}" includes="**/*.jar"/>
+		<fileset dir="${test.libs.dir}" includes="**/*.jar"/>
+		<pathelement location="${classes.dir}"/>
+		<pathelement location="${test.classes.dir}"/>
+	</path>
+
+	<target name="-init">
+		<mkdir dir="${reports.dir}"/>
+		<mkdir dir="${classes.dir}"/>
+		<mkdir dir="${test.classes.dir}"/>
+	</target>
+	
+	<target name="-compileClasses">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
+	</target>
+
+	<target name="-compileTestClasses">
+		<javac srcdir="${test.src.dir}" destdir="${test.classes.dir}" classpathref="classpath"/>
+	</target>
+
+	<target name="run-tests" depends="-init,-compileClasses,-compileTestClasses">
+		<junit printsummary="yes" dir="${test.project.root}">
+			<classpath refid="classpath"/>
+			<formatter type="xml"/>
+		
+		<batchtest fork="yes" todir="${reports.dir}">
+			<fileset dir="${test.src.dir}" includes="**/*.java"/>
+		</batchtest>
+		</junit>
+	</target>
+</project>
