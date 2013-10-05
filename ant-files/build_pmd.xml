@@ -21,7 +21,7 @@
 
 	<target name="pmd">
 		<mkdir dir="${reports.dir}" />
-		<pmd rulesetfiles="rulesets/java/basic.xml">
+		<pmd rulesetfiles="rulesets/java/basic.xml,rulesets/java/android.xml,rulesets/java/unusedcode.xml,rulesets/java/unnecessary.xml,rulesets/java/sunsecure.xml,rulesets/java/strings.xml,rulesets/java/braces.xml">
       <formatter type="xml" tofile="${reports.dir}/catroid_pmd.xml" />
       <fileset dir="${catroid.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidBTServer.source.dir}" includes="**/*.java" />
