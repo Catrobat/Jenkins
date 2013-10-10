@@ -11,6 +11,7 @@
 	<property name="catroidSourceTest.source.dir" value="${job.workspace}/catroidSourceTest/src" />
 	<property name="catroidTest.source.dir" value="${job.workspace}/catroidTest/src" />
 	<property name="catroidUiTest.source.dir" value="${job.workspace}/catroidUiTest/src" />
+	<property name="catroidCucumberTest.source.dir" value="${job.workspace}/catroidCucumberTest/src" />
 	
 	<taskdef resource="checkstyletask.properties" classpath="${libs.home}/checkstyle-5.6-all.jar" />
 	
@@ -25,6 +26,7 @@
 			<fileset dir="${catroidSourceTest.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidTest.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidUiTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidCucumberTest.source.dir}" includes="**/*.java" />
 		</checkstyle>
 	</target>
 </project>
