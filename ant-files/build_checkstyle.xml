@@ -26,7 +26,7 @@
 			<fileset dir="${catroidSourceTest.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidTest.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidUiTest.source.dir}" includes="**/*.java" />
-			<fileset dir="${catroidCucumberTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidCucumberTest.source.dir}" includes="**/*.java" erroronmissingdir="false" />
 		</checkstyle>
 	</target>
 </project>
