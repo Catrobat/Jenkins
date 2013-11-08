@@ -5,25 +5,25 @@
 	<property name="pmd.libs" value="${pmd.libs}" />
 	<property name="reports.dir" value="${job.workspace}/reports" />
 
-  <property name="catroid.source.dir" value="${job.workspace}/catroid/src" />
+	<property name="catroid.source.dir" value="${job.workspace}/catroid/src" />
 	<property name="catroidBTServer.source.dir" value="${job.workspace}/catroidLegoNXTBTTest/src" />
 	<property name="catroidSourceTest.source.dir" value="${job.workspace}/catroidSourceTest/src" />
 	<property name="catroidTest.source.dir" value="${job.workspace}/catroidTest/src" />
 	<property name="catroidUiTest.source.dir" value="${job.workspace}/catroidUiTest/src" />
 
-  <path id="pmd.classpath">
-    <fileset dir="${pmd.libs}">
-        <include name="*.jar"/>
-    </fileset>
-  </path>
+	<path id="pmd.classpath">
+		<fileset dir="${pmd.libs}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
 
-  <taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
+	<taskdef name="pmd" classname="net.sourceforge.pmd.ant.PMDTask" classpathref="pmd.classpath"/>
 
 	<target name="pmd">
 		<mkdir dir="${reports.dir}" />
-		<pmd rulesetfiles="rulesets/java/basic.xml,rulesets/java/android.xml,rulesets/java/unusedcode.xml,rulesets/java/unnecessary.xml,rulesets/java/sunsecure.xml,rulesets/java/strings.xml,rulesets/java/braces.xml">
-      <formatter type="xml" tofile="${reports.dir}/catroid_pmd.xml" />
-      <fileset dir="${catroid.source.dir}" includes="**/*.java" />
+		<pmd rulesetfiles="../configs/catroid_pmd.xml">
+			<formatter type="xml" tofile="${reports.dir}/catroid_pmd.xml" />
+			<fileset dir="${catroid.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidBTServer.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidSourceTest.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidTest.source.dir}" includes="**/*.java" />
