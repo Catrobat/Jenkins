@@ -4,9 +4,18 @@
 	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	 xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
 	<description>PMD Ruleset for Catroid/PocketCode</description>
+	<rule ref="rulesets/java/android.xml"/>
+	<rule ref="rulesets/java/basic.xml">
+		<exclude name="UselessParentheses"/>
+	</rule>
+	<rule ref="rulesets/java/braces.xml"/>
+	<rule ref="rulesets/java/empty.xml"/>
 	<rule ref="rulesets/java/strings.xml">
 		<exclude name="AvoidDuplicateLiterals"/>
 	</rule>
+	<rule ref="rulesets/java/sunsecure.xml"/>
+	<rule ref="rulesets/java/unnecessary.xml"/>
+	<rule ref="rulesets/java/unused.xml"/>
 </ruleset>
 
 
