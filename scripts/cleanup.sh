@@ -16,6 +16,7 @@ sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.cat
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.catroid.test
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.catroid.uitest
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.catroid.nativetest
+sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.catroid.test.cucumber
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.pocketcode
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.pocketcode.test
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.pocketcode.uitest
@@ -32,3 +33,4 @@ sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r /sdca
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r /sdcard/pocketcode
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r "/sdcard/Pocket Code"
 sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r /sdcard/testresults/*
+sudo $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r /sdcard/cucumber/report.json
