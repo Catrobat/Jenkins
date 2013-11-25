@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ] 
+if [ "$#" -lt 2 ] 
 then
   echo "Usage: ./initEmulator.sh androidSdkPath port"
   echo ""
@@ -14,6 +14,10 @@ fi
 androidSdkPath=$(echo $1 | sed 's/\/$//g')
 port=$2
 port2=$((port + 1))
+
+if [ $3 ]; then
+  export ANDROID_ADB_SERVER_PORT=$3
+fi
 
 # Kill emulator if running. Prevents starting the same AVD multiple times.
 running=$($androidSdkPath/platform-tools/adb -s emulator-$port get-state)

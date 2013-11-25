@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "$#" -ne 2 ] 
+if [ "$#" -lt 2 ] 
 then
   echo "Usage: ./initEmulator.sh androidSdkPath port"
   echo ""
@@ -15,6 +15,9 @@ customScriptsPath=$(dirname $0)
 androidSdkPath=$(echo $1 | sed 's/\/$//g')
 port=$2
 port2=$((port + 1))
+if [ $3 ]; then
+  export ANDROID_ADB_SERVER_PORT=$3
+fi
 
 # Wait for emulator to finish booting
 while [ ! "$($androidSdkPath/platform-tools/adb -s emulator-$port shell getprop dev.bootcomplete)" -a "1" ]
@@ -26,4 +29,4 @@ done
 $androidSdkPath/platform-tools/adb -s emulator-$port shell input keyevent 82
 
 # Uninstall packages and cleanup sdcard
-$customScriptsPath/cleanup.sh $androidSdkPath emulator-$port
+$customScriptsPath/cleanup.sh $androidSdkPath emulator-$port $ANDROID_ADB_SERVER_PORT
