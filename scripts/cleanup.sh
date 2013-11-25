@@ -20,6 +20,7 @@ $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.catroid.test
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.catroid.uitest
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.catroid.nativetest
+$androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.catroid.test.cucumber
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.pocketcode
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.pocketcode.test
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber uninstall org.catrobat.pocketcode.uitest
@@ -36,3 +37,4 @@ $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r /sdcard/ca
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r /sdcard/pocketcode
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r "/sdcard/Pocket Code"
 $androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r /sdcard/testresults/*
+$androidSdkPath/platform-tools/adb -s $deviceSerialNumber shell rm -r /sdcard/cucumber/report.json
