@@ -9,7 +9,6 @@
 	<property name="catroidBTServer.source.dir" value="${job.workspace}/catroidLegoNXTBTTest/src" />
 	<property name="catroidSourceTest.source.dir" value="${job.workspace}/catroidSourceTest/src" />
 	<property name="catroidTest.source.dir" value="${job.workspace}/catroidTest/src" />
-	<property name="catroidUiTest.source.dir" value="${job.workspace}/catroidUiTest/src" />
 
 	<path id="pmd.classpath">
 		<fileset dir="${pmd.libs}">
@@ -27,7 +26,6 @@
 			<fileset dir="${catroidBTServer.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidSourceTest.source.dir}" includes="**/*.java" />
 			<fileset dir="${catroidTest.source.dir}" includes="**/*.java" />
-			<fileset dir="${catroidUiTest.source.dir}" includes="**/*.java" />
 		</pmd>
 	</target>
 </project>

@@ -13,4 +13,3 @@ echo "------ LINT CHECKER ------"
 
 $androidSdkPath/tools/lint --config $workspace/catroid/lint.xml --showall --xml $workspace/reports/catroid_lint_results.xml catroid
 $androidSdkPath/tools/lint --config $workspace/catroidTest/lint.xml --showall --xml $workspace/reports/catroidTest_lint_results.xml catroidTest
-$androidSdkPath/tools/lint --config $workspace/catroidUiTest/lint.xml --showall --xml $workspace/reports/catroidUiTest_lint_results.xml catroidUiTest
