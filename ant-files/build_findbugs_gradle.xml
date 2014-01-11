@@ -12,7 +12,7 @@
 	<property name="catroid.excluded.classes" value="${classes.root.dir}/com" />
 	<property name="catroid.classes" value="${classes.root.dir}/org/catrobat/catroid" />	
 	<property name="abs.libs" value="${job.workspace}/libraryProjects/actionbarsherlock/libs" />
-	<property name="abs.bin" value="${job.workspace}/libraryProjects/actionbarsherlock/bin" />	
+	<property name="abs.bin" value="${job.workspace}/build/exploded-bundles/ComActionbarsherlockActionbarsherlock440.aar" />	
 	
 	<taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask" />	
 	
