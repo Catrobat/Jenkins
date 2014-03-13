@@ -32,12 +32,13 @@
 	<target name="cpd">
     		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.classpath"/>
     		<mkdir dir="${reports.dir}" />
-    		<cpd minimumTokenCount="100" 
-    			outputFile="${reports.dir}/catroid_pmd_cpd.xml"
+    		<cpd minimumTokenCount="25" 
+    			outputFile="${reports.dir}/catroid_pmd_cpd.txt"
     			language="java">
-        		<fileset dir="${catroid.source.dir}">
-            			<include name="**/*.java"/>
-        		</fileset>
+        		<fileset dir="${catroid.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidBTServer.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidSourceTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidTest.source.dir}" includes="**/*.java" />
     		</cpd>
 	</target>
 </project>
