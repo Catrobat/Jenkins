@@ -32,7 +32,7 @@
 	<target name="cpd">
     		<taskdef name="cpd" classname="net.sourceforge.pmd.cpd.CPDTask" classpathref="pmd.classpath"/>
     		<mkdir dir="${reports.dir}" />
-    		<cpd minimumTokenCount="10"
+    		<cpd minimumTokenCount="100"
     			ignoreAnnotations="true"
     			format="xml"
     			outputFile="${reports.dir}/catroid_pmd_cpd.xml"
