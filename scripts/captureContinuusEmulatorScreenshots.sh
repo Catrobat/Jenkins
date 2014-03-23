@@ -9,7 +9,7 @@ then
   exit 1	
 fi
 
-SLEEP_TIME=8
+SLEEP_TIME=6
 
 EMULATOR_SEARCH_STRING="$1:"
 SCREENSHOT_FILENAME=$2
@@ -37,6 +37,7 @@ do
 	window_not_found=0
 	
 	import -window "$emulator_window_id" $SCREENSHOT_FILENAME
+	convert $SCREENSHOT_FILENAME -thumbnail 150x150^ $SCREENSHOT_FILENAME-thumb.png
 	
 done
 
