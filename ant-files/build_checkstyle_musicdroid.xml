@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="musicdroid_checkstyle">	
+	
+	<property name="job.workspace" value="${job.workspace}" />
+	<property name="configs.home" value="${configs.home}" />
+	<property name="libs.home" value="${libs.home}" />
+	<property name="reports.dir" value="${job.workspace}/reports" />
+	
+	<property name="musicdroid.source.dir" value="${job.workspace}/MusicdriodNew/Musicdroid/src" />
+	<property name="musicdroidSourceTest.source.dir" value="${job.workspace}/MusicdriodNew/MusicdroidSourceTest/src" />
+	<property name="musicdroidTest.source.dir" value="${job.workspace}//MusicdriodNew/MusicdroidTest/src" />
+	<property name="musicdroidUiTest.source.dir" value="${job.workspace}//MusicdriodNew/MusicdroidUiTest/src" />
+	
+	<taskdef resource="checkstyletask.properties" classpath="${libs.home}/checkstyle-5.6-all.jar" />
+	
+	<target name="checkstyle">
+		<mkdir dir="${reports.dir}" />
+		<checkstyle config="${configs.home}/checkstyle.xml"
+			failOnViolation="false">
+			<formatter type="xml"
+				tofile="${reports.dir}/musicdroid_checkstyle.xml" />
+			<fileset dir="${musicdroid.source.dir}" includes="**/*.java" />
+			<fileset dir="${musicdroidSourceTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${musicdroidTest.source.dir}" includes="**/*.java" />
+			<fileset dir="${musicdroidUiTest.source.dir}" includes="**/*.java" />
+			</checkstyle>
+	</target>
+</project>
