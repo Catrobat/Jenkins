@@ -2,6 +2,7 @@
 
 #kill any running emulator processes
 runningEmulators=`ps aux | grep -i emulator64-x86  | grep -v grep`
+echo "$runningEmulators"
 if [ -z "$runningEmulators" ] 
 then
   echo "no emulators running - nothing to do"
