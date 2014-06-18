@@ -6,7 +6,7 @@
 	<property name="android.sdk.version" value="android-15" />
 	<property name="findbugs.home" value="${findbugs.home}" />
 	<property name="reports.dir" value="${job.workspace}/reports" />	
-	<property name="classes.root.dir" value="${classes.root.dir}/build/classes/debug" />
+	<property name="classes.root.dir" value="${classes.root.dir}/build/intermediate/classes/debug" />
 
 	<property name="catroid.libs" value="${job.workspace}/catroid/libs" />
 	<property name="catroid.excluded.classes" value="${classes.root.dir}/com" />
