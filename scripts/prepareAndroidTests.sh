@@ -40,17 +40,17 @@ if [ "$btProcess" = "" ]
   else echo "btserver is running -> OK"
 fi
 
-echo "------ADB------"
-adbProcess=`ps aux | grep "adb fork-server server" | grep -v grep`
-adbProcessAsRoot=`ps aux | grep "adb fork-server server" | grep root | grep -v grep`
-if [ "$adbProcess" =  "" ]
-  then echo "adb not running -> starting it"
-       sudo $customScriptsPath/restartADB.sh $androidSdkPath $ANDROID_ADB_SERVER_PORT
-elif [ "$adbProcessAsRoot" = "" ]
-  then echo "adb does NOT run as root -> restarting adb"
-       sudo $customScriptsPath/restartADB.sh $androidSdkPath $ANDROID_ADB_SERVER_PORT
-  else echo "adb does run as root -> OK" 
-fi
+#echo "------ADB------"
+#adbProcess=`ps aux | grep "adb fork-server server" | grep -v grep`
+#adbProcessAsRoot=`ps aux | grep "adb fork-server server" | grep root | grep -v grep`
+#if [ "$adbProcess" =  "" ]
+#  then echo "adb not running -> starting it"
+#       sudo $customScriptsPath/restartADB.sh $androidSdkPath $ANDROID_ADB_SERVER_PORT
+#elif [ "$adbProcessAsRoot" = "" ]
+#  then echo "adb does NOT run as root -> restarting adb"
+#       sudo $customScriptsPath/restartADB.sh $androidSdkPath $ANDROID_ADB_SERVER_PORT
+#  else echo "adb does run as root -> OK" 
+#fi
 
 #success
 exit 0
