@@ -6,7 +6,8 @@
 	<property name="reports.dir" value="${job.workspace}/reports" />
 
 	<property name="catroid.source.dir" value="${job.workspace}/catroid/src" />
-	<property name="catroidBTServer.source.dir" value="${job.workspace}/catroidLegoNXTBTTest/src" />
+	<property name="catroidBTServerOld.source.dir" value="${job.workspace}/catroidLegoNXTBTTest/src" />
+	<property name="catroidBTServer.source.dir" value="${job.workspace}/catroidBluetoothTestServer/src" />
 	<property name="catroidSourceTest.source.dir" value="${job.workspace}/catroidSourceTest/src" />
 
 	<path id="pmd.classpath">
@@ -22,7 +23,8 @@
 		<pmd rulesetfiles="../configs/catroid_pmd.xml">
 			<formatter type="xml" tofile="${reports.dir}/catroid_pmd.xml" />
 			<fileset dir="${catroid.source.dir}" includes="**/*.java" />
-			<fileset dir="${catroidBTServer.source.dir}" includes="**/*.java" />
+			<fileset dir="${catroidBTServerOld.source.dir}" includes="**/*.java" erroronmissingdir="false" />
+			<fileset dir="${catroidBTServer.source.dir}" includes="**/*.java" erroronmissingdir="false" />
 			<fileset dir="${catroidSourceTest.source.dir}" includes="**/*.java" />
 		</pmd>
 	</target>
