@@ -24,12 +24,12 @@ var devices = new Dict({}, k => DEVICE_DISCONNECTED);
 client.trackDevices()
     .then(function (tracker) {
         tracker.on('add', function (device) { //Called on Startup for each connected device
-            if (device.type != 'device')
+            if (device.type != 'device' && device.type != 'offline')
                 return;
 
             console.log('Device %s was plugged in', device.id);
 
-            if(devices.get(device.id) != DEVICE_DISCONNECTED)
+            if (devices.get(device.id) != DEVICE_DISCONNECTED)
                 resetDevice(device.id);
 
             devices.set(device.id, DEVICE_CONNECTED);
@@ -37,7 +37,7 @@ client.trackDevices()
             //console.log(devices);
         });
         tracker.on('remove', function (device) {
-            if (device.type != 'device')
+            if (device.type != 'device' && device.type != 'offline')
                 return;
 
             console.log('Device %s was unplugged', device.id);
@@ -63,31 +63,50 @@ app.get('/aquire', function (req, res) {
     aquireDevice(res);
 });
 
-app.get('/release', function (req, res) {
-    // TODO read Request Parameters
+app.param('releaseId', function (req, res, next, releaseId) {
+    console.log(releaseId, 'request for release');
+    if (devices.get(releaseId) == DEVICE_IN_USE){
+        console.log(releaseId, 'release device');
+        resetDevice(releaseId);
+    }
+    else {
+        console.log(releaseId, 'device not in use');
+    }
+
+    next();
+});
+
+app.get('/release/:releaseId', function (req, res) {
+    res.end();
 });
 
 
 // Callback Functions
 // adb device reset function
-function resetDevice(deviceId){
-    console.log(deviceId, 'reseted');
+function resetDevice(deviceId) {
+    client.shell(deviceId, 'force-stop org.catrobat')
+        .then(client.shell(deviceId, 'kill org.catrobat'))
+        .then(() => {
+            console.log(deviceId, 'Stopped catrobat apps');
+            devices.set(deviceId, DEVICE_CONNECTED);
+            console.log(deviceId, 'reseted');
+        });
 }
 
 // called after timeout
-function timeoutDevice(deviceId){
+function timeoutDevice(deviceId) {
     console.log(deviceId, 'timeout detected');
     devices.set(deviceId, DEVICE_TIMEOUT);
 }
 
 //
-function handleTimeout(deviceId){
+function handleTimeout(deviceId) {
+    console.log(deviceId, 'release device (timeout)');
     resetDevice(deviceId);
-    devices.set(deviceId, DEVICE_CONNECTED);
 }
 
 // Handler for aquire request
-function aquireDevice(response){
+function aquireDevice(response) {
     // handle timeout for devices in timeout state
     Array.from(devices.filter(v => v == DEVICE_TIMEOUT).keys()).forEach(handleTimeout);
 
@@ -95,7 +114,7 @@ function aquireDevice(response){
     const openDevices = Array.from(devices.filter(v => v == DEVICE_CONNECTED).keys());
 
     // Block request and retry again
-    if(openDevices.length <= 0) {
+    if (openDevices.length <= 0) {
         setTimeout(() => aquireDevice(response), AQUIRE_RETRY_IN_SEC);
         return;
     }
