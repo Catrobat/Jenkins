@@ -1,0 +1,69 @@
+---
+- hosts: jenkins
+  become_user: sudo
+
+  tasks:
+    - name: Update Repository
+      apt: "update_cache=yes"
+      when: false
+
+    - name: Install Base Packages
+      apt: "name={{ item }} state=present"
+      with_items:
+        - git
+        - openssh-server
+        - openjdk-7-jdk
+
+- hosts: jenkins_master
+  become_user: sudo
+  environment:
+    JENKINS_HOME: /home/jenkins/jenkins
+
+
+  tasks:
+    - name: Add Key for Jenkins Debian Repository
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
+
+    - name: Add Repository for Jenkins
+      apt_repository:
+        repo: deb https://pkg.jenkins.io/debian binary/
+        state: present
+        update_cache: yes
+
+    - name: Specify Jenkins User with Custom Home
+      user:
+        name: jenkins
+        home: /home/jenkins
+        comment: Jenkins
+        system: yes
+        shell: /bin/bash
+
+    - name: Install Jenkins
+      apt: "name=jenkins state=present"
+
+    - name: Start and Enable Jenkins Service
+      service:
+        name: jenkins
+        state: started
+        enabled: yes
+
+    - name: Change Jenkins Defaults
+      ini_file:
+        section: null
+        dest: /etc/default/jenkins
+        no_extra_spaces: yes
+        backup: yes
+        option: JENKINS_HOME
+        value: /home/jenkins/jenkins
+      register: jenkins_defaults
+
+    - name: Restart Jenkins When Defaults Change
+      service:
+        name: jenkins
+        state: restarted
+        enabled: yes
+      when: jenkins_defaults|changed
+
+
