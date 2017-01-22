@@ -19,6 +19,9 @@
   environment:
     JENKINS_HOME: /home/jenkins/jenkins
 
+  handlers:
+    - name: restart jenkins
+      service: "name=jenkins state=restarted"
 
   tasks:
     - name: Add Key for Jenkins Debian Repository
@@ -43,12 +46,6 @@
     - name: Install Jenkins
       apt: "name=jenkins state=present"
 
-    - name: Start and Enable Jenkins Service
-      service:
-        name: jenkins
-        state: started
-        enabled: yes
-
     - name: Change Jenkins Defaults
       ini_file:
         section: null
@@ -57,13 +54,7 @@
         backup: yes
         option: JENKINS_HOME
         value: /home/jenkins/jenkins
-      register: jenkins_defaults
+      notify: restart jenkins
 
-    - name: Restart Jenkins When Defaults Change
-      service:
-        name: jenkins
-        state: restarted
-        enabled: yes
-      when: jenkins_defaults|changed
-
-
+    - name: Ensure Jenkins is started and enabled on boot.
+      service: name=jenkins state=started enabled=yes
