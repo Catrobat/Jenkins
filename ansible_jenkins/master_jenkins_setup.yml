@@ -3,9 +3,8 @@
   become_user: sudo
 
   tasks:
-    - name: Update Repository
-      apt: "update_cache=yes"
-      when: false
+    - name: Update repository when older than 1 hour.
+      apt: update_cache=yes cache_valid_time=3600
 
     - name: Install Base Packages
       apt: "name={{ item }} state=present"
