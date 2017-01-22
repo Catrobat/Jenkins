@@ -16,8 +16,10 @@
 
 - hosts: jenkins_master
   become_user: sudo
-  environment:
-    JENKINS_HOME: /home/jenkins/jenkins
+
+  vars:
+    jenkins_user_home: "/home/jenkins"
+    jenkins_home: "{{ jenkins_user_home }}/jenkins"
 
   handlers:
     - name: restart jenkins
@@ -38,13 +40,15 @@
     - name: Specify Jenkins User with Custom Home
       user:
         name: jenkins
-        home: /home/jenkins
+        home: "{{ jenkins_user_home }}"
         comment: Jenkins
         system: yes
         shell: /bin/bash
 
     - name: Install Jenkins
       apt: "name=jenkins state=present"
+      environment:
+        JENKINS_HOME: "{{ jenkins_home }}"
 
     - name: Change Jenkins Defaults
       ini_file:
@@ -53,7 +57,7 @@
         no_extra_spaces: yes
         backup: yes
         option: JENKINS_HOME
-        value: /home/jenkins/jenkins
+        value: "{{ jenkins_home }}"
       notify: restart jenkins
 
     - name: Ensure Jenkins is started and enabled on boot.
