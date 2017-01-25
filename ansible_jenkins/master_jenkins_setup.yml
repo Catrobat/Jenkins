@@ -2,10 +2,11 @@
 - hosts: jenkins
   become_user: sudo
 
-  tasks:
+  pre_tasks:
     - name: Update repository when older than 1 hour.
       apt: update_cache=yes cache_valid_time=3600
 
+  tasks:
     - name: Install Base Packages
       apt: "name={{ item }} state=present"
       with_items:
@@ -24,6 +25,10 @@
   handlers:
     - name: restart jenkins
       service: "name=jenkins state=restarted"
+
+  pre_tasks:
+    - name: Update repository when older than 1 hour.
+      apt: update_cache=yes cache_valid_time=3600
 
   tasks:
     - name: Add Key for Jenkins Debian Repository
