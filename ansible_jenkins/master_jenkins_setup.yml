@@ -2,6 +2,9 @@
 - hosts: jenkins
   become_user: sudo
 
+  vars:
+    jenkins_user_home: "/home/jenkins"
+
   pre_tasks:
     - name: Update repository when older than 1 hour.
       apt: update_cache=yes cache_valid_time=3600
@@ -14,6 +17,15 @@
         - git
         - openssh-server
         - openjdk-7-jdk
+
+    - name: Specify the jenkins user with a custom home.
+      user:
+        name: jenkins
+        home: "{{ jenkins_user_home }}"
+        comment: Jenkins
+        system: yes
+        shell: /bin/bash
+
 
 - hosts: jenkins_master
   become_user: sudo
@@ -41,14 +53,6 @@
         repo: deb https://pkg.jenkins.io/debian binary/
         state: present
         update_cache: yes
-
-    - name: Specify Jenkins User with Custom Home
-      user:
-        name: jenkins
-        home: "{{ jenkins_user_home }}"
-        comment: Jenkins
-        system: yes
-        shell: /bin/bash
 
     - name: Install Jenkins
       apt: "name=jenkins state=present"
