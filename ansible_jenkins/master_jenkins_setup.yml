@@ -13,12 +13,6 @@
         - git
         - openssh-server
         - openjdk-7-jdk
-        - pciutils
-
-    - name: Check if there is a NVIDIA graphics card.
-      shell: "/usr/bin/lspci | grep VGA | { grep -i nvidia || true; }"
-      register: nvidia_vga_list
-      changed_when: false
 
 - hosts: jenkins_master
   become_user: sudo
