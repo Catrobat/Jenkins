@@ -14,6 +14,7 @@
         - git
         - openssh-server
         - openjdk-7-jdk
+        - sudo
 
 - name: Jenkins user configuration.
   hosts: jenkins
@@ -47,6 +48,15 @@
         update_password: always
       when:
         - jenkins_user_password != ""
+
+    - name: Ensure jenkins users can reboot their host without sudo password.
+      lineinfile:
+        state: present
+        dest: /etc/sudoers
+        insertafter: "^# User privilege specification"
+        regexp: "^jenkins\tALL=NOPASSWD: "
+        line: "jenkins\tALL=NOPASSWD: /sbin/reboot"
+        validate: "visudo -cf %s"
 
 
 - hosts: jenkins_master
