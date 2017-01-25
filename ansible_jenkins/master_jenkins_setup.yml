@@ -2,9 +2,6 @@
 - hosts: jenkins
   become_user: sudo
 
-  vars:
-    jenkins_user_home: "/home/jenkins"
-
   pre_tasks:
     - name: Update repository when older than 1 hour.
       apt: update_cache=yes cache_valid_time=3600
@@ -18,6 +15,23 @@
         - openssh-server
         - openjdk-7-jdk
 
+- name: Jenkins user configuration.
+  hosts: jenkins
+  become_user: sudo
+
+  vars:
+    jenkins_user_home: "/home/jenkins"
+
+  # Once https://github.com/ansible/ansible/issues/13263 is fixed activate
+  # the password prompt when a custom variable (change_pw ...) is set.
+  vars_prompt:
+    - name: "jenkins_user_password"
+      prompt: "Enter the jenkins user password. Pressing enter will keep the password as is."
+      default: ""
+      confirm: yes
+      private: yes
+
+  tasks:
     - name: Specify the jenkins user with a custom home.
       user:
         name: jenkins
@@ -25,6 +39,14 @@
         comment: Jenkins
         system: yes
         shell: /bin/bash
+
+    - name: Change the password for the jenkins user.
+      user:
+        name: jenkins
+        password: "{{ jenkins_user_password | password_hash('sha512') }}"
+        update_password: always
+      when:
+        - jenkins_user_password != ""
 
 
 - hosts: jenkins_master
