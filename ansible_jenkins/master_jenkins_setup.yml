@@ -40,6 +40,22 @@
       become_user: catroid
 
 
+- hosts: emulators
+  become: yes
+
+  tasks:
+    - name: Enable multiarch.
+      command: dpkg --add-architecture i386
+
+    - name: Install Android SDK dependencies.
+      apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
+      with_items:
+        - "libstdc++6:i386"
+        - "libgcc1:i386"
+        - "zlib1g:i386"
+        - "libncurses5:i386"
+
+
 - hosts: jenkins_master
   become: yes
 
