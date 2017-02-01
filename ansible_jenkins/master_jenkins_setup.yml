@@ -1,6 +1,6 @@
 ---
 - hosts: jenkins
-  become_user: sudo
+  become: yes
 
   pre_tasks:
     - name: Update repository when older than 1 hour.
@@ -18,7 +18,7 @@
 
 - name: Jenkins user configuration.
   hosts: jenkins
-  become_user: sudo
+  become: yes
 
   vars:
     jenkins_user_home: "/home/jenkins"
@@ -60,7 +60,7 @@
 
 
 - hosts: jenkins_master
-  become_user: sudo
+  become: yes
 
   vars:
     jenkins_user_home: "/home/jenkins"
