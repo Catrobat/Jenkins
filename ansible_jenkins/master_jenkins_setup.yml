@@ -21,8 +21,31 @@
   become: yes
 
   vars:
-    jenkins_user_home: "/home/jenkins"
     catroid_user_home: "/home/catroid"
+
+  tasks:
+    - name: Ensure jenkins users can reboot their host without sudo password.
+      lineinfile:
+        state: present
+        dest: /etc/sudoers
+        insertafter: "^# User privilege specification"
+        regexp: "^catroid\tALL=NOPASSWD: "
+        line: "catroid\tALL=NOPASSWD: /sbin/reboot"
+        validate: "visudo -cf %s"
+
+    - name: Download the Catroid jenkins directory consisting scripts etc.
+      git:
+        repo: https://github.com/Catrobat/Jenkins.git
+        dest: "{{ catroid_user_home }}/Jenkins"
+      become_user: catroid
+
+
+- hosts: jenkins_master
+  become: yes
+
+  vars:
+    jenkins_user_home: "/home/jenkins"
+    jenkins_home: "{{ jenkins_user_home }}/jenkins"
 
   # Once https://github.com/ansible/ansible/issues/13263 is fixed activate
   # the password prompt when a custom variable (change_pw ...) is set.
@@ -32,6 +55,14 @@
       default: ""
       confirm: yes
       private: yes
+
+  handlers:
+    - name: restart jenkins
+      service: "name=jenkins state=restarted"
+
+  pre_tasks:
+    - name: Update repository when older than 1 hour.
+      apt: update_cache=yes cache_valid_time=3600
 
   tasks:
     - name: Specify the jenkins user with a custom home.
@@ -50,38 +81,6 @@
       when:
         - jenkins_user_password != ""
 
-    - name: Ensure jenkins users can reboot their host without sudo password.
-      lineinfile:
-        state: present
-        dest: /etc/sudoers
-        insertafter: "^# User privilege specification"
-        regexp: "^jenkins\tALL=NOPASSWD: "
-        line: "jenkins\tALL=NOPASSWD: /sbin/reboot"
-        validate: "visudo -cf %s"
-
-    - name: Download the Catroid jenkins directory consisting scripts etc.
-      git:
-        repo: https://github.com/Catrobat/Jenkins.git
-        dest: "{{ catroid_user_home }}/Jenkins"
-      become_user: catroid
-
-
-- hosts: jenkins_master
-  become: yes
-
-  vars:
-    jenkins_user_home: "/home/jenkins"
-    jenkins_home: "{{ jenkins_user_home }}/jenkins"
-
-  handlers:
-    - name: restart jenkins
-      service: "name=jenkins state=restarted"
-
-  pre_tasks:
-    - name: Update repository when older than 1 hour.
-      apt: update_cache=yes cache_valid_time=3600
-
-  tasks:
     - name: Add Key for Jenkins Debian Repository
       apt_key:
         url: https://pkg.jenkins.io/debian/jenkins.io.key
