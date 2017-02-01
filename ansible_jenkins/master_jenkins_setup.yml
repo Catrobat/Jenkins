@@ -16,7 +16,7 @@
         - openjdk-7-jdk
         - sudo
 
-- name: Jenkins user configuration.
+- name: Catroid user configuration.
   hosts: jenkins
   become: yes
 
@@ -24,7 +24,7 @@
     catroid_user_home: "/home/catroid"
 
   tasks:
-    - name: Ensure jenkins users can reboot their host without sudo password.
+    - name: Ensure catroid users can reboot their host without sudo password.
       lineinfile:
         state: present
         dest: /etc/sudoers
