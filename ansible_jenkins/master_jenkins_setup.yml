@@ -1,0 +1,127 @@
+---
+- hosts: jenkins
+  become: yes
+
+  pre_tasks:
+    - name: Update repository when older than 1 hour.
+      apt: update_cache=yes cache_valid_time=3600
+
+  tasks:
+    - name: Install Base Packages
+      apt: "name={{ item }} state=present"
+      with_items:
+        - apt-transport-https
+        - git
+        - openssh-server
+        - openjdk-7-jdk
+        - sudo
+
+- name: Jenkins user configuration.
+  hosts: jenkins
+  become: yes
+
+  vars:
+    catroid_user_home: "/home/catroid"
+
+  tasks:
+    - name: Ensure jenkins users can reboot their host without sudo password.
+      lineinfile:
+        state: present
+        dest: /etc/sudoers
+        insertafter: "^# User privilege specification"
+        regexp: "^catroid\tALL=NOPASSWD: "
+        line: "catroid\tALL=NOPASSWD: /sbin/reboot"
+        validate: "visudo -cf %s"
+
+    - name: Download the Catroid jenkins directory consisting scripts etc.
+      git:
+        repo: https://github.com/Catrobat/Jenkins.git
+        dest: "{{ catroid_user_home }}/Jenkins"
+      become_user: catroid
+
+
+- hosts: emulators
+  become: yes
+
+  tasks:
+    - name: Enable multiarch.
+      command: dpkg --add-architecture i386
+
+    - name: Install Android SDK dependencies.
+      apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
+      with_items:
+        - "libstdc++6:i386"
+        - "libgcc1:i386"
+        - "zlib1g:i386"
+        - "libncurses5:i386"
+
+
+- hosts: jenkins_master
+  become: yes
+
+  vars:
+    jenkins_user_home: "/home/jenkins"
+    jenkins_home: "{{ jenkins_user_home }}/jenkins"
+
+  # Once https://github.com/ansible/ansible/issues/13263 is fixed activate
+  # the password prompt when a custom variable (change_pw ...) is set.
+  vars_prompt:
+    - name: "jenkins_user_password"
+      prompt: "Enter the jenkins user password. Pressing enter will keep the password as is."
+      default: ""
+      confirm: yes
+      private: yes
+
+  handlers:
+    - name: restart jenkins
+      service: "name=jenkins state=restarted"
+
+  pre_tasks:
+    - name: Update repository when older than 1 hour.
+      apt: update_cache=yes cache_valid_time=3600
+
+  tasks:
+    - name: Specify the jenkins user with a custom home.
+      user:
+        name: jenkins
+        home: "{{ jenkins_user_home }}"
+        comment: Jenkins
+        system: yes
+        shell: /bin/bash
+
+    - name: Change the password for the jenkins user.
+      user:
+        name: jenkins
+        password: "{{ jenkins_user_password | password_hash('sha512') }}"
+        update_password: always
+      when:
+        - jenkins_user_password != ""
+
+    - name: Add Key for Jenkins Debian Repository
+      apt_key:
+        url: https://pkg.jenkins.io/debian/jenkins.io.key
+        state: present
+
+    - name: Add Repository for Jenkins
+      apt_repository:
+        repo: deb https://pkg.jenkins.io/debian binary/
+        state: present
+        update_cache: yes
+
+    - name: Install Jenkins
+      apt: "name=jenkins state=present"
+      environment:
+        JENKINS_HOME: "{{ jenkins_home }}"
+
+    - name: Change Jenkins Defaults
+      ini_file:
+        section: null
+        dest: /etc/default/jenkins
+        no_extra_spaces: yes
+        backup: yes
+        option: JENKINS_HOME
+        value: "{{ jenkins_home }}"
+      notify: restart jenkins
+
+    - name: Ensure Jenkins is started and enabled on boot.
+      service: name=jenkins state=started enabled=yes
