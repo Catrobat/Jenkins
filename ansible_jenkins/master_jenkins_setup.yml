@@ -39,6 +39,14 @@
         dest: "{{ catroid_user_home }}/Jenkins"
       become_user: catroid
 
+    - name: After network loss, e.g. gateway was down, restart network automatically.
+      cron:
+        name: Restart network
+        job: "{{ catroid_user_home }}/Jenkins/scripts/restartNetwork"
+        minute: "*/10"
+        user: root
+        cron_file: "/etc/crontab"
+
 
 - hosts: emulators
   become: yes
