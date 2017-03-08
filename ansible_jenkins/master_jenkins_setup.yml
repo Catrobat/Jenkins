@@ -63,6 +63,9 @@
 - hosts: emulators
   become: yes
 
+  vars:
+    android_sdk: "/home/catroid/{{ slave_directory }}/tools/android-sdk"
+
   tasks:
     - name: Enable multiarch.
       command: dpkg --add-architecture i386
@@ -74,6 +77,30 @@
         - "libgcc1:i386"
         - "zlib1g:i386"
         - "libncurses5:i386"
+        - qemu-kvm
+        - libvirt-bin
+
+    - name: Add the catroid user to the KVM group.
+      user:
+        name: catroid
+        groups: kvm
+        append: yes
+
+    - name: Create the license directory.
+      file:
+        path: "{{  slave_directory }}/tools/android-sdk/licenses"
+        state: directory
+        recurse: yes
+
+    - name: Create the android sdk licence file.
+      copy:
+        content: "\n8933bad161af4178b1185d1a37fbf41ea5269c55\n"
+        dest: "{{ android_sdk }}/licenses/android-sdk-license" 
+
+    - name: Create the android sdk preview licence file.
+      copy:
+        content: "\n84831b9409646a918e30573bab4c9c91346d8abd\n"
+        dest: "{{ android_sdk }}/licenses/android-sdk-preview-license" 
 
 
 - hosts: jenkins_master
