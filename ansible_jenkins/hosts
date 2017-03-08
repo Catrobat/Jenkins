@@ -8,7 +8,7 @@ jenkins_master
 emulators
 
 [jenkins_master]
-master ansible_host=127.0.0.1 ansible_connection=local
+master ansible_host=127.0.0.1 ansible_connection=local slave_directory=local_slave
 
 [jenkins:children]
 jenkins_master
