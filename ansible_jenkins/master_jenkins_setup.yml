@@ -55,11 +55,21 @@
     android_sdk_license_dir: "{{ slave_directory }}/tools/android-sdk/licenses"
 
   tasks:
+    - name: Get installed architectures.
+      command: dpkg --print-foreign-architectures
+      register: architectures
+      changed_when: False
+
     - name: Enable multiarch.
       command: dpkg --add-architecture i386
+      when: architectures.stdout != "i386"
+
+    - name: Update repository when a new architecture was added.
+      apt: update_cache=yes
+      when: architectures.stdout != "i386"
 
     - name: Install Android SDK dependencies.
-      apt: name={{ item }} state=present update_cache=yes cache_valid_time=3600
+      apt: name={{ item }} state=present
       with_items:
         - "libstdc++6:i386"
         - "libgcc1:i386"
