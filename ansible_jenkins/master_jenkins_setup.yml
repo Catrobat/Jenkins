@@ -52,7 +52,7 @@
   become: yes
 
   vars:
-    android_sdk: "/home/catroid/{{ slave_directory }}/tools/android-sdk"
+    android_sdk_license_dir: "{{ slave_directory }}/tools/android-sdk/licenses"
 
   tasks:
     - name: Enable multiarch.
@@ -76,19 +76,19 @@
 
     - name: Create the license directory.
       file:
-        path: "{{  slave_directory }}/tools/android-sdk/licenses"
+        path: "{{ android_sdk_license_dir }}"
         state: directory
         recurse: yes
 
     - name: Create the android sdk licence file.
       copy:
         content: "\n8933bad161af4178b1185d1a37fbf41ea5269c55\n"
-        dest: "{{ android_sdk }}/licenses/android-sdk-license" 
+        dest: "{{ android_sdk_license_dir }}/android-sdk-license"
 
     - name: Create the android sdk preview licence file.
       copy:
         content: "\n84831b9409646a918e30573bab4c9c91346d8abd\n"
-        dest: "{{ android_sdk }}/licenses/android-sdk-preview-license" 
+        dest: "{{ android_sdk_license_dir }}/android-sdk-preview-license"
 
 
 - hosts: jenkins_master
