@@ -1,0 +1,24 @@
+---
+- name: Ensure catroid users can reboot their host without sudo password.
+  lineinfile:
+    state: present
+    dest: /etc/sudoers
+    insertafter: "^# User privilege specification"
+    regexp: "^catroid\tALL=NOPASSWD: "
+    line: "catroid\tALL=NOPASSWD: /sbin/reboot"
+    validate: "visudo -cf %s"
+
+- name: Download the Catroid jenkins directory consisting scripts etc.
+  git:
+    repo: https://github.com/Catrobat/Jenkins.git
+    dest: "{{ catroid_user_home }}/Jenkins"
+  become_user: catroid
+
+- name: After network loss, e.g. gateway was down, restart network automatically.
+  cron:
+    name: Restart network
+    job: "{{ catroid_user_home }}/Jenkins/scripts/restartNetwork"
+    minute: "*/10"
+    user: root
+    cron_file: "/etc/crontab"
+

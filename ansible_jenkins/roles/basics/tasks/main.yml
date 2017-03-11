@@ -1,0 +1,9 @@
+---
+- name: Install Base Packages
+  apt: "name={{ item }} state=present"
+  with_items:
+    - apt-transport-https
+    - git
+    - openssh-server
+    - openjdk-7-jdk
+    - sudo
