@@ -1,0 +1,46 @@
+---
+- name: Specify the jenkins user with a custom home.
+  user:
+    name: jenkins
+    home: "{{ jenkins_user_home }}"
+    comment: Jenkins
+    system: yes
+    shell: /bin/bash
+
+- name: Change the password for the jenkins user.
+  user:
+    name: jenkins
+    password: "{{ jenkins_user_password | password_hash('sha512') }}"
+    update_password: always
+  no_log: yes
+  when:
+    - jenkins_user_password != ""
+
+- name: Add Key for Jenkins Debian Repository
+  apt_key:
+    url: https://pkg.jenkins.io/debian/jenkins.io.key
+    state: present
+
+- name: Add Repository for Jenkins
+  apt_repository:
+    repo: deb https://pkg.jenkins.io/debian binary/
+    state: present
+    update_cache: yes
+
+- name: Install Jenkins
+  apt: "name=jenkins state=present"
+  environment:
+    JENKINS_HOME: "{{ jenkins_home }}"
+
+- name: Change Jenkins Defaults
+  ini_file:
+    section: null
+    dest: /etc/default/jenkins
+    no_extra_spaces: yes
+    backup: yes
+    option: JENKINS_HOME
+    value: "{{ jenkins_home }}"
+  notify: restart jenkins
+
+- name: Ensure Jenkins is started and enabled on boot.
+  service: name=jenkins state=started enabled=yes

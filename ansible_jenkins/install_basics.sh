@@ -1,6 +1,6 @@
 #!/bin/bash
 
 apt-get update
-apt-get -y install ansible
-ansible-playbook install_new_ansible.yml
-ansible-playbook master_jenkins_setup.yml
+apt-get -y install python-pip
+pip install ansible
+ansible-playbook setup_jenkins.yml

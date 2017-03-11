@@ -1,0 +1,3 @@
+---
+emulator_dir: "/home/catroid/{{ inventory_hostname }}_emulator"
+android_sdk_license_dir: "{{ emulator_dir }}/tools/android-sdk/licenses"
