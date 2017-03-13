@@ -1,0 +1,14 @@
+.cat-info {
+    background-color: #ddffdd;
+    border-left: 6px solid #4CAF50;
+}
+
+.cat-note {
+    background-color: #ffffcc;
+    border-left: 6px solid #ffeb3b;
+}
+
+.cat-warning {
+    background-color: #ffdddd;
+    border-left: 6px solid #f44336;
+}
