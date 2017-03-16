@@ -32,6 +32,14 @@
   environment:
     JENKINS_HOME: "{{ jenkins_home }}"
 
+  # Jobs can use a shared style sheet, see https://confluence.catrob.at/x/SYFYAQ
+- name: Place a link to the job style in the user content directory.
+  file:
+    src: "{{ catroid_user_home }}/Jenkins/css/job_styles.css"
+    dest: "{{ jenkins_home }}/userContent/job_styles.css"
+    state: link
+  become_user: jenkins
+
 - name: Change Jenkins Defaults
   ini_file:
     section: null
