@@ -1,6 +1,6 @@
 ---
 project_identifier: catrobat
-
+api_key:
 base_url: http://api.crowdin.net
 base_path: .
 preserve_hierarchy: true
@@ -40,10 +40,14 @@ files:
         he: he
         ja: ja
         ko: ko
+        'ms-MY': 'ms'
+        ms: ms
         nl: nl
         'no': 'no'
         'no-NO': 'no'
         pl: pl
+        'ps-AF': 'ps'
+        ps: ps
         pt: pt
         pt-PT: pt
         ro: ro
@@ -53,6 +57,8 @@ files:
         sr-CS: sr-rCS
         sr-SP: sr-rSP
         sv-SE: sv
+        ta: ta
+        'ta-IN': 'ta'
         th: th
         th-TH: th
         tr: tr
