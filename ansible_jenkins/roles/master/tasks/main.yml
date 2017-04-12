@@ -27,18 +27,29 @@
     state: present
     update_cache: yes
 
-- name: Install Jenkins
-  apt: "name=jenkins state=present"
-  environment:
-    JENKINS_HOME: "{{ jenkins_home }}"
+  # This needs to be done manually as it can take a while before the
+  # directories are created by the Jenkins installation.
+- name: Create Jenkins userContent directory
+  file:
+    dest: "{{ jenkins_home }}/userContent"
+    state: directory
+    owner: jenkins
+    group: jenkins
+    recurse: yes
 
   # Jobs can use a shared style sheet, see https://confluence.catrob.at/x/SYFYAQ
 - name: Place a link to the job style in the user content directory.
   file:
     src: "{{ catroid_user_home }}/Jenkins/css/job_styles.css"
     dest: "{{ jenkins_home }}/userContent/job_styles.css"
+    owner: jenkins
+    group: jenkins
     state: link
-  become_user: jenkins
+
+- name: Install Jenkins
+  apt: "name=jenkins state=present"
+  environment:
+    JENKINS_HOME: "{{ jenkins_home }}"
 
 - name: Change Jenkins Defaults
   ini_file:
