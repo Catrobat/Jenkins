@@ -5,5 +5,16 @@
     - apt-transport-https
     - git
     - openssh-server
-    - openjdk-7-jdk
     - sudo
+
+- name: Add debian backports.
+  apt_repository:
+    repo: "deb http://ftp.de.debian.org/debian jessie-backports main"
+    state: present
+    update_cache: yes
+
+- name: Install OpenJDK 8
+  apt:
+    name: openjdk-8-jdk
+    state: present
+    default_release: jessie-backports
