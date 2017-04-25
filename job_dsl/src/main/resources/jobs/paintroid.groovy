@@ -146,6 +146,15 @@ $bulletPointsStr    </ul>
 
         def p = new AndroidEmulatorParameters(data.androidEmulatorParameters + params)
         job.wrappers {
+            buildTimeoutWrapper {
+                strategy {
+                    noActivityTimeOutStrategy {
+                        timeoutSecondsString(p.noActivityTimeout)
+                    }
+                }
+                timeoutEnvVar('')
+            }
+
             androidEmulator {
                 avdName(null)
                 osVersion("android-${p.androidApi}")
@@ -283,7 +292,7 @@ $bulletPointsStr    </ul>
 @Canonical
 class AndroidEmulatorParameters {
     String androidApi = '${ANDROID_VERSION}'
-    String screenDensity, screenResolution, targetAbi
+    String screenDensity, screenResolution, targetAbi, noActivityTimeout
     String deviceLocale = 'en_US'
     String sdCardSize = '100M'
     Map hardwareProperties = [:]
@@ -306,6 +315,7 @@ class Paintroid {
     def githubOrganizations = ['Catrobat']
     def pullRequestAdmins = ['thmq', '84n4n4']
     def androidEmulatorParameters = [screenDensity: '240', screenResolution: '480x800', targetAbi: 'x86',
+                                     noActivityTimeout: '1200',
                                      hardwareProperties: ['hw.keyboard': 'yes', 'hw.ramSize': '800', 'vm.heapSize': '128'],
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'Paintroid/build/outputs/apk/Paintroid-debug.apk'
