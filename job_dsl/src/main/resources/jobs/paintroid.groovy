@@ -152,6 +152,10 @@ $bulletPointsStr    </ul>
                         timeoutSecondsString(p.noActivityTimeout)
                     }
                 }
+                operationList {
+                    abortOperation()
+                    failOperation()
+                }
                 timeoutEnvVar('')
             }
 
