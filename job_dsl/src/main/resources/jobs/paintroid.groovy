@@ -127,10 +127,14 @@ $bulletPointsStr    </ul>
         git(data.repo, data.branch)
     }
 
-    void git(String repo_, String branch_) {
-        job.properties {
-            githubProjectUrl(data.githubUrl)
+    void git(String repo_, String branch_, String githubUrl=null) {
+        githubUrl = githubUrl ?: retrieveGithubUrl(repo_)
+        if (githubUrl) {
+            job.properties {
+                githubProjectUrl(githubUrl)
+            }
         }
+
         job.scm {
             git {
                 remote {
@@ -139,6 +143,15 @@ $bulletPointsStr    </ul>
                 }
             }
         }
+    }
+
+    private String retrieveGithubUrl(String repo) {
+        if (data)
+            return data.githubUrl
+        else if (repo.contains('github'))
+            return repo - ~/\.git$/
+        else
+            return ''
     }
 
     void androidEmulator(Map params=[:]) {
@@ -251,10 +264,10 @@ $bulletPointsStr    </ul>
         }
     }
 
-    void nightly() {
+    void nightly(String schedule='H 0 * * *') {
         job.concurrentBuild(false)
         job.triggers {
-            cron('H 0 * * *')
+            cron(schedule)
         }
     }
 
@@ -381,4 +394,22 @@ new PaintroidJobBuilder(multiJob('Paintroid-Nightly')).make {
     uploadApkToFilesCatrobat()
 }
 
+// TODO refactor to use different job builder
+new AndroidJobBuilder(job('Jenkins-SeedJob'), null).make {
+    htmlDescription(['Seed job to create all other jobs.'])
+
+    label(null) // TODO this new job builder should net set a label by default
+    git('https://github.com/Catrobat/Jenkins.git', 'master')
+    nightly('H 23 * * *') // run the job before all other nightlies
+    steps {
+        jobDsl {
+            targets('job_dsl/src/main/resources/jobs/*.groovy')
+            failOnMissingPlugin(true)
+            removedJobAction('DISABLE')
+            unstableOnDeprecation(true)
+        }
+    }
+}
+
 createListView('Paintroid', 'Paintroid.+')
+createListView('Jenkins', 'Jenkins.+')
