@@ -18,3 +18,8 @@
     name: openjdk-8-jdk
     state: present
     default_release: jessie-backports
+
+- name: Select OpenJDK 8 as default
+  alternatives:
+    name: java
+    path: /usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/bin/java
