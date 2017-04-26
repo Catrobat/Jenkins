@@ -372,26 +372,17 @@ new PaintroidJobBuilder(job('Paintroid-PullRequest')).make {
     junit()
 }
 
-new PaintroidJobBuilder(multiJob('Paintroid-Nightly')).make {
+new PaintroidJobBuilder(job('Paintroid-Nightly')).make {
     htmlDescription(['Nightly Paintroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
 
     git()
     nightly()
-
-    steps {
-        phase('BuildAndTest') {
-            phaseJob('Paintroid-ParallelTests-CustomBranch') {
-                parameters {
-                    gitRevision()
-                }
-            }
-        }
-    }
-
-    gradle('clean assembleDebug', '-Pjenkins')
+    androidEmulator(androidApi: 22)
+    gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
     uploadApkToFilesCatrobat()
+    junit()
 }
 
 // TODO refactor to use different job builder
