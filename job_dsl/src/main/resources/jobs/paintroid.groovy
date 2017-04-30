@@ -367,7 +367,7 @@ new PaintroidJobBuilder(job('Paintroid-PullRequest')).make {
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
 
     pullRequest()
-    androidEmulator(androidApi: 22)
+    androidEmulator(androidApi: 18)
     gradle('connectedDebugAndroidTest', '-Pjenkins')
     junit()
 }
@@ -379,7 +379,7 @@ new PaintroidJobBuilder(job('Paintroid-Nightly')).make {
 
     git()
     nightly()
-    androidEmulator(androidApi: 22)
+    androidEmulator(androidApi: 18)
     gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
     uploadApkToFilesCatrobat()
     junit()
