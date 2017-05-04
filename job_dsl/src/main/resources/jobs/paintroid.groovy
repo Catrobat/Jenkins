@@ -46,8 +46,18 @@ class JobBuilder {
     }
 
     Job make(Closure additionalConfig) {
+        jobDefaults()
         runClosure(additionalConfig)
+
         job
+    }
+
+    protected void jobDefaults() {
+        logRotator(30, 100)
+        job.wrappers {
+            preBuildCleanup()
+            timestamps()
+        }
     }
 
     private void runClosure(Closure closure) {
@@ -68,27 +78,6 @@ class JobBuilder {
     def methodMissing(String name, argument) {
         job.invokeMethod(name, (Object[]) argument)
     }
-}
-
-class AndroidJobBuilder extends JobBuilder {
-    protected def data
-
-    AndroidJobBuilder(Job job, def data) {
-        super(job)
-        this.data = data
-    }
-
-    Job make(Closure additionalConfig) {
-        logRotator(30, 100)
-        label('NoDevice')
-        job.concurrentBuild()
-        job.wrappers {
-            preBuildCleanup()
-            timestamps()
-        }
-
-        super.make(additionalConfig)
-    }
 
     void htmlDescription(String description) {
         job.description('<style>\n    @import "/userContent/job_styles.css";\n</style>\n' + description)
@@ -105,16 +94,6 @@ $bulletPointsStr    </ul>
         htmlDescription(text);
     }
 
-    void buildName(String template_) {
-        job.wrappers {
-            buildNameSetter {
-                template(template_)
-                runAtStart(true)
-                runAtEnd(true)
-            }
-        }
-    }
-
     void jenkinsUsersPermissions(Permission... permissions) {
         authorization {
             permissions.each { p ->
@@ -123,12 +102,8 @@ $bulletPointsStr    </ul>
         }
     }
 
-    void git() {
-        git(data.repo, data.branch)
-    }
-
-    void git(String repo_, String branch_, String githubUrl=null) {
-        githubUrl = githubUrl ?: retrieveGithubUrl(repo_)
+    void git(String repo_, String branch_) {
+        def githubUrl = retrieveGithubUrl(repo_)
         if (githubUrl) {
             job.properties {
                 githubProjectUrl(githubUrl)
@@ -145,13 +120,54 @@ $bulletPointsStr    </ul>
         }
     }
 
-    private String retrieveGithubUrl(String repo) {
-        if (data)
-            return data.githubUrl
-        else if (repo.contains('github'))
+    protected String retrieveGithubUrl(String repo) {
+        if (repo.contains('github'))
             return repo - ~/\.git$/
         else
             return ''
+    }
+
+    void nightly(String schedule='H 0 * * *') {
+        job.concurrentBuild(false)
+        job.triggers {
+            cron(schedule)
+        }
+    }
+
+}
+
+class AndroidJobBuilder extends JobBuilder {
+    protected def data
+
+    AndroidJobBuilder(Job job, def data) {
+        super(job)
+        this.data = data
+    }
+
+    protected void jobDefaults() {
+        super.jobDefaults()
+        label('NoDevice')
+    }
+
+    void buildName(String template_) {
+        job.wrappers {
+            buildNameSetter {
+                template(template_)
+                runAtStart(true)
+                runAtEnd(true)
+            }
+        }
+    }
+
+    void git() {
+        git(data.repo, data.branch)
+    }
+
+    protected String retrieveGithubUrl(String repo) {
+        if (data)
+            return data.githubUrl
+        else
+            return super.retrieveGithubUrl(repo)
     }
 
     void androidEmulator(Map params=[:]) {
@@ -261,13 +277,6 @@ $bulletPointsStr    </ul>
     void parameterizedTestExclusionsFile() {
         job.parameters {
             fileParam(data.testExclusionsFile, 'Optional file listing the tests to exclude (both .java and .class files).\nNeeded for parallel test job execution.')
-        }
-    }
-
-    void nightly(String schedule='H 0 * * *') {
-        job.concurrentBuild(false)
-        job.triggers {
-            cron(schedule)
         }
     }
 
@@ -385,11 +394,10 @@ new PaintroidJobBuilder(job('Paintroid-Nightly')).make {
     junit()
 }
 
-// TODO refactor to use different job builder
-new AndroidJobBuilder(job('Jenkins-SeedJob'), null).make {
+new JobBuilder(job('Jenkins-SeedJob')).make {
     htmlDescription(['Seed job to create all other jobs.'])
 
-    label(null) // TODO this new job builder should net set a label by default
+    jenkinsUsersPermissions()
     git('https://github.com/Catrobat/Jenkins.git', 'master')
     nightly('H 23 * * *') // run the job before all other nightlies
     steps {
