@@ -224,7 +224,6 @@ class AndroidJobBuilder extends JobBuilder {
             gradle {
                 switches(switches_)
                 tasks(tasks_)
-                description('Building with gradle')
             }
         }
     }
