@@ -49,7 +49,7 @@
 - name: Install Jenkins
   apt: "name=jenkins state=present"
   environment:
-    JENKINS_HOME: "{{ jenkins_home }}"
+    RUNLEVEL: "1" # to not start jenkins directly
 
 - name: Change Jenkins Defaults
   ini_file:
