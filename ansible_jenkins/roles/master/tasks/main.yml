@@ -1,4 +1,7 @@
 ---
+- name: Install rsync to create backups.
+  apt: "name=rsync state=present"
+
 - name: Specify the jenkins user with a custom home.
   user:
     name: jenkins
