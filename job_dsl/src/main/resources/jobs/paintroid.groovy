@@ -83,7 +83,7 @@ class JobBuilder {
         job.description('<style>\n    @import "/userContent/job_styles.css";\n</style>\n' + description)
     }
 
-    void htmlDescription(List bulletPoints=[], String prefix='<p><b>Info:</b></p>', String cssClass='cat-info') {
+    void htmlDescription(List bulletPoints=[], String cssClass='cat-info', String prefix='<p><b>Info:</b></p>') {
         bulletPoints += 'Remove this job when it was not run in the last 2 months.'
         String bulletPointsStr = bulletPoints.sum { ' ' * 8 + '<li>' + it + '</li>\n' }
         String text = """<div class="$cssClass">
@@ -134,6 +134,11 @@ $bulletPointsStr    </ul>
         }
     }
 
+    void shell(String... commands) {
+        job.steps {
+            shell(commands.join('\n'))
+        }
+    }
 }
 
 class AndroidJobBuilder extends JobBuilder {
@@ -408,6 +413,19 @@ new JobBuilder(job('Jenkins-SeedJob')).make {
             unstableOnDeprecation(true)
         }
     }
+}
+
+new JobBuilder(job('Jenkins-LocalBackup')).make {
+    htmlDescription(['Still in the works, see JENKINS-115, use at own risk!',
+                     'Creates a local backup of jenkins in /home/jenkins/jenkins_created_backups.',
+                     'Useful to run manually before installing updates of plugins.',
+                     'Does not replace other forms of updates!'],
+                    'cat-note')
+
+    jenkinsUsersPermissions()
+    label('master')
+    git('https://github.com/Catrobat/Jenkins.git', 'master')
+    shell('bash -ex ./scripts/scripts/backupJenkinsLocally.sh')
 }
 
 createListView('Paintroid', 'Paintroid.+')
