@@ -416,11 +416,9 @@ new JobBuilder(job('Jenkins-SeedJob')).make {
 }
 
 new JobBuilder(job('Jenkins-LocalBackup')).make {
-    htmlDescription(['Still in the works, see JENKINS-115, use at own risk!',
-                     'Creates a local backup of jenkins in /home/jenkins/jenkins_created_backups.',
+    htmlDescription(['Creates a local backup of jenkins in /home/jenkins/jenkins_created_backups.',
                      'Useful to run manually before installing updates of plugins.',
-                     'Does not replace other forms of updates!'],
-                    'cat-note')
+                     'Does not replace other forms of updates!'])
 
     jenkinsUsersPermissions()
     label('master')
