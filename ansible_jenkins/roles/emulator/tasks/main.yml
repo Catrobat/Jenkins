@@ -27,22 +27,3 @@
     name: catroid
     groups: kvm
     append: yes
-
-- name: Create the license directory.
-  file:
-    path: "{{ android_sdk_license_dir }}"
-    state: directory
-    recurse: yes
-  become_user: catroid
-
-- name: Create the android sdk licence file.
-  copy:
-    content: "\n8933bad161af4178b1185d1a37fbf41ea5269c55\n"
-    dest: "{{ android_sdk_license_dir }}/android-sdk-license"
-  become_user: catroid
-
-- name: Create the android sdk preview licence file.
-  copy:
-    content: "\n84831b9409646a918e30573bab4c9c91346d8abd\n"
-    dest: "{{ android_sdk_license_dir }}/android-sdk-preview-license"
-  become_user: catroid
