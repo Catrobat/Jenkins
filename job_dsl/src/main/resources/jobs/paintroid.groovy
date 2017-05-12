@@ -425,7 +425,7 @@ new JobBuilder(job('Jenkins-LocalBackup')).make {
     jenkinsUsersPermissions()
     label('master')
     git('https://github.com/Catrobat/Jenkins.git', 'master')
-    shell('bash -ex ./scripts/scripts/backupJenkinsLocally.sh')
+    shell('bash -ex ./scripts/backupJenkinsLocally.sh')
 }
 
 createListView('Paintroid', 'Paintroid.+')
