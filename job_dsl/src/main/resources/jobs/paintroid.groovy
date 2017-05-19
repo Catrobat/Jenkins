@@ -542,6 +542,19 @@ new PaintroidJobBuilder(job('Paintroid-Nightly')).make {
     junit()
 }
 
+new PaintroidJobBuilder(job('Paintroid-Find-Broken-Tests')).make {
+    htmlDescription(['Job to find broken Paintroid tests, to not tamper with the nightly.'])
+
+    jenkinsUsersPermissions(Permission.JobRead)
+
+    git()
+    nightly()
+    excludeTests()
+    androidEmulator(androidApi: 18)
+    gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
+    junit()
+}
+
 new JobBuilder(job('Jenkins-SeedJob')).make {
     htmlDescription(['Seed job to create all other jobs.'])
 
