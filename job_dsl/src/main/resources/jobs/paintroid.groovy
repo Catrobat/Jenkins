@@ -290,6 +290,10 @@ fi
 ''')
     }
 
+    void excludeTests() {
+        excludeTestClasses(data.excludedTests)
+    }
+
     void gradle(String tasks_, String switches_='') {
         job.steps {
             gradle {
@@ -478,6 +482,16 @@ class Paintroid {
                                      hardwareProperties: ['hw.keyboard': 'yes', 'hw.ramSize': '800', 'vm.heapSize': '128'],
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'Paintroid/build/outputs/apk/Paintroid-debug.apk'
+    def excludedTests = ['ActivityOpenedFromPocketCodeTest', 'BitmapIntegrationTest', 'LandscapeTest', 'LayerIntegrationTest',
+                         'MenuFileActivityIntegrationTest', 'ToolOnBackPressedTests', 'ToolSelectionIntegrationTest'
+                        ].collect{"org.catrobat.paintroid.test.integration.$it"} +
+                        ['BrushPickerIntegrationTest', 'ColorDialogIntegrationTest'
+                        ].collect{"org.catrobat.paintroid.test.integration.dialog.$it"} +
+                        ['EraserToolIntegrationTest', 'FillToolIntegrationTest', 'FlipToolIntegrationTest',
+                         'RectangleFillToolIntegrationTest', 'RotationToolIntegrationTest', 'StampToolIntegrationTest',
+                         'TextToolIntegrationTest', 'TransformToolIntegrationTest'
+                        ].collect{"org.catrobat.paintroid.test.integration.tools.$it"} +
+                        ['AllUnitTests' ].collect{"org.catrobat.paintroid.test.junit.$it"}
 }
 
 new PaintroidJobBuilder(job('Paintroid-PartialTests')).make {
@@ -521,6 +535,7 @@ new PaintroidJobBuilder(job('Paintroid-Nightly')).make {
 
     git()
     nightly()
+    excludeTests()
     androidEmulator(androidApi: 18)
     gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
     uploadApkToFilesCatrobat()
