@@ -42,10 +42,10 @@ class JobBuilder {
     protected def data
     protected def job
     private String description
-      
+
     protected Set excludedTests = []
 
-    JobBuilder(Job job, def data) {
+    JobBuilder(Job job, def data=null) {
         this.data = data
         this.job = job
     }
@@ -54,16 +54,16 @@ class JobBuilder {
         jobDefaults()
         runClosure(additionalConfig)
 
+        if (data?.testExclusionsFile && excludedTests) {
+            job.steps {
+                shell {
+                    command('# Run is marked unstable since there are exluded tests.\nexit 1')
+                    unstableReturn(1)
+                }
+            }
+        }
+
         job
-      
-        if(data.testExclusionsFile != '' && !excludedTests.empty) {
-              job.steps {
-                  shell {
-                      command('# Run is marked unstable since there are exluded tests.\nexit 1')
-                      unstableReturn(1)
-                  }
-              }
-          }
     }
 
     protected void jobDefaults() {
@@ -104,20 +104,20 @@ class JobBuilder {
     $prefix
     <ul>
 $bulletPointsStr    </ul></div>"""
-      
+
         this.description = text
-        
+
         htmlDescription();
     }
-  
+
     void excludeTestClass(List testclasses) {
-      testclasses.each{a -> excludeTestClass(a)}
+        testclasses.each{a -> excludeTestClass(a)}
     }
-  
+
     void excludeTestClass(String testclass) {
-        if(data.testExclusionsFile != ''){
+        if (data?.testExclusionsFile) {
             excludedTests << testclass
-            htmlDescription();          
+            htmlDescription();
             job.steps {
                 shell {
                     command("echo ${testclass} >> " + data.testExclusionsFile)
@@ -125,19 +125,19 @@ $bulletPointsStr    </ul></div>"""
             }
         }
     }
-  
+
     private String getExcludedTestClasses(String cssClass='cat-note'){
-        if(excludedTests){
+        if (excludedTests) {
             String text = """<div class="$cssClass">"""
             text += "<p><b>Excluded Testcases:\n</b></p><ul>"
             text += excludedTests.sum { ' ' * 8 + '<li>' + it + '</li>\n' }
             text += "</ul></div>";
-            
-          return text
+
+            return text
         }
-      
+
         return ''
-    }  
+    }
 
     void jenkinsUsersPermissions(Permission... permissions) {
         authorization {
@@ -187,7 +187,7 @@ $bulletPointsStr    </ul></div>"""
 }
 
 class AndroidJobBuilder extends JobBuilder {
-    
+
     AndroidJobBuilder(Job job, def data) {
         super(job, data)
     }
@@ -427,7 +427,7 @@ new CalculatorJobBuilder(job('Calculator-Nightly-DSL-Generated')).make {
     git()
     nightly()
     androidEmulator(androidApi: 22)
-  
+
     //Build Actions
     gradle('clean')
     gradle('test')
@@ -446,7 +446,7 @@ new CalculatorJobBuilder(job('Calculator-Nightly-DSL-Generated-With-Exclusions')
     git()
     nightly()
     androidEmulator(androidApi: 22)
-  
+
     excludeTestClass('catrobat.calculator.test.CalculationsTest')
 
     //Build Actions
