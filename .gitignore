@@ -1,2 +1,5 @@
 *~
+.*
 
+# Files created by Ansible
+*.retry
