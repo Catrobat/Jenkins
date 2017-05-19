@@ -39,9 +39,14 @@ def createListView(String name_, String pattern) {
  * @see <a href="https://www.cloudbees.com/sites/default/files/2016-jenkins-world-rule_jenkins_with_configuration_as_code_2.pdf">Rule Jenkins with Configuration as Code</a>
  */
 class JobBuilder {
+    protected def data
     protected def job
+    private String description
+      
+    protected Set excludedTests = []
 
-    JobBuilder(Job job) {
+    JobBuilder(Job job, def data) {
+        this.data = data
         this.job = job
     }
 
@@ -50,6 +55,15 @@ class JobBuilder {
         runClosure(additionalConfig)
 
         job
+      
+        if(data.testExclusionsFile != '' && !excludedTests.empty) {
+              job.steps {
+                  shell {
+                      command('# Run is marked unstable since there are exluded tests.\nexit 1')
+                      unstableReturn(1)
+                  }
+              }
+          }
     }
 
     protected void jobDefaults() {
@@ -79,20 +93,51 @@ class JobBuilder {
         job.invokeMethod(name, (Object[]) argument)
     }
 
-    void htmlDescription(String description) {
-        job.description('<style>\n    @import "/userContent/job_styles.css";\n</style>\n' + description)
+    void htmlDescription() {
+        job.description('<style>\n    @import "/userContent/job_styles.css";\n</style>\n' + description + getExcludedTestClasses())
     }
 
-    void htmlDescription(List bulletPoints=[], String cssClass='cat-info', String prefix='<p><b>Info:</b></p>') {
+    void htmlDescription(List bulletPoints, String cssClass='cat-info', String prefix='<p><b>Info:</b></p>') {
         bulletPoints += 'Remove this job when it was not run in the last 2 months.'
         String bulletPointsStr = bulletPoints.sum { ' ' * 8 + '<li>' + it + '</li>\n' }
         String text = """<div class="$cssClass">
     $prefix
     <ul>
-$bulletPointsStr    </ul>
-</div>"""
-        htmlDescription(text);
+$bulletPointsStr    </ul></div>"""
+      
+        this.description = text
+        
+        htmlDescription();
     }
+  
+    void excludeTestClass(List testclasses) {
+      testclasses.each{a -> excludeTestClass(a)}
+    }
+  
+    void excludeTestClass(String testclass) {
+        if(data.testExclusionsFile != ''){
+            excludedTests << testclass
+            htmlDescription();          
+            job.steps {
+                shell {
+                    command("echo ${testclass} >> " + data.testExclusionsFile)
+                }
+            }
+        }
+    }
+  
+    private String getExcludedTestClasses(String cssClass='cat-note'){
+        if(excludedTests){
+            String text = """<div class="$cssClass">"""
+            text += "<p><b>Excluded Testcases:\n</b></p><ul>"
+            text += excludedTests.sum { ' ' * 8 + '<li>' + it + '</li>\n' }
+            text += "</ul></div>";
+            
+          return text
+        }
+      
+        return ''
+    }  
 
     void jenkinsUsersPermissions(Permission... permissions) {
         authorization {
@@ -142,11 +187,9 @@ $bulletPointsStr    </ul>
 }
 
 class AndroidJobBuilder extends JobBuilder {
-    protected def data
-
+    
     AndroidJobBuilder(Job job, def data) {
-        super(job)
-        this.data = data
+        super(job, data)
     }
 
     protected void jobDefaults() {
@@ -353,6 +396,68 @@ class AndroidEmulatorParameters {
     String commandLineOptions = ''
 }
 
+class CalculatorJobBuilder extends AndroidJobBuilder {
+    CalculatorJobBuilder(Job job) {
+        super(job, new Calculator())
+    }
+}
+
+class Calculator {
+    def repo = 'https://github.com/vinzynth/catroidCalculator.git'
+    def branch = 'master'
+    def githubUrl = 'https://github.com/vinzynth/catroidCalculator'
+    def androidVersions = 18..24
+    def testExclusionsFile = 'testexclusions.txt'
+    def testResultsPattern = ''
+    def githubOrganizations = []
+    def pullRequestAdmins = []
+    def androidEmulatorParameters = [screenDensity: '160', screenResolution: '480x800', targetAbi: 'x86_64',
+                                     noActivityTimeout: '1200',
+                                     hardwareProperties: ['hw.keyboard': 'yes', 'hw.ramSize': '800', 'vm.heapSize': '128'],
+                                     commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
+    //def debugApk = 'Calculator/build/outputs/apk/Calculator-debug.apk'
+}
+
+
+new CalculatorJobBuilder(job('Calculator-Nightly-DSL-Generated')).make {
+    htmlDescription(['Nightly Calculator Job. Created by DSL-Seed Job for testing purposes.'])
+
+    jenkinsUsersPermissions(Permission.JobRead)
+
+    git()
+    nightly()
+    androidEmulator(androidApi: 22)
+  
+    //Build Actions
+    gradle('clean')
+    gradle('test')
+    gradle('assembleDebug')
+
+    //Post-Build Actions
+    //uploadApkToFilesCatrobat()
+    //junit()
+}
+
+new CalculatorJobBuilder(job('Calculator-Nightly-DSL-Generated-With-Exclusions')).make {
+    htmlDescription(['Nightly Calculator Job. Created by DSL-Seed Job for testing purposes.'])
+
+    jenkinsUsersPermissions(Permission.JobRead)
+
+    git()
+    nightly()
+    androidEmulator(androidApi: 22)
+  
+    excludeTestClass('catrobat.calculator.test.CalculationsTest')
+
+    //Build Actions
+    gradle('clean')
+    gradle('test')
+    gradle('assembleDebug')
+
+    //Post-Build Actions
+    //uploadApkToFilesCatrobat()
+    //junit()
+}
 class PaintroidJobBuilder extends AndroidJobBuilder {
     PaintroidJobBuilder(Job job) {
         super(job, new Paintroid())
@@ -451,3 +556,4 @@ new JobBuilder(job('Jenkins-LocalBackup')).make {
 
 createListView('Paintroid', 'Paintroid.+')
 createListView('Jenkins', 'Jenkins.+')
+createListView('Calculator', 'Calculator.+')
