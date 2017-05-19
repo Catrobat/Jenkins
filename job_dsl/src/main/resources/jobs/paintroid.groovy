@@ -110,20 +110,20 @@ $bulletPointsStr    </ul></div>"""
         htmlDescription();
     }
 
-    void excludeTestClass(List testclasses) {
-        testclasses.each{a -> excludeTestClass(a)}
-    }
-
-    void excludeTestClass(String testclass) {
+    void excludeTestClasses(List testclasses) {
         if (data?.testExclusionsFile) {
-            excludedTests << testclass
-            htmlDescription();
+            excludedTests += testclasses
+            htmlDescription()
             job.steps {
                 shell {
-                    command("echo ${testclass} >> " + data.testExclusionsFile)
+                    command(testclasses.collect{"echo \"$it\" >> $data.testExclusionsFile"}.join('\n'))
                 }
             }
         }
+    }
+
+    void excludeTestClass(String testclass) {
+        excludeTestClasses([testclass])
     }
 
     private String getExcludedTestClasses(String cssClass='cat-note'){
