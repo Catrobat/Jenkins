@@ -281,6 +281,10 @@ class AndroidJobBuilder extends JobBuilder {
         shell('''
 TOOLS_DIR="$WORKSPACE/../../tools"
 
+if [ -d "$ANDROID_HOME" ]; then
+    TOOLS_DIR="$ANDROID_HOME/.."
+fi
+
 if [ -d "$TOOLS_DIR" ]; then
     LICENSES_DIR="$TOOLS_DIR/android-sdk/licenses"
     mkdir -p "$LICENSES_DIR"
