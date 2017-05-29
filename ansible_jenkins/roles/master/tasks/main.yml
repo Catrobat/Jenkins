@@ -66,3 +66,42 @@
 
 - name: Ensure Jenkins is started and enabled on boot.
   service: name=jenkins state=started enabled=yes
+
+- name: Determine Jenkins credentials to install plugins.
+  jenkins_credentials:
+    user: "{{ ldap_user }}"
+    password: "{{ ldap_password }}"
+    jenkins_home: "{{ jenkins_home }}"
+  no_log: Yes
+  register: credentials
+
+- name: Install plugin
+  jenkins_plugin:
+    name: "{{ item }}"
+    params: "{{ credentials['credentials'] }}"
+    jenkins_home: "{{ jenkins_home }}"
+    timeout: 60
+  no_log: Yes
+  notify: restart jenkins
+  with_items:
+    - android-emulator
+    - antisamy-markup-formatter # allows html descriptions for plugins
+    - build-name-setter
+    - build-timeout
+    - built-on-column           # built on node column in overview
+    - extreme-notification      # provides hooks to post (indirectly) to e.g. Discord
+    - ghprb                     # github PR support
+    - git
+    - gradle
+    - greenballs                # instead of blue
+    - jenkins-multijob-plugin   # Job that consists of other jobs
+    - job-dsl                   # Support for a DSL to describe jobs
+    - jobConfigHistory          # diff changes in job config
+    - parallel-test-executor    # Distribute tests onto multiple nodes for better performance
+    - rebuild                   # adds a rebuild button to jobs
+    - ssh-slaves                # to connect to slaves via ssh
+    - timestamper               # add timestamps in the log automatically
+    - workflow-aggregator       # Support for Jenkins Pipeline
+    - ws-cleanup                # Clean the workspace for builds
+  when:
+    - install_plugins

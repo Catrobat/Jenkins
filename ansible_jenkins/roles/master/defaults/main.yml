@@ -2,3 +2,6 @@
 jenkins_user_password: ""
 jenkins_user_home: "/home/jenkins"
 jenkins_home: "{{ jenkins_user_home }}/jenkins"
+install_plugins: Yes
+ldap_user: ""
+ldap_password: ""
