@@ -2,3 +2,4 @@
 dependencies:
   - role: basics
   - role: catroid_user
+  - role: nagios_user

@@ -1,0 +1,17 @@
+---
+- name: Add a nagios user.
+  user:
+    name: nagios
+    home: /home/nagios
+    shell: /bin/bash
+
+- name: Ensure the nagios user can check the SMART varlues of the hard drives.
+  lineinfile:
+    state: present
+    dest: /etc/sudoers
+    regexp: "^nagios\tALL=NOPASSWD: "
+    line: "nagios\tALL=NOPASSWD: /home/nagios/check_smart_all_disks"
+    validate: "visudo -cf %s"
+
+- name: Install SMART tools.
+  apt: name=smartmontools state=present
