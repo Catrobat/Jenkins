@@ -2,20 +2,25 @@
 - hosts: jenkins_master
   become: yes
 
-  # Once https://github.com/ansible/ansible/issues/13263 is fixed activate
-  # the password prompt when a custom variable (change_pw ...) is set.
-  vars_prompt:
-    - name: "jenkins_user_password"
-      prompt: "Enter the jenkins user password. Pressing enter will keep the password as is."
-      default: ""
-      confirm: yes
-      private: yes
+  pre_tasks:
+    - name: Load the passwords file if present.
+      include_vars:
+        dir: "."
+        files_matching: "passwords.yml"
+      no_log: yes
 
   roles:
     - master
 
 - hosts: emulators
   become: yes
+
+  pre_tasks:
+    - name: Load the passwords file if present.
+      include_vars:
+        dir: "."
+        files_matching: "passwords.yml"
+      no_log: yes
 
   roles:
     - emulator
