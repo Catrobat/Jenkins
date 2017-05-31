@@ -1,9 +1,23 @@
 ---
+- name: Add a catroid user.
+  user:
+    name: catroid
+    home: /home/catroid
+    shell: /bin/bash
+
+- name: Change the password for the catroid user.
+  user:
+    name: catroid
+    password: "{{ catroid_password | password_hash('sha512') }}"
+    update_password: always
+  no_log: yes
+  when:
+    - catroid_password != ""
+
 - name: Ensure catroid users can reboot their host without sudo password.
   lineinfile:
     state: present
     dest: /etc/sudoers
-    insertafter: "^# User privilege specification"
     regexp: "^catroid\tALL=NOPASSWD: "
     line: "catroid\tALL=NOPASSWD: /sbin/reboot"
     validate: "visudo -cf %s"
@@ -21,4 +35,3 @@
     minute: "*/10"
     user: root
     cron_file: "/etc/crontab"
-
