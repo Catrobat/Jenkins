@@ -78,7 +78,10 @@
 - name: Install plugin
   jenkins_plugin:
     name: "{{ item }}"
-    params: "{{ credentials['credentials'] }}"
+    params:
+      url: http://localhost:8080
+      url_username: "{{ credentials['user'] }}"
+      url_password: "{{ credentials['password'] }}"
     jenkins_home: "{{ jenkins_home }}"
     timeout: 60
   no_log: Yes
