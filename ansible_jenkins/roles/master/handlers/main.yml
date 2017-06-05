@@ -1,3 +1,17 @@
 ---
 - name: restart jenkins
   service: "name=jenkins state=restarted"
+  notify: Wait for Jenkins to start up
+
+- name: Wait for Jenkins to start up
+  uri:
+    url: "{{ jenkins_url }}/login"
+    status_code: 200
+    timeout: 5
+  register: jenkins_service_status
+  # Keep trying for 5 mins in 5 sec intervals
+  retries: 60
+  delay: 5
+  until: >
+    'status' in jenkins_service_status and
+    jenkins_service_status['status'] == 200

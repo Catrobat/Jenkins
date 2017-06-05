@@ -64,6 +64,9 @@
     value: "{{ jenkins_home }}"
   notify: restart jenkins
 
+- name: Ensure Jenkins is using the updated defaults.
+  meta: flush_handlers
+
 - name: Ensure Jenkins is started and enabled on boot.
   service: name=jenkins state=started enabled=yes
 
@@ -79,7 +82,7 @@
   jenkins_plugin:
     name: "{{ item }}"
     params:
-      url: http://localhost:8080
+      url: "{{ jenkins_url }}"
       url_username: "{{ credentials['user'] }}"
       url_password: "{{ credentials['password'] }}"
     jenkins_home: "{{ jenkins_home }}"
