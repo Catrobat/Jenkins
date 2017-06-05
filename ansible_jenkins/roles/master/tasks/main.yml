@@ -111,3 +111,18 @@
     - ws-cleanup                # Clean the workspace for builds
   when:
     - install_plugins
+
+- name: Ensure Jenkins is using the updated defaults.
+  meta: flush_handlers
+
+- name: Configuring Jenkins.
+  jenkins_script:
+    script: "{{ lookup('file', 'config.groovy') }}"
+    user: "{{ credentials['user'] }}"
+    password: "{{ credentials['password'] }}"
+    url: "{{ jenkins_url }}"
+  register: script_result
+  changed_when: "'changed:' in script_result.output"
+  notify: restart jenkins
+  when:
+    - configure_jenkins

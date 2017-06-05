@@ -4,5 +4,6 @@ jenkins_user_home: "/home/jenkins"
 jenkins_home: "{{ jenkins_user_home }}/jenkins"
 jenkins_url: http://localhost:8080
 install_plugins: Yes
+configure_jenkins: No
 ldap_user: ""
 ldap_password: ""
