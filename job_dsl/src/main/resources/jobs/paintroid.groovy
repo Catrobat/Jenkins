@@ -408,6 +408,10 @@ class AndroidEmulatorParameters {
     String commandLineOptions = ''
 }
 
+folder("Paintroid")
+folder("Jenkins")
+folder("Experimental")
+
 class CalculatorJobBuilder extends AndroidJobBuilder {
     CalculatorJobBuilder(Job job) {
         super(job, new Calculator())
@@ -431,7 +435,7 @@ class Calculator {
 }
 
 
-new CalculatorJobBuilder(job('Calculator-Nightly-DSL-Generated')).make {
+new CalculatorJobBuilder(job('Experimental/Calculator-Nightly-DSL-Generated')).make {
     htmlDescription(['Nightly Calculator Job. Created by DSL-Seed Job for testing purposes.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -450,7 +454,7 @@ new CalculatorJobBuilder(job('Calculator-Nightly-DSL-Generated')).make {
     //junit()
 }
 
-new CalculatorJobBuilder(job('Calculator-Nightly-DSL-Generated-With-Exclusions')).make {
+new CalculatorJobBuilder(job('Experimental/Calculator-Nightly-DSL-Generated-With-Exclusions')).make {
     htmlDescription(['Nightly Calculator Job. Created by DSL-Seed Job for testing purposes.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -503,7 +507,7 @@ class Paintroid {
                         ['**/junit/**']
 }
 
-new PaintroidJobBuilder(job('Paintroid-PartialTests')).make {
+new PaintroidJobBuilder(job('Paintroid/PartialTests')).make {
     htmlDescription([], '<p>Do <b>not</b> start this job manually.</p>\n' +
                     '<p>A job to execute emulator tests defined by external jobs via exclude files.</p>')
 
@@ -516,17 +520,17 @@ new PaintroidJobBuilder(job('Paintroid-PartialTests')).make {
     gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
 }
 
-new PaintroidJobBuilder(job('Paintroid-ParallelTests-CustomBranch')).make {
+new PaintroidJobBuilder(job('Paintroid/ParallelTests-CustomBranch')).make {
     htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
 
     parameterizedGit()
     parameterizedAndroidVersion()
-    parallelTests('Paintroid-PartialTests', 2)
+    parallelTests('Paintroid/PartialTests', 2)
 }
 
-new PaintroidJobBuilder(job('Paintroid-PullRequest')).make {
+new PaintroidJobBuilder(job('Paintroid/PullRequest')).make {
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
@@ -537,7 +541,7 @@ new PaintroidJobBuilder(job('Paintroid-PullRequest')).make {
     junit()
 }
 
-new PaintroidJobBuilder(job('Paintroid-Nightly')).make {
+new PaintroidJobBuilder(job('Paintroid/Nightly')).make {
     htmlDescription(['Nightly Paintroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -551,7 +555,7 @@ new PaintroidJobBuilder(job('Paintroid-Nightly')).make {
     junit()
 }
 
-new PaintroidJobBuilder(job('Paintroid-Find-Broken-Tests')).make {
+new PaintroidJobBuilder(job('Experimental/Paintroid-Find-Broken-Tests')).make {
     htmlDescription(['Job to find broken Paintroid tests, to not tamper with the nightly.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -564,7 +568,7 @@ new PaintroidJobBuilder(job('Paintroid-Find-Broken-Tests')).make {
     junit()
 }
 
-new JobBuilder(job('Jenkins-SeedJob')).make {
+new JobBuilder(job('Jenkins/SeedJob')).make {
     htmlDescription(['Seed job to create all other jobs.'])
 
     jenkinsUsersPermissions()
@@ -580,7 +584,7 @@ new JobBuilder(job('Jenkins-SeedJob')).make {
     }
 }
 
-new JobBuilder(job('Jenkins-LocalBackup')).make {
+new JobBuilder(job('Jenkins/LocalBackup')).make {
     htmlDescription(['Creates a local backup of jenkins in /home/jenkins/jenkins_created_backups.',
                      'Useful to run manually before installing updates of plugins.',
                      'Does not replace other forms of updates!'])
@@ -590,7 +594,3 @@ new JobBuilder(job('Jenkins-LocalBackup')).make {
     git('https://github.com/Catrobat/Jenkins.git', 'master')
     shell('bash -ex ./scripts/backupJenkinsLocally.sh')
 }
-
-createListView('Paintroid', 'Paintroid.+')
-createListView('Jenkins', 'Jenkins.+')
-createListView('Calculator', 'Calculator.+')
