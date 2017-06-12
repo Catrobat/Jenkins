@@ -408,6 +408,7 @@ class AndroidEmulatorParameters {
     String commandLineOptions = ''
 }
 
+folder("Catroid")
 folder("Paintroid")
 folder("Jenkins")
 folder("Experimental")
@@ -593,4 +594,79 @@ new JobBuilder(job('Jenkins/LocalBackup')).make {
     label('master')
     git('https://github.com/Catrobat/Jenkins.git', 'master')
     shell('bash -ex ./scripts/backupJenkinsLocally.sh')
+}
+
+class CatroidJobBuilder extends AndroidJobBuilder {
+    CatroidJobBuilder(Job job) {
+        super(job, new Catroid())
+    }
+}
+
+class Catroid {
+    def repo = 'https://github.com/vinzynth/Catroid.git' // TODO change once https://github.com/Catrobat/Catroid/pull/2349 was merged
+    def branch = 'develop'
+    def githubUrl = 'https://github.com/vinzynth/Catroid'
+    def androidVersions = 19..24
+    def testExclusionsFile = 'testexclusions.txt'
+    def testResultsPattern = '**/*TEST*.xml'
+    def githubOrganizations = ['Catrobat']
+    def pullRequestAdmins = ['84n4n4', 'bernadettespieler', 'Bioxar', 'cheidenreich', 'ElliHeschl',
+                             'joseffilzmaier', 'MightyMendor', 'oliewa92', 'robertpainsi', 'thmq',
+                             'thomasmauerhofer']
+    def androidEmulatorParameters = [screenDensity: 'xhdpi', screenResolution: '768x1280', targetAbi: 'x86_64',
+                                     noActivityTimeout: '1200',
+                                     hardwareProperties: ['hw.camera': 'yes', 'hw.ramSize': '800', 'hw.camera.front': 'emulated',
+                                                          'hw.camera.back': 'emulated', 'hw.gps': 'yes'],
+                                     commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
+    def debugApk = 'catroid/build/outputs/apk/catroid-catroid-debug.apk'
+    def excludedTests = []
+}
+
+new CatroidJobBuilder(job('Catroid/PartialTests')).make {
+    htmlDescription([], '<p>Do <b>not</b> start this job manually.</p>\n' +
+                    '<p>A job to execute emulator tests defined by external jobs via exclude files.</p>')
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+
+    parameterizedGit()
+    parameterizedAndroidVersion()
+    parameterizedTestExclusionsFile()
+    androidEmulator()
+    gradle('connectedCatroidDebugAndroidTest')
+}
+
+new CatroidJobBuilder(job('Catroid/ParallelTests-CustomBranch')).make {
+    htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
+
+    jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
+
+    parameterizedGit()
+    parameterizedAndroidVersion()
+    parallelTests('Catroid/PartialTests', 2)
+}
+
+new CatroidJobBuilder(job('Catroid/PullRequest')).make {
+    htmlDescription(['Job is automatically started when a pull request is created on github.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+
+    pullRequest()
+    androidEmulator(androidApi: 22)
+    gradle('clean check test connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
+    junit()
+}
+
+new CatroidJobBuilder(job('Catroid/Nightly')).make {
+    htmlDescription(['Nightly Catroid job.'])
+
+    jenkinsUsersPermissions(Permission.JobRead)
+
+    git()
+    nightly()
+    excludeTests()
+    androidEmulator(androidApi: 22)
+    gradle('assembleDebug connectedCatroidDebugAndroidTest')
+    uploadApkToFilesCatrobat()
+    junit()
 }
