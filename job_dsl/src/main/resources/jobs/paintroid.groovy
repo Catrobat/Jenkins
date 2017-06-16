@@ -623,7 +623,7 @@ class Catroid {
 }
 
 new CatroidJobBuilder(job('Catroid/PartialTests')).make {
-    htmlDescription(['Do <b>not</b> start this job manually.', +
+    htmlDescription(['Do <b>not</b> start this job manually.',
                      'A job to execute emulator tests defined by external jobs via exclude files.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
