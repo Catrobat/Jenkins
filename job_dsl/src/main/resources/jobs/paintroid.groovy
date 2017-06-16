@@ -509,8 +509,8 @@ class Paintroid {
 }
 
 new PaintroidJobBuilder(job('Paintroid/PartialTests')).make {
-    htmlDescription([], '<p>Do <b>not</b> start this job manually.</p>\n' +
-                    '<p>A job to execute emulator tests defined by external jobs via exclude files.</p>')
+    htmlDescription(['Do <b>not</b> start this job manually.',
+                     'A job to execute emulator tests defined by external jobs via exclude files.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
 
@@ -623,8 +623,8 @@ class Catroid {
 }
 
 new CatroidJobBuilder(job('Catroid/PartialTests')).make {
-    htmlDescription([], '<p>Do <b>not</b> start this job manually.</p>\n' +
-                    '<p>A job to execute emulator tests defined by external jobs via exclude files.</p>')
+    htmlDescription(['Do <b>not</b> start this job manually.', +
+                     'A job to execute emulator tests defined by external jobs via exclude files.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
 
