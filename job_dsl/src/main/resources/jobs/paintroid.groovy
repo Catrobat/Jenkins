@@ -551,7 +551,8 @@ new PaintroidJobBuilder(job('Paintroid/Nightly')).make {
     nightly()
     excludeTests()
     androidEmulator(androidApi: 18)
-    gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
+    gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest',
+           '-Pjenkins -Pindependent="Paint Nightly #${BUILD_NUMBER}"')
     uploadApkToFilesCatrobat()
     junit()
 }
@@ -666,7 +667,8 @@ new CatroidJobBuilder(job('Catroid/Nightly')).make {
     nightly()
     excludeTests()
     androidEmulator(androidApi: 22)
-    gradle('assembleDebug connectedCatroidDebugAndroidTest')
+    gradle('assembleDebug connectedCatroidDebugAndroidTest',
+           '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
     uploadApkToFilesCatrobat()
     junit()
 }
