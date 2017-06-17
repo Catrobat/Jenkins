@@ -91,6 +91,7 @@
   notify: restart jenkins
   with_items:
     - android-emulator
+    - android-lint
     - antisamy-markup-formatter # allows html descriptions for plugins
     - build-name-setter
     - build-timeout
