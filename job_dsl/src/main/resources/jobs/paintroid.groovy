@@ -658,6 +658,20 @@ new CatroidJobBuilder(job('Catroid/PartialTests')).make {
     gradle('connectedCatroidDebugAndroidTest')
 }
 
+new CatroidJobBuilder(job('Catroid/CustomBranch')).make {
+    htmlDescription(['This job builds and runs static analysis and tests of the given REPO/BRANCH.'])
+
+    jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
+
+    parameterizedGit()
+    parameterizedAndroidVersion()
+    excludeTests()
+    androidEmulator()
+    gradle('check test connectedCatroidDebugAndroidTest')
+    staticAnalysis()
+    junit()
+}
+
 new CatroidJobBuilder(job('Catroid/ParallelTests-CustomBranch')).make {
     htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
 
