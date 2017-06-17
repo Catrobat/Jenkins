@@ -95,6 +95,7 @@
     - build-name-setter
     - build-timeout
     - built-on-column           # built on node column in overview
+    - checkstyle                # Collects checkstyle static analysis results
     - extreme-notification      # provides hooks to post (indirectly) to e.g. Discord
     - ghprb                     # github PR support
     - git
@@ -104,6 +105,7 @@
     - job-dsl                   # Support for a DSL to describe jobs
     - jobConfigHistory          # diff changes in job config
     - parallel-test-executor    # Distribute tests onto multiple nodes for better performance
+    - pmd                       # Collects PMD static analysis results
     - rebuild                   # adds a rebuild button to jobs
     - ssh-slaves                # to connect to slaves via ssh
     - timestamper               # add timestamps in the log automatically
