@@ -179,6 +179,12 @@ $bulletPointsStr    </ul></div>"""
         }
     }
 
+    void continuous(String schedule='H/5 * * * *') {
+        job.triggers {
+            scm(schedule)
+        }
+    }
+
     void shell(String... commands) {
         job.steps {
             shell(commands.join('\n'))
@@ -587,6 +593,7 @@ new JobBuilder(job('Jenkins/SeedJob')).make {
 
     jenkinsUsersPermissions()
     git('https://github.com/Catrobat/Jenkins.git', 'master')
+    continuous()
     nightly('H 23 * * *') // run the job before all other nightlies
     steps {
         jobDsl {
