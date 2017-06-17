@@ -539,6 +539,19 @@ new PaintroidJobBuilder(job('Paintroid/PartialTests')).make {
     gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
 }
 
+new PaintroidJobBuilder(job('Paintroid/CustomBranch')).make {
+    htmlDescription(['This job builds and runs tests of the given REPO/BRANCH.'])
+
+    jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
+
+    parameterizedGit()
+    parameterizedAndroidVersion()
+    excludeTests()
+    androidEmulator()
+    gradle('assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
+    junit()
+}
+
 new PaintroidJobBuilder(job('Paintroid/ParallelTests-CustomBranch')).make {
     htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
 
