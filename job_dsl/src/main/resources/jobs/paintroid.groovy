@@ -342,6 +342,17 @@ fi
         }
     }
 
+    void staticAnalysis() {
+        job.publishers {
+            data.staticAnalysisResults.each{ tool, resultPattern ->
+                "$tool"(resultPattern) {
+                    canRunOnFailed(true)
+                    thresholds(unstableTotal: [all: 0])
+                }
+            }
+        }
+    }
+
     void parameterizedAndroidVersion() {
         job.parameters {
             choiceParam('ANDROID_VERSION', data.androidVersions, 'The android version to use by API level \nhttp://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels')
@@ -506,6 +517,7 @@ class Paintroid {
                          'UndoRedoIntegrationTest'
                         ].collect{"**/$it*"} +
                         ['**/junit/**']
+    def staticAnalysisResults = [:]
 }
 
 new PaintroidJobBuilder(job('Paintroid/PartialTests')).make {
@@ -621,6 +633,9 @@ class Catroid {
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'catroid/build/outputs/apk/catroid-catroid-debug.apk'
     def excludedTests = []
+    def staticAnalysisResults = [androidLint: 'catroid/build/reports/lint*.xml',
+                                 checkstyle: 'catroid/build/reports/checkstyle.xml',
+                                 pmd: 'catroid/build/reports/pmd.xml']
 }
 
 new CatroidJobBuilder(job('Catroid/PartialTests')).make {
@@ -655,6 +670,7 @@ new CatroidJobBuilder(job('Catroid/PullRequest')).make {
     androidEmulator(androidApi: 22)
     gradle('clean check test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
+    staticAnalysis()
     junit()
 }
 
@@ -667,8 +683,9 @@ new CatroidJobBuilder(job('Catroid/Nightly')).make {
     nightly()
     excludeTests()
     androidEmulator(androidApi: 22)
-    gradle('assembleDebug connectedCatroidDebugAndroidTest',
+    gradle('check test assembleDebug connectedCatroidDebugAndroidTest',
            '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
     uploadApkToFilesCatrobat()
+    staticAnalysis()
     junit()
 }
