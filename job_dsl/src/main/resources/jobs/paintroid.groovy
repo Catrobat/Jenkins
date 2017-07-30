@@ -443,13 +443,7 @@ folder("Paintroid")
 folder("Jenkins")
 folder("Experimental")
 
-class CalculatorJobBuilder extends AndroidJobBuilder {
-    CalculatorJobBuilder(Job job) {
-        super(job, new Calculator())
-    }
-}
-
-class Calculator {
+class CalculatorData {
     def repo = 'https://github.com/vinzynth/catroidCalculator.git'
     def branch = 'master'
     def githubUrl = 'https://github.com/vinzynth/catroidCalculator'
@@ -465,8 +459,11 @@ class Calculator {
     //def debugApk = 'Calculator/build/outputs/apk/Calculator-debug.apk'
 }
 
+def calculator(String job_name, Closure closure) {
+    new AndroidJobBuilder(job(job_name), new CalculatorData()).make(closure)
+}
 
-new CalculatorJobBuilder(job('Experimental/Calculator-Nightly-DSL-Generated')).make {
+calculator('Experimental/Calculator-Nightly-DSL-Generated') {
     htmlDescription(['Nightly Calculator Job. Created by DSL-Seed Job for testing purposes.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -485,7 +482,7 @@ new CalculatorJobBuilder(job('Experimental/Calculator-Nightly-DSL-Generated')).m
     //junit()
 }
 
-new CalculatorJobBuilder(job('Experimental/Calculator-Nightly-DSL-Generated-With-Exclusions')).make {
+calculator('Experimental/Calculator-Nightly-DSL-Generated-With-Exclusions') {
     htmlDescription(['Nightly Calculator Job. Created by DSL-Seed Job for testing purposes.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -505,13 +502,8 @@ new CalculatorJobBuilder(job('Experimental/Calculator-Nightly-DSL-Generated-With
     //uploadApkToFilesCatrobat()
     //junit()
 }
-class PaintroidJobBuilder extends AndroidJobBuilder {
-    PaintroidJobBuilder(Job job) {
-        super(job, new Paintroid())
-    }
-}
 
-class Paintroid {
+class PaintroidData {
     def repo = 'https://github.com/Catrobat/Paintroid.git'
     def branch = 'develop'
     def githubUrl = 'https://github.com/Catrobat/Paintroid'
@@ -539,7 +531,11 @@ class Paintroid {
     def staticAnalysisResults = [:]
 }
 
-new PaintroidJobBuilder(job('Paintroid/PartialTests')).make {
+def paintroid(String job_name, Closure closure) {
+    new AndroidJobBuilder(job(job_name), new PaintroidData()).make(closure)
+}
+
+paintroid('Paintroid/PartialTests') {
     htmlDescription(['Do <b>not</b> start this job manually.',
                      'A job to execute emulator tests defined by external jobs via exclude files.'])
 
@@ -552,7 +548,7 @@ new PaintroidJobBuilder(job('Paintroid/PartialTests')).make {
     gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
 }
 
-new PaintroidJobBuilder(job('Paintroid/CustomBranch')).make {
+paintroid('Paintroid/CustomBranch') {
     htmlDescription(['This job builds and runs tests of the given REPO/BRANCH.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
@@ -565,7 +561,7 @@ new PaintroidJobBuilder(job('Paintroid/CustomBranch')).make {
     junit()
 }
 
-new PaintroidJobBuilder(job('Paintroid/ParallelTests-CustomBranch')).make {
+paintroid('Paintroid/ParallelTests-CustomBranch') {
     htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
@@ -575,7 +571,7 @@ new PaintroidJobBuilder(job('Paintroid/ParallelTests-CustomBranch')).make {
     parallelTests('Paintroid/PartialTests', 2)
 }
 
-new PaintroidJobBuilder(job('Paintroid/PullRequest')).make {
+paintroid('Paintroid/PullRequest') {
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
@@ -586,7 +582,7 @@ new PaintroidJobBuilder(job('Paintroid/PullRequest')).make {
     junit()
 }
 
-new PaintroidJobBuilder(job('Paintroid/Nightly')).make {
+paintroid('Paintroid/Nightly') {
     htmlDescription(['Nightly Paintroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -601,7 +597,7 @@ new PaintroidJobBuilder(job('Paintroid/Nightly')).make {
     junit()
 }
 
-new PaintroidJobBuilder(job('Experimental/Paintroid-Find-Broken-Tests')).make {
+paintroid('Experimental/Paintroid-Find-Broken-Tests') {
     htmlDescription(['Job to find broken Paintroid tests, to not tamper with the nightly.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -642,13 +638,7 @@ new JobBuilder(job('Jenkins/LocalBackup')).make {
     shell('bash -ex ./scripts/backupJenkinsLocally.sh')
 }
 
-class CatroidJobBuilder extends AndroidJobBuilder {
-    CatroidJobBuilder(Job job) {
-        super(job, new Catroid())
-    }
-}
-
-class Catroid {
+class CatroidData {
     def repo = 'https://github.com/vinzynth/Catroid.git' // TODO change once https://github.com/Catrobat/Catroid/pull/2349 was merged
     def branch = 'develop'
     def githubUrl = 'https://github.com/vinzynth/Catroid'
@@ -721,7 +711,11 @@ class Catroid {
                                  pmd: 'catroid/build/reports/pmd.xml']
 }
 
-new CatroidJobBuilder(job('Catroid/PartialTests')).make {
+def catroid(String job_name, Closure closure) {
+    new AndroidJobBuilder(job(job_name), new CatroidData()).make(closure)
+}
+
+catroid('Catroid/PartialTests') {
     htmlDescription(['Do <b>not</b> start this job manually.',
                      'A job to execute emulator tests defined by external jobs via exclude files.'])
 
@@ -734,7 +728,7 @@ new CatroidJobBuilder(job('Catroid/PartialTests')).make {
     gradle('connectedCatroidDebugAndroidTest')
 }
 
-new CatroidJobBuilder(job('Catroid/CustomBranch')).make {
+catroid('Catroid/CustomBranch') {
     htmlDescription(['This job builds and runs static analysis and tests of the given REPO/BRANCH.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
@@ -748,7 +742,7 @@ new CatroidJobBuilder(job('Catroid/CustomBranch')).make {
     junit()
 }
 
-new CatroidJobBuilder(job('Catroid/ParallelTests-CustomBranch')).make {
+catroid('Catroid/ParallelTests-CustomBranch') {
     htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
@@ -758,7 +752,7 @@ new CatroidJobBuilder(job('Catroid/ParallelTests-CustomBranch')).make {
     parallelTests('Catroid/PartialTests', 2)
 }
 
-new CatroidJobBuilder(job('Catroid/PullRequest')).make {
+catroid('Catroid/PullRequest') {
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
@@ -771,7 +765,7 @@ new CatroidJobBuilder(job('Catroid/PullRequest')).make {
     junit()
 }
 
-new CatroidJobBuilder(job('Catroid/PullRequest-Espresso')).make {
+catroid('Catroid/PullRequest-Espresso') {
     htmlDescription(['Job is manually trigger for pull requests on github to run Espresso tests.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
@@ -785,7 +779,7 @@ new CatroidJobBuilder(job('Catroid/PullRequest-Espresso')).make {
     junit()
 }
 
-new CatroidJobBuilder(job('Catroid/Nightly')).make {
+catroid('Catroid/Nightly') {
     htmlDescription(['Nightly Catroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
