@@ -398,6 +398,9 @@ fi
                 triggerPhrase(params['triggerPhrase'])
                 extensions {
                     commitStatus {
+
+                        // The context allows to have multiple PR jobs for a single PR.
+                        // To not overwrite each other the job results are then differentiated by the context.
                         context(params['context'])
                     }
                 }
