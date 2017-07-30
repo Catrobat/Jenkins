@@ -381,6 +381,7 @@ fi
     }
 
     void pullRequest(Map params=[triggerPhrase: /.*test\W+this\W+please.*/,
+                                 onlyTriggerPhrase: false,
                                  context: 'Unit Tests and Static Analysis']) {
         job.concurrentBuild(false)
 
@@ -395,13 +396,16 @@ fi
                 admins(data.pullRequestAdmins)
                 orgWhitelist(data.githubOrganizations)
                 cron('H/2 * * * *')
-                triggerPhrase(params['triggerPhrase'])
+                triggerPhrase(params.triggerPhrase)
+                if (params.onlyTriggerPhrase) {
+                    onlyTriggerPhrase()
+                }
                 extensions {
                     commitStatus {
 
                         // The context allows to have multiple PR jobs for a single PR.
                         // To not overwrite each other the job results are then differentiated by the context.
-                        context(params['context'])
+                        context(params.context)
                     }
                 }
             }
@@ -772,7 +776,9 @@ new CatroidJobBuilder(job('Catroid/PullRequest-Espresso')).make {
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
 
-    pullRequest(triggerPhrase: /.*please\W+run\W+espresso\W+tests.*/, context: 'Espresso Tests')
+    pullRequest(triggerPhrase: /.*please\W+run\W+espresso\W+tests.*/,
+                onlyTriggerPhrase: true,
+                context: 'Espresso Tests')
     androidEmulator(androidApi: 22)
     gradle('connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
