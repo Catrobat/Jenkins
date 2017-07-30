@@ -22,8 +22,11 @@
     - qemu-kvm
     - libvirt-bin
 
-- name: Add the catroid user to the KVM group, to have KVM support for the emulator.
+- name: Add the catroid user to the groups needed by KVM for the emulator.
   user:
     name: catroid
-    groups: kvm
+    groups: "{{ item }}"
     append: yes
+  with_items:
+    - "kvm"
+    - "libvirt"
