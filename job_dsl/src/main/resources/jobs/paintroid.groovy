@@ -380,7 +380,8 @@ fi
         }
     }
 
-    void pullRequest() {
+    void pullRequest(Map params=[triggerPhrase: /.*test\W+this\W+please.*/,
+                                 context: 'Unit Tests and Static Analysis']) {
         job.concurrentBuild(false)
 
         job.parameters {
@@ -394,7 +395,12 @@ fi
                 admins(data.pullRequestAdmins)
                 orgWhitelist(data.githubOrganizations)
                 cron('H/2 * * * *')
-                triggerPhrase('.*test\\W+this\\W+please.*')
+                triggerPhrase(params['triggerPhrase'])
+                extensions {
+                    commitStatus {
+                        context(params['context'])
+                    }
+                }
             }
         }
     }
@@ -755,6 +761,18 @@ new CatroidJobBuilder(job('Catroid/PullRequest')).make {
     gradle('clean check test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     staticAnalysis()
+    junit()
+}
+
+new CatroidJobBuilder(job('Catroid/PullRequest-Espresso')).make {
+    htmlDescription(['Job is manually trigger for pull requests on github to run Espresso tests.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+
+    pullRequest(triggerPhrase: /.*please\W+run\W+espresso\W+tests.*/, context: 'Espresso Tests')
+    androidEmulator(androidApi: 22)
+    gradle('connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     junit()
 }
 
