@@ -112,8 +112,8 @@ $bulletPointsStr    </ul></div>"""
         }
     }
 
-    void git(String repo_, String branch_) {
-        def githubUrl = retrieveGithubUrl(repo_)
+    void git(Map params=[:]) {
+        def githubUrl = retrieveGithubUrl(params.repo)
         if (githubUrl) {
             job.properties {
                 githubProjectUrl(githubUrl)
@@ -123,8 +123,8 @@ $bulletPointsStr    </ul></div>"""
         job.scm {
             git {
                 remote {
-                    url(repo_)
-                    branch(branch_)
+                    url(params.repo)
+                    branch(params.branch)
                 }
             }
         }

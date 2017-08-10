@@ -6,7 +6,7 @@ new JobBuilder(job('Jenkins/SeedJob')).make {
     htmlDescription(['Seed job to create all other jobs.'])
 
     jenkinsUsersPermissions()
-    git('https://github.com/Catrobat/Jenkins.git', 'master')
+    git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
     continuous()
     nightly('H 23 * * *') // run the job before all other nightlies
     steps {
@@ -27,6 +27,6 @@ new JobBuilder(job('Jenkins/LocalBackup')).make {
 
     jenkinsUsersPermissions()
     label('master')
-    git('https://github.com/Catrobat/Jenkins.git', 'master')
+    git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
     shell('bash -ex ./scripts/backupJenkinsLocally.sh')
 }

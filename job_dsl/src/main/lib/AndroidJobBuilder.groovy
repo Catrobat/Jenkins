@@ -21,8 +21,9 @@ class AndroidJobBuilder extends JobBuilder {
         }
     }
 
-    void git() {
-        git(data.repo, data.branch)
+    void git(Map params=[:]) {
+        params = [repo: data.repo, branch: data.branch] + params
+        super.git(params)
     }
 
     protected String retrieveGithubUrl(String repo) {
@@ -179,7 +180,7 @@ fi
             stringParam('BRANCH', data.branch, '')
         }
 
-        git('$REPO', '$BRANCH')
+        git(repo: '$REPO', branch: '$BRANCH')
     }
 
     void parameterizedTestExclusionsFile() {
@@ -196,7 +197,7 @@ fi
         job.parameters {
             stringParam('sha1', data.branch, '')
         }
-        git(data.repo, '${sha1}')
+        git(repo: data.repo, branch: '${sha1}')
         buildName('#${BUILD_NUMBER} | ${ENV, var="sha1"}')
 
         job.triggers {
