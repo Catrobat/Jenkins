@@ -112,6 +112,7 @@ fi
             gradle {
                 switches(switches_)
                 tasks(tasks_)
+                passAsProperties(false)
             }
         }
     }
