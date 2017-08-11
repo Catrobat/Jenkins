@@ -75,6 +75,16 @@ $bulletPointsStr    </ul></div>"""
         htmlDescription();
     }
 
+    void buildName(String template_) {
+        job.wrappers {
+            buildNameSetter {
+                template(template_)
+                runAtStart(true)
+                runAtEnd(true)
+            }
+        }
+    }
+
     void excludeTestClasses(List testclasses) {
         if (data?.testExclusionsFile) {
             excludedTests += testclasses

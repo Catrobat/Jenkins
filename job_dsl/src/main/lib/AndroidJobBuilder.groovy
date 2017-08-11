@@ -11,16 +11,6 @@ class AndroidJobBuilder extends JobBuilder {
         label('NoDevice')
     }
 
-    void buildName(String template_) {
-        job.wrappers {
-            buildNameSetter {
-                template(template_)
-                runAtStart(true)
-                runAtEnd(true)
-            }
-        }
-    }
-
     void git(Map params=[:]) {
         params = [repo: data.repo, branch: data.branch] + params
         super.git(params)
