@@ -105,6 +105,7 @@
     - jenkins-multijob-plugin   # Job that consists of other jobs
     - job-dsl                   # Support for a DSL to describe jobs
     - jobConfigHistory          # diff changes in job config
+    - mask-passwords            # Hides passwords in the job log
     - parallel-test-executor    # Distribute tests onto multiple nodes for better performance
     - pmd                       # Collects PMD static analysis results
     - rebuild                   # adds a rebuild button to jobs
