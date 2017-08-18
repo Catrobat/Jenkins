@@ -36,6 +36,7 @@ class JobBuilder {
         job.wrappers {
             preBuildCleanup()
             timestamps()
+            maskPasswords()
         }
     }
 
