@@ -220,10 +220,6 @@ fi
             }
         }
 
-        publishers {
-            archiveArtifacts {
-                pattern(data.debugApk)
-            }
-        }
+        archiveArtifacts(data.debugApk)
     }
 }

@@ -166,4 +166,12 @@ $bulletPointsStr    </ul></div>"""
             shell(commands.join('\n'))
         }
     }
+
+    void archiveArtifacts(String pattern_) {
+        publishers {
+            archiveArtifacts {
+                pattern(pattern_)
+            }
+        }
+    }
 }
