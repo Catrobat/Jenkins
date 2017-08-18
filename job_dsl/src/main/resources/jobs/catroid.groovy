@@ -83,3 +83,35 @@ catroid('Catroid/Nightly') {
     staticAnalysis()
     junit()
 }
+
+catroid('Catroid/Standalone') {
+    htmlDescription(['Builds a Catroid APP as a standalone APK.'])
+
+    jenkinsUsersPermissions(Permission.JobRead)
+
+    parameters {
+        stringParam('DOWNLOAD', 'https://pocketcode.org/download/821.catrobat', 'Enter the Project ID you want to build as standalone')
+        stringParam('SUFFIX', 'standalone', '')
+        password {
+            name('UPLOAD')
+            defaultValue('')
+            description('upload url for webserver\n\nSyntax of the upload value is of the form' +
+                        'https://pocketcode.org/ci/upload/1?token=UPLOADTOKEN')
+        }
+    }
+
+    authenticationToken('') // TODO how to handle this and keep secret?
+    buildName('#${DOWNLOAD}')
+    git(branch: 'master')
+    gradle('buildStandalone assembleStandaloneDebug',
+           '-Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}"')
+    shell('curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug-unaligned.apk $UPLOAD')
+    archiveArtifacts('catroid/build/outputs/apk/*debug-unaligned.apk')
+    publishers {
+        mailer {
+            recipients('') // TODO should the mails be kept secret too, to avoid them being on github?
+            notifyEveryUnstableBuild(true)
+            sendToIndividuals(false)
+        }
+    }
+}
