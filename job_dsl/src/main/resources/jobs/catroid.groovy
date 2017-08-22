@@ -45,6 +45,7 @@ catroid('Catroid/PullRequest') {
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
 
     pullRequest()
     androidEmulator(androidApi: 22)
@@ -58,6 +59,7 @@ catroid('Catroid/PullRequest-Espresso') {
     htmlDescription(['Job is manually trigger for pull requests on github to run Espresso tests.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
 
     pullRequest(triggerPhrase: /.*please\W+run\W+espresso\W+tests.*/,
                 onlyTriggerPhrase: true,

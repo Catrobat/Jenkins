@@ -115,10 +115,18 @@ $bulletPointsStr    </ul></div>"""
         return ''
     }
 
-    void jenkinsUsersPermissions(Permission... permissions) {
+    void anonymousUsersPermissions(Permission... permissions_) {
+        permissions('Anonymous', *permissions_)
+    }
+
+    void jenkinsUsersPermissions(Permission... permissions_) {
+        permissions('Jenkins-Users', *permissions_)
+    }
+
+    void permissions(String user, Permission... permissions_) {
         authorization {
-            permissions.each { p ->
-                permission(p.permission, 'Jenkins-Users')
+            permissions_.each { p ->
+                permission(p.permission, user)
             }
         }
     }

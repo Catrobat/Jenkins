@@ -44,6 +44,7 @@ paintroid('Paintroid/PullRequest') {
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
 
     pullRequest()
     androidEmulator(androidApi: 18)
