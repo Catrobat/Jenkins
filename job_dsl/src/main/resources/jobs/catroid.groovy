@@ -97,7 +97,7 @@ catroid('Catroid/Standalone') {
         password {
             name('UPLOAD')
             defaultValue('')
-            description('upload url for webserver\n\nSyntax of the upload value is of the form' +
+            description('upload url for webserver\n\nSyntax of the upload value is of the form\n' +
                         'https://pocketcode.org/ci/upload/1?token=UPLOADTOKEN')
         }
     }
