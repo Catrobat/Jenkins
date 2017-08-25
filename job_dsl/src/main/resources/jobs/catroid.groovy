@@ -102,7 +102,14 @@ catroid('Catroid/Standalone') {
         }
     }
 
-    authenticationToken('') // TODO how to handle this and keep secret?
+    // Both the authentication token and the mail recipients should not be on github.
+    // That means they cannot be hardcode here.
+    // At the same time this information should be visible in the job itself.
+    // A workaround to achieve this is to store the information in global properties on jenkins master.
+    def token = GLOBAL_STANDALONE_AUTH_TOKEN
+    def mail_recipients = GLOBAL_STANDALONE_MAIL_RECIPIENTS
+
+    authenticationToken(token)
     buildName('#${DOWNLOAD}')
     git(branch: 'master')
     gradle('buildStandalone assembleStandaloneDebug',
@@ -111,7 +118,7 @@ catroid('Catroid/Standalone') {
     archiveArtifacts('catroid/build/outputs/apk/*debug-unaligned.apk')
     publishers {
         mailer {
-            recipients('') // TODO should the mails be kept secret too, to avoid them being on github?
+            recipients(mail_recipients)
             notifyEveryUnstableBuild(true)
             sendToIndividuals(false)
         }

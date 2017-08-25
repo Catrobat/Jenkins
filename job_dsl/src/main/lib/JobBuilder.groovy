@@ -48,7 +48,7 @@ class JobBuilder {
         closure.delegate = this
 
         // And only use this builder as the closure delegate.
-        closure.resolveStrategy = Closure.DELEGATE_ONLY
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
 
         // Run closure code.
         closure()
