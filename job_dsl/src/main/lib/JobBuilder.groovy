@@ -47,7 +47,10 @@ class JobBuilder {
         // Set delegate of closure to this builder.
         closure.delegate = this
 
-        // And only use this builder as the closure delegate.
+        // Use this class as delegate first.
+        // Afterwards the outer environment is used.
+        // This allows to access the environment (including global properties)
+        // of the seed job directly in this groovy script.
         closure.resolveStrategy = Closure.DELEGATE_FIRST
 
         // Run closure code.
