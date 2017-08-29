@@ -1,7 +1,8 @@
 class CatroidData {
-    def repo = 'https://github.com/vinzynth/Catroid.git' // TODO change once https://github.com/Catrobat/Catroid/pull/2349 was merged
+    // TODO check that https://github.com/Catrobat/Catroid/pull/2349 is merged
+    def repo = 'https://github.com/Catrobat/Catroid.git'
     def branch = 'develop'
-    def githubUrl = 'https://github.com/vinzynth/Catroid'
+    def githubUrl = 'https://github.com/Catrobat/Catroid'
     def androidVersions = 19..24
     def testExclusionsFile = 'testexclusions.txt'
     def testResultsPattern = '**/*TEST*.xml'
