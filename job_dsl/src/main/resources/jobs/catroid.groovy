@@ -79,13 +79,13 @@ catroid('Catroid/Nightly') {
     nightly()
     androidEmulator(androidApi: 24)
     gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
+    uploadApkToFilesCatrobat()
     gradle('clean check test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     shell("# ensure that the following test run does not override these results\n" +
           'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
     gradle('connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
-    uploadApkToFilesCatrobat()
     staticAnalysis()
     junit()
 }
