@@ -60,7 +60,7 @@ class AndroidJobBuilder extends JobBuilder {
                 }
 
                 wipeData(true)
-                showWindow(true)
+                showWindow(false)
                 useSnapshots(false)
 
                 deleteAfterBuild(false)
