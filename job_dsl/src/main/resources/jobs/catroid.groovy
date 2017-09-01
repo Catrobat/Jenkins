@@ -77,11 +77,34 @@ catroid('Catroid/Nightly') {
 
     git()
     nightly()
-    excludeTests()
-    androidEmulator(androidApi: 22)
-    gradle('check test assembleDebug connectedCatroidDebugAndroidTest',
-           '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
+    androidEmulator(androidApi: 24)
+    gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
+    gradle('clean check test connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
+    shell("# ensure that the following test run does not override these results\n" +
+          'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
+    gradle('connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     uploadApkToFilesCatrobat()
+    staticAnalysis()
+    junit()
+}
+
+catroid('Catroid/Continuous') {
+    htmlDescription(['Job runs continuously on changes.'])
+
+    jenkinsUsersPermissions(Permission.JobRead)
+
+    git()
+    continuous()
+    androidEmulator(androidApi: 24)
+    gradle('assembleDebug')
+    gradle('clean check test connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
+    shell("# ensure that the following test run does not override these results\n" +
+          'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
+    gradle('connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     staticAnalysis()
     junit()
 }
