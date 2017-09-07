@@ -5,7 +5,10 @@ def catroid(String job_name, Closure closure) {
 }
 
 catroid('Catroid/SinglePackageEmulatorTest') {
-    htmlDescription(['This job builds and runs static analysis and tests of the given REPO/BRANCH and package.'])
+    htmlDescription(['This job builds and runs static analysis and tests of the given REPO/BRANCH and package.',
+                     'Use it when you want to build your own branch on Jenkins and run some checks and tests on the emulator.',
+                     'Using that job early in developement can improve your tests, ' +
+                     'so that they not only work on your local device but also on the emulator.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
 
