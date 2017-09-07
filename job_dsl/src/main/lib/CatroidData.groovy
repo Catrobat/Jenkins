@@ -12,7 +12,8 @@ class CatroidData {
                              'thomasmauerhofer']
     def androidEmulatorParameters = [screenDensity: 'xhdpi', screenResolution: '768x1280', targetAbi: 'x86_64',
                                      noActivityTimeout: '1200',
-                                     hardwareProperties: ['hw.camera': 'yes', 'hw.ramSize': '800', 'hw.camera.front': 'emulated',
+                                     hardwareProperties: ['hw.camera': 'yes', 'hw.ramSize': '800', 'hw.gpu.enabled': 'yes',
+                                                          'hw.camera.front': 'emulated',
                                                           'hw.camera.back': 'emulated', 'hw.gps': 'yes'],
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'catroid/build/outputs/apk/catroid-catroid-debug.apk'
