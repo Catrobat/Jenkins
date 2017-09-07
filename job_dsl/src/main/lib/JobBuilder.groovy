@@ -68,12 +68,11 @@ class JobBuilder {
     }
 
     void htmlDescription(List bulletPoints, String cssClass='cat-info', String prefix='<p><b>Info:</b></p>') {
-        bulletPoints += 'Remove this job when it was not run in the last 2 months.'
         String bulletPointsStr = bulletPoints.sum { ' ' * 8 + '<li>' + it + '</li>\n' }
         String text = """<div class="$cssClass">
     $prefix
     <ul>
-$bulletPointsStr    </ul></div>"""
+$bulletPointsStr    </ul>\n</div>"""
 
         this.description = text
 
