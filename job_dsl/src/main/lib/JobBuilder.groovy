@@ -33,6 +33,7 @@ class JobBuilder {
 
     protected void jobDefaults() {
         logRotator(30, 100)
+        jdk('java-8-openjdk-amd64')
         job.wrappers {
             preBuildCleanup()
             timestamps()
