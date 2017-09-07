@@ -63,7 +63,7 @@ class AndroidJobBuilder extends JobBuilder {
                 showWindow(false)
                 useSnapshots(false)
 
-                deleteAfterBuild(false)
+                deleteAfterBuild(true)
                 startupDelay(0)
                 startupTimeout(120)
                 commandLineOptions(p.commandLineOptions)
