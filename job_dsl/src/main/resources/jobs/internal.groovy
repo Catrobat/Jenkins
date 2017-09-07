@@ -14,7 +14,7 @@ new JobBuilder(job('Jenkins/SeedJob')).make {
             additionalClasspath('job_dsl/src/main/lib/')
             targets('job_dsl/src/main/resources/jobs/*.groovy')
             failOnMissingPlugin(true)
-            removedJobAction('DISABLE')
+            removedJobAction('DELETE')
             unstableOnDeprecation(true)
         }
     }
