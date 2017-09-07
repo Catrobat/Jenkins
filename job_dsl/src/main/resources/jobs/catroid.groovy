@@ -4,41 +4,21 @@ def catroid(String job_name, Closure closure) {
     new AndroidJobBuilder(job(job_name), new CatroidData()).make(closure)
 }
 
-catroid('Catroid/PartialTests') {
-    htmlDescription(['Do <b>not</b> start this job manually.',
-                     'A job to execute emulator tests defined by external jobs via exclude files.'])
-
-    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
-
-    parameterizedGit()
-    parameterizedAndroidVersion()
-    parameterizedTestExclusionsFile()
-    androidEmulator()
-    gradle('connectedCatroidDebugAndroidTest')
-}
-
-catroid('Catroid/CustomBranch') {
-    htmlDescription(['This job builds and runs static analysis and tests of the given REPO/BRANCH.'])
+catroid('Catroid/SinglePackageEmulatorTest') {
+    htmlDescription(['This job builds and runs static analysis and tests of the given REPO/BRANCH and package.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
 
     parameterizedGit()
     parameterizedAndroidVersion()
-    excludeTests()
+    job.parameters {
+        stringParam('PACKAGE', 'org.catrobat.catroid.test', '')
+    }
     androidEmulator()
-    gradle('check test connectedCatroidDebugAndroidTest')
+    gradle('check test connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.package=$PACKAGE')
     staticAnalysis()
     junit()
-}
-
-catroid('Catroid/ParallelTests-CustomBranch') {
-    htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
-
-    jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
-
-    parameterizedGit()
-    parameterizedAndroidVersion()
-    parallelTests('Catroid/PartialTests', 2)
 }
 
 catroid('Catroid/PullRequest') {
