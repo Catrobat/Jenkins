@@ -1,8 +1,9 @@
 // The file should not be named jenkins.groovy as that leads to a warning as there
 // is already a jenkins package.
-folder("Jenkins")
+def folder = 'Jenkins'
+Views.folderAndView(this, folder)
 
-new JobBuilder(job('Jenkins/SeedJob')).make {
+new JobBuilder(job("$folder/SeedJob")).make {
     htmlDescription(['Seed job to create all other jobs.'])
 
     jenkinsUsersPermissions()
@@ -21,7 +22,7 @@ new JobBuilder(job('Jenkins/SeedJob')).make {
     }
 }
 
-new JobBuilder(job('Jenkins/LocalBackup')).make {
+new JobBuilder(job("$folder/LocalBackup")).make {
     htmlDescription(['Creates a local backup of jenkins in /home/jenkins/jenkins_created_backups.',
                      'Useful to run manually before installing updates of plugins.',
                      'Does not replace other forms of updates!'])

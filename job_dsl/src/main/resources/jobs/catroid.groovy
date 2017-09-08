@@ -1,10 +1,11 @@
-folder("Catroid")
+def folder = 'Catroid'
+Views.folderAndView(this, folder)
 
 def catroid(String job_name, Closure closure) {
     new AndroidJobBuilder(job(job_name), new CatroidData()).make(closure)
 }
 
-catroid('Catroid/SinglePackageEmulatorTest') {
+catroid("$folder/SinglePackageEmulatorTest") {
     htmlDescription(['This job builds and runs static analysis and tests of the given REPO/BRANCH and package.',
                      'Use it when you want to build your own branch on Jenkins and run some checks and tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
@@ -24,7 +25,7 @@ catroid('Catroid/SinglePackageEmulatorTest') {
     junit()
 }
 
-catroid('Catroid/PullRequest') {
+catroid("$folder/PullRequest") {
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
@@ -38,7 +39,7 @@ catroid('Catroid/PullRequest') {
     junit()
 }
 
-catroid('Catroid/PullRequest-Espresso') {
+catroid("$folder/PullRequest-Espresso") {
     htmlDescription(['Job is manually trigger for pull requests on github to run Espresso tests.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
@@ -53,7 +54,7 @@ catroid('Catroid/PullRequest-Espresso') {
     junit()
 }
 
-catroid('Catroid/Nightly') {
+catroid("$folder/Nightly") {
     htmlDescription(['Nightly Catroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -73,7 +74,7 @@ catroid('Catroid/Nightly') {
     junit()
 }
 
-catroid('Catroid/Continuous') {
+catroid("$folder/Continuous") {
     htmlDescription(['Job runs continuously on changes.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -92,7 +93,7 @@ catroid('Catroid/Continuous') {
     junit()
 }
 
-catroid('Catroid/Standalone') {
+catroid("$folder/Standalone") {
     htmlDescription(['Builds a Catroid APP as a standalone APK.'])
 
     jenkinsUsersPermissions(Permission.JobRead)

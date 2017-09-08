@@ -1,10 +1,11 @@
-folder("Paintroid")
+def folder = 'Paintroid'
+Views.folderAndView(this, folder)
 
 def paintroid(String job_name, Closure closure) {
     new AndroidJobBuilder(job(job_name), new PaintroidData()).make(closure)
 }
 
-paintroid('Paintroid/PartialTests') {
+paintroid("$folder/PartialTests") {
     htmlDescription(['Do <b>not</b> start this job manually.',
                      'A job to execute emulator tests defined by external jobs via exclude files.'])
 
@@ -17,7 +18,7 @@ paintroid('Paintroid/PartialTests') {
     gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
 }
 
-paintroid('Paintroid/CustomBranch') {
+paintroid("$folder/CustomBranch") {
     htmlDescription(['This job builds and runs tests of the given REPO/BRANCH.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
@@ -30,17 +31,17 @@ paintroid('Paintroid/CustomBranch') {
     junit()
 }
 
-paintroid('Paintroid/ParallelTests-CustomBranch') {
+paintroid("$folder/ParallelTests-CustomBranch") {
     htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
 
     parameterizedGit()
     parameterizedAndroidVersion()
-    parallelTests('Paintroid/PartialTests', 2)
+    parallelTests("$folder/PartialTests", 2)
 }
 
-paintroid('Paintroid/PullRequest') {
+paintroid("$folder/PullRequest") {
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
@@ -52,7 +53,7 @@ paintroid('Paintroid/PullRequest') {
     junit()
 }
 
-paintroid('Paintroid/Nightly') {
+paintroid("$folder/Nightly") {
     htmlDescription(['Nightly Paintroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
