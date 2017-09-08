@@ -3,7 +3,7 @@ import javaposse.jobdsl.dsl.Job
 /**
  * @see <a href="https://www.cloudbees.com/sites/default/files/2016-jenkins-world-rule_jenkins_with_configuration_as_code_2.pdf">Rule Jenkins with Configuration as Code</a>
  */
-class JobBuilder {
+class JobBuilder extends Delegator {
     protected def data
     protected def job
     private String description
@@ -11,6 +11,7 @@ class JobBuilder {
     protected Set excludedTests = []
 
     JobBuilder(Job job, def data=null) {
+        super(job)
         this.data = data
         this.job = job
     }
@@ -39,28 +40,6 @@ class JobBuilder {
             timestamps()
             maskPasswords()
         }
-    }
-
-    private void runClosure(Closure closure) {
-        // Create clone of closure for threading access.
-        closure = closure.clone()
-
-        // Set delegate of closure to this builder.
-        closure.delegate = this
-
-        // Use this class as delegate first.
-        // Afterwards the outer environment is used.
-        // This allows to access the environment (including global properties)
-        // of the seed job directly in this groovy script.
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-
-        // Run closure code.
-        closure()
-    }
-
-    // Delegate everything else to Job DSL
-    def methodMissing(String name, argument) {
-        job.invokeMethod(name, (Object[]) argument)
     }
 
     void htmlDescription() {
