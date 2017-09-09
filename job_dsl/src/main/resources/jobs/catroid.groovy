@@ -5,23 +5,43 @@ def catroid(String job_name, Closure closure) {
     new AndroidJobBuilder(job(job_name), new CatroidData()).make(closure)
 }
 
-catroid("$folder/SinglePackageEmulatorTest") {
-    htmlDescription(['This job builds and runs static analysis and tests of the given REPO/BRANCH and package.',
-                     'Use it when you want to build your own branch on Jenkins and run some checks and tests on the emulator.',
+catroid("$folder/SingleClassEmulatorTest") {
+    htmlDescription(['This job runs the tests of the given REPO/BRANCH and CLASS.',
+                     'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
                      'so that they not only work on your local device but also on the emulator.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
 
     parameterizedGit()
-    parameterizedAndroidVersion()
     job.parameters {
-        stringParam('PACKAGE', 'org.catrobat.catroid.test', '')
+        stringParam('CLASS', 'test.common.DefaultProjectHandlerTest', '')
     }
+    parameterizedAndroidVersion()
+    buildName('#${BUILD_NUMBER} | ${ENV, var="CLASS"} ')
     androidEmulator()
-    gradle('check test connectedCatroidDebugAndroidTest',
-           '-Pandroid.testInstrumentationRunnerArguments.package=$PACKAGE')
-    staticAnalysis()
+    gradle('connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.$CLASS')
+    junit()
+}
+
+catroid("$folder/SinglePackageEmulatorTest") {
+    htmlDescription(['This job runs the tests of the given REPO/BRANCH and PACKAGE.',
+                     'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
+                     'Using that job early in developement can improve your tests, ' +
+                     'so that they not only work on your local device but also on the emulator.'])
+
+    jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
+
+    parameterizedGit()
+    job.parameters {
+        stringParam('PACKAGE', 'test', '')
+    }
+    parameterizedAndroidVersion()
+    buildName('#${BUILD_NUMBER} | ${ENV, var="PACKAGE"}')
+    androidEmulator()
+    gradle('connectedCatroidDebugAndroidTest',
+           '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.$PACKAGE')
     junit()
 }
 
@@ -40,7 +60,7 @@ catroid("$folder/PullRequest") {
 }
 
 catroid("$folder/PullRequest-Espresso") {
-    htmlDescription(['Job is manually trigger for pull requests on github to run Espresso tests.'])
+    htmlDescription(['Job is manually triggered for pull requests on github to run Espresso tests.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
     anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
