@@ -46,6 +46,7 @@ catroid("$folder/SinglePackageEmulatorTest") {
 }
 
 catroid("$folder/PullRequest") {
+    disabled()
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
@@ -60,6 +61,7 @@ catroid("$folder/PullRequest") {
 }
 
 catroid("$folder/PullRequest-Espresso") {
+    disabled()
     htmlDescription(['Job is manually triggered for pull requests on github to run Espresso tests.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)

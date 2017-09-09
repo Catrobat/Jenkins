@@ -46,6 +46,7 @@ paintroid("$folder/SinglePackageEmulatorTest") {
 }
 
 paintroid("$folder/PullRequest") {
+    disabled()
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
