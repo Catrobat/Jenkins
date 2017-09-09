@@ -186,7 +186,8 @@ fi
         job.concurrentBuild(false)
 
         job.parameters {
-            stringParam('sha1', data.branch, '')
+            stringParam('sha1', data.branch,
+                        'Can be used run pull request tests by typing: origin/pr/*pullrequestnumber*/merge')
         }
         git(repo: data.repo, branch: '${sha1}')
         buildName('#${BUILD_NUMBER} | ${ENV, var="sha1"}')
