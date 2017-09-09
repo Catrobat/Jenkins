@@ -6,7 +6,7 @@ class PaintroidData {
     def testExclusionsFile = 'testexclusions.txt'
     def testResultsPattern = '**/*TEST*.xml'
     def githubOrganizations = ['Catrobat']
-    def pullRequestAdmins = ['thmq', '84n4n4']
+    def pullRequestAdmins = ['thmq', '84n4n4', 'ThomasSchwengler']
     def androidEmulatorParameters = [androidApi: '24', screenDensity: 'xhdpi', screenResolution: '768x1280', targetAbi: 'x86_64',
                                      noActivityTimeout: '1200',
                                      hardwareProperties: ['hw.keyboard': 'yes', 'hw.ramSize': '800', 'vm.heapSize': '128'],
