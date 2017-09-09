@@ -3,14 +3,14 @@ class CatroidData {
     def repo = 'https://github.com/Catrobat/Catroid.git'
     def branch = 'develop'
     def githubUrl = 'https://github.com/Catrobat/Catroid'
-    def androidVersions = 19..24
+    def androidVersions = 24..19
     def testExclusionsFile = 'testexclusions.txt'
     def testResultsPattern = '**/*TEST*.xml'
     def githubOrganizations = ['Catrobat']
     def pullRequestAdmins = ['84n4n4', 'bernadettespieler', 'Bioxar', 'cheidenreich', 'ElliHeschl',
                              'joseffilzmaier', 'MightyMendor', 'oliewa92', 'robertpainsi', 'thmq',
                              'thomasmauerhofer']
-    def androidEmulatorParameters = [screenDensity: 'xhdpi', screenResolution: '768x1280', targetAbi: 'x86_64',
+    def androidEmulatorParameters = [androidApi: '24', screenDensity: 'xhdpi', screenResolution: '768x1280', targetAbi: 'x86_64',
                                      noActivityTimeout: '1200',
                                      hardwareProperties: ['hw.camera': 'yes', 'hw.ramSize': '800', 'hw.gpu.enabled': 'yes',
                                                           'hw.camera.front': 'emulated',

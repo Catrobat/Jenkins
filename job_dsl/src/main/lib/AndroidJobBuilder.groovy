@@ -163,6 +163,7 @@ fi
         job.parameters {
             choiceParam('ANDROID_VERSION', data.androidVersions, 'The android version to use by API level \nhttp://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels')
         }
+        data.androidEmulatorParameters.androidApi = '$ANDROID_VERSION'
     }
 
     void parameterizedGit() {

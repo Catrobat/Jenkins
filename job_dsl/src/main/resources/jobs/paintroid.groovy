@@ -48,7 +48,7 @@ paintroid("$folder/PullRequest") {
     anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
 
     pullRequest()
-    androidEmulator(androidApi: 18)
+    androidEmulator()
     gradle('connectedDebugAndroidTest', '-Pjenkins')
     junit()
 }
@@ -61,7 +61,7 @@ paintroid("$folder/Nightly") {
     git()
     nightly()
     excludeTests()
-    androidEmulator(androidApi: 18)
+    androidEmulator()
     gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest',
            '-Pjenkins -Pindependent="Paint Nightly #${BUILD_NUMBER}"')
     uploadApkToFilesCatrobat()

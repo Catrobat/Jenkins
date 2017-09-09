@@ -32,7 +32,7 @@ catroid("$folder/PullRequest") {
     anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
 
     pullRequest()
-    androidEmulator(androidApi: 22)
+    androidEmulator()
     gradle('clean check test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     staticAnalysis()
@@ -48,7 +48,7 @@ catroid("$folder/PullRequest-Espresso") {
     pullRequest(triggerPhrase: /.*please\W+run\W+espresso\W+tests.*/,
                 onlyTriggerPhrase: true,
                 context: 'Espresso Tests')
-    androidEmulator(androidApi: 22)
+    androidEmulator()
     gradle('connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     junit()
@@ -61,7 +61,7 @@ catroid("$folder/Nightly") {
 
     git()
     nightly()
-    androidEmulator(androidApi: 24)
+    androidEmulator()
     gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
     uploadApkToFilesCatrobat()
     gradle('clean check test connectedCatroidDebugAndroidTest',
@@ -81,7 +81,7 @@ catroid("$folder/Continuous") {
 
     git()
     continuous()
-    androidEmulator(androidApi: 24)
+    androidEmulator()
     gradle('assembleDebug')
     gradle('clean check test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
