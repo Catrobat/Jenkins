@@ -60,6 +60,7 @@ paintroid("$folder/PullRequest") {
 }
 
 paintroid("$folder/Nightly") {
+    disabled()
     htmlDescription(['Nightly Paintroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
