@@ -5,40 +5,44 @@ def paintroid(String job_name, Closure closure) {
     new AndroidJobBuilder(job(job_name), new PaintroidData()).make(closure)
 }
 
-paintroid("$folder/PartialTests") {
-    htmlDescription(['Do <b>not</b> start this job manually.',
-                     'A job to execute emulator tests defined by external jobs via exclude files.'])
-
-    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
-
-    parameterizedGit()
-    parameterizedAndroidVersion()
-    parameterizedTestExclusionsFile()
-    androidEmulator()
-    gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
-}
-
-paintroid("$folder/CustomBranch") {
-    htmlDescription(['This job builds and runs tests of the given REPO/BRANCH.'])
+paintroid("$folder/SingleClassEmulatorTest") {
+    htmlDescription(['This job runs the tests of the given REPO/BRANCH and CLASS.',
+                     'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
+                     'Using that job early in developement can improve your tests, ' +
+                     'so that they not only work on your local device but also on the emulator.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
 
     parameterizedGit()
+    job.parameters {
+        stringParam('CLASS', 'test.espresso.NavigationDrawerTest', '')
+    }
     parameterizedAndroidVersion()
-    excludeTests()
+    buildName('#${BUILD_NUMBER} | ${ENV, var="CLASS"} ')
     androidEmulator()
-    gradle('assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest', '-Pjenkins')
+    gradle('connectedDebugAndroidTest',
+           '-Pjenkins -Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.paintroid.$CLASS')
     junit()
 }
 
-paintroid("$folder/ParallelTests-CustomBranch") {
-    htmlDescription(['This job builds and runs UI tests of the given REPO/BRANCH.'])
+paintroid("$folder/SinglePackageEmulatorTest") {
+    htmlDescription(['This job runs the tests of the given REPO/BRANCH and PACKAGE.',
+                     'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
+                     'Using that job early in developement can improve your tests, ' +
+                     'so that they not only work on your local device but also on the emulator.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
 
     parameterizedGit()
+    job.parameters {
+        stringParam('PACKAGE', 'test.espresso', '')
+    }
     parameterizedAndroidVersion()
-    parallelTests("$folder/PartialTests", 2)
+    buildName('#${BUILD_NUMBER} | ${ENV, var="PACKAGE"}')
+    androidEmulator()
+    gradle('connectedDebugAndroidTest',
+           '-Pjenkins -Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.paintroid.$PACKAGE')
+    junit()
 }
 
 paintroid("$folder/PullRequest") {
@@ -49,7 +53,8 @@ paintroid("$folder/PullRequest") {
 
     pullRequest()
     androidEmulator()
-    gradle('connectedDebugAndroidTest', '-Pjenkins')
+    gradle('connectedDebugAndroidTest',
+           '-Pjenkins -Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.paintroid.test.espresso')
     junit()
 }
 
@@ -60,10 +65,25 @@ paintroid("$folder/Nightly") {
 
     git()
     nightly()
-    excludeTests()
     androidEmulator()
-    gradle('clean assembleDebug assembleDebugAndroidTest connectedDebugAndroidTest',
+    gradle('assembleDebug',
            '-Pjenkins -Pindependent="Paint Nightly #${BUILD_NUMBER}"')
     uploadApkToFilesCatrobat()
+    gradle('connectedDebugAndroidTest',
+           '-Pjenkins -Pindependent="Paint Nightly #${BUILD_NUMBER} ' +
+           '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.paintroid.test.espresso')
+    junit()
+}
+
+paintroid("$folder/Continuous") {
+    htmlDescription(['Job runs continuously on changes.'])
+
+    jenkinsUsersPermissions(Permission.JobRead)
+
+    git()
+    continuous()
+    androidEmulator()
+    gradle('connectedDebugAndroidTest',
+           '-Pjenkins -Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.paintroid.test.espresso')
     junit()
 }
