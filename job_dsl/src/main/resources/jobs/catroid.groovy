@@ -84,11 +84,13 @@ catroid("$folder/Nightly") {
     androidEmulator()
     gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
     uploadApkToFilesCatrobat()
-    gradle('clean check test connectedCatroidDebugAndroidTest',
+    gradle('check test connectedCatroidDebugAndroidTest',
+           '-Pindependent="Code Nightly #${BUILD_NUMBER}" ' +
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     shell("# ensure that the following test run does not override these results\n" +
           'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
     gradle('connectedCatroidDebugAndroidTest',
+           '-Pindependent="Code Nightly #${BUILD_NUMBER}" ' +
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     staticAnalysis()
     junit()
@@ -102,8 +104,7 @@ catroid("$folder/Continuous") {
     git()
     continuous()
     androidEmulator()
-    gradle('assembleDebug')
-    gradle('clean check test connectedCatroidDebugAndroidTest',
+    gradle('check test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     shell("# ensure that the following test run does not override these results\n" +
           'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
