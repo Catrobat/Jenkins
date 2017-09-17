@@ -155,3 +155,19 @@ catroid("$folder/Standalone") {
         }
     }
 }
+
+catroid("$folder/Standalone-Nightly") {
+    htmlDescription(['Nightly builds of the "Tic-Tac-Toe Master" standalone APP using develop.',
+                     'This allows to find issues with standalone builds before the next release.'])
+
+    jenkinsUsersPermissions(Permission.JobRead)
+    git()
+
+    // Running this in two steps to find more issues, like CAT-2400
+    gradle('buildStandalone',
+           '-Pdownload="https://pocketcode.org/download/821.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
+    gradle('assembleStandaloneDebug',
+           '-Pdownload="https://pocketcode.org/download/821.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
+
+    archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
+}
