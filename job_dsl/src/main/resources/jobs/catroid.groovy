@@ -145,8 +145,8 @@ catroid("$folder/Standalone") {
     git(branch: 'master')
     gradle('buildStandalone assembleStandaloneDebug',
            '-Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}"')
-    shell('curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug-unaligned.apk $UPLOAD')
-    archiveArtifacts('catroid/build/outputs/apk/*debug-unaligned.apk')
+    shell('curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug.apk $UPLOAD')
+    archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
     publishers {
         mailer {
             recipients(mail_recipients)
