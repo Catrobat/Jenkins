@@ -162,6 +162,7 @@ catroid("$folder/Standalone-Nightly") {
 
     jenkinsUsersPermissions(Permission.JobRead)
     git()
+    nightly()
 
     // Running this in two steps to find more issues, like CAT-2400
     gradle('buildStandalone',
