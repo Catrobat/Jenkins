@@ -166,9 +166,9 @@ catroid("$folder/Standalone-Nightly") {
 
     // Running this in two steps to find more issues, like CAT-2400
     gradle('buildStandalone',
-           '-Pdownload="https://pocketcode.org/download/821.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
+           '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
     gradle('assembleStandaloneDebug',
-           '-Pdownload="https://pocketcode.org/download/821.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
+           '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
 
     archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
 }
