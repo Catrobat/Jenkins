@@ -77,7 +77,6 @@ catroid("$folder/PullRequest-Espresso") {
 }
 
 catroid("$folder/Nightly") {
-    disabled()
     htmlDescription(['Nightly Catroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
