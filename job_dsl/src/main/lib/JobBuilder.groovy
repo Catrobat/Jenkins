@@ -126,6 +126,8 @@ $bulletPointsStr    </ul>\n</div>"""
                 remote {
                     url(params.repo)
                     branch(params.branch)
+                    refspec(params.refspec)
+                    name(params.name)
                 }
             }
         }

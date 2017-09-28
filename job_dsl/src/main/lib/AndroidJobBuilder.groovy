@@ -190,7 +190,11 @@ fi
             stringParam('sha1', data.branch,
                         'Can be used run pull request tests by typing: origin/pr/*pullrequestnumber*/merge')
         }
-        git(repo: data.repo, branch: '${sha1}')
+        git(repo: data.repo,
+            branch: '${sha1}',
+            name: 'origin',
+            refspec: '+refs/pull/*:refs/remotes/origin/pr/*')
+
         buildName('#${BUILD_NUMBER} | ${ENV, var="sha1"}')
 
         job.triggers {
