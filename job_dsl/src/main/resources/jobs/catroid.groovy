@@ -60,6 +60,20 @@ catroid("$folder/PullRequest") {
     junit()
 }
 
+catroid("$folder/PullRequest-UniqueApk") {
+    htmlDescription(['This job is automatically started when a pull request is created on github.',
+                     'It checks that the job builds with the parameters to have unique APKs, ' +
+                     'reducing the risk of breaking gradle changes.',
+                     'The resulting APK is not verified on itself.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+    git()
+
+    pullRequest(context: 'Unique APK')
+    gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
+}
+
 catroid("$folder/PullRequest-Espresso") {
     disabled()
     htmlDescription(['Job is manually triggered for pull requests on github to run Espresso tests.'])
