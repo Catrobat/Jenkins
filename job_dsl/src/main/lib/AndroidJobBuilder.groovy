@@ -2,13 +2,21 @@ import javaposse.jobdsl.dsl.Job
 
 class AndroidJobBuilder extends JobBuilder {
 
-    AndroidJobBuilder(Job job, def data) {
-        super(job, data)
+    AndroidJobBuilder(Job job, def outerScope, def data) {
+        super(job, outerScope, data)
     }
 
     protected void jobDefaults() {
         super.jobDefaults()
         label('NoDevice')
+
+        // Use the globally accessible log-parser-rules.
+        def log_parser_rules_file = outerScope.JENKINS_HOME + '/log_parser_rules.groovy'
+        publishers {
+            consoleParsing {
+                globalRules(log_parser_rules_file)
+            }
+        }
     }
 
     void git(Map params=[:]) {

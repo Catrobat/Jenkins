@@ -32,6 +32,6 @@ class JobsBuilder {
     }
 
     def job(Job job, Closure closure) {
-        jobBuilderClass.newInstance([job, dataCreator()] as Object[]).make(closure)
+        jobBuilderClass.newInstance([job, outerScope, dataCreator()] as Object[]).make(closure)
     }
 }
