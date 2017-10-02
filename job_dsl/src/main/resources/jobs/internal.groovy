@@ -1,15 +1,15 @@
 // The file should not be named jenkins.groovy as that leads to a warning as there
 // is already a jenkins package.
-def folder = 'Jenkins'
-Views.folderAndView(this, folder)
+def internal = new JobsBuilder(this).folderAndView('Jenkins')
 
-new JobBuilder(job("$folder/SeedJob")).make {
+internal.job("SeedJob") {
     htmlDescription(['Seed job to create all other jobs.'])
 
     jenkinsUsersPermissions()
     git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
     continuous()
     nightly('H 23 * * *') // run the job before all other nightlies
+    shell('cp configs/log_parser_rules.groovy $JENKINS_HOME/')
     steps {
         jobDsl {
             additionalClasspath('job_dsl/src/main/lib/')
@@ -22,7 +22,7 @@ new JobBuilder(job("$folder/SeedJob")).make {
     }
 }
 
-new JobBuilder(job("$folder/LocalBackup")).make {
+internal.job("LocalBackup") {
     htmlDescription(['Creates a local backup of jenkins in /home/jenkins/jenkins_created_backups.',
                      'Useful to run manually before installing updates of plugins.',
                      'Does not replace other forms of updates!'])
@@ -32,3 +32,5 @@ new JobBuilder(job("$folder/LocalBackup")).make {
     git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
     shell('bash -ex ./scripts/backupJenkinsLocally.sh')
 }
+
+println "########################### $JENKINS_HOME/log_parser_rules.groovy"

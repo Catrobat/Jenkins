@@ -1,11 +1,10 @@
-def folder = 'Paintroid'
-Views.folderAndView(this, folder)
+def paintroid = new JobsBuilder(this).android({new PaintroidData()}).folderAndView('Paintroid')
 
 def paintroid(String job_name, Closure closure) {
     new AndroidJobBuilder(job(job_name), new PaintroidData()).make(closure)
 }
 
-paintroid("$folder/SingleClassEmulatorTest") {
+paintroid.job("SingleClassEmulatorTest") {
     htmlDescription(['This job runs the tests of the given REPO/BRANCH and CLASS.',
                      'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
@@ -25,7 +24,7 @@ paintroid("$folder/SingleClassEmulatorTest") {
     junit()
 }
 
-paintroid("$folder/SinglePackageEmulatorTest") {
+paintroid.job("SinglePackageEmulatorTest") {
     htmlDescription(['This job runs the tests of the given REPO/BRANCH and PACKAGE.',
                      'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
@@ -45,7 +44,7 @@ paintroid("$folder/SinglePackageEmulatorTest") {
     junit()
 }
 
-paintroid("$folder/PullRequest") {
+paintroid.job("PullRequest") {
     disabled()
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
@@ -59,7 +58,7 @@ paintroid("$folder/PullRequest") {
     junit()
 }
 
-paintroid("$folder/Nightly") {
+paintroid.job("Nightly") {
     disabled()
     htmlDescription(['Nightly Paintroid job.'])
 
@@ -77,7 +76,7 @@ paintroid("$folder/Nightly") {
     junit()
 }
 
-paintroid("$folder/Continuous") {
+paintroid.job("Continuous") {
     htmlDescription(['Job runs continuously on changes.'])
 
     jenkinsUsersPermissions(Permission.JobRead)

@@ -1,11 +1,6 @@
-def folder = 'Catroid'
-Views.folderAndView(this, folder)
+def catroid = new JobsBuilder(this).android({new CatroidData()}).folderAndView('Catroid')
 
-def catroid(String job_name, Closure closure) {
-    new AndroidJobBuilder(job(job_name), new CatroidData()).make(closure)
-}
-
-catroid("$folder/SingleClassEmulatorTest") {
+catroid.job("SingleClassEmulatorTest") {
     htmlDescription(['This job runs the tests of the given REPO/BRANCH and CLASS.',
                      'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
@@ -25,7 +20,7 @@ catroid("$folder/SingleClassEmulatorTest") {
     junit()
 }
 
-catroid("$folder/SinglePackageEmulatorTest") {
+catroid.job("SinglePackageEmulatorTest") {
     htmlDescription(['This job runs the tests of the given REPO/BRANCH and PACKAGE.',
                      'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
@@ -45,7 +40,7 @@ catroid("$folder/SinglePackageEmulatorTest") {
     junit()
 }
 
-catroid("$folder/PullRequest") {
+catroid.job("PullRequest") {
     disabled()
     htmlDescription(['Job is automatically started when a pull request is created on github.'])
 
@@ -60,7 +55,7 @@ catroid("$folder/PullRequest") {
     junit()
 }
 
-catroid("$folder/PullRequest-UniqueApk") {
+catroid.job("PullRequest-UniqueApk") {
     htmlDescription(['This job is automatically started when a pull request is created on github.',
                      'It checks that the job builds with the parameters to have unique APKs, ' +
                      'reducing the risk of breaking gradle changes.',
@@ -74,7 +69,7 @@ catroid("$folder/PullRequest-UniqueApk") {
     gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
 }
 
-catroid("$folder/PullRequest-Espresso") {
+catroid.job("PullRequest-Espresso") {
     disabled()
     htmlDescription(['Job is manually triggered for pull requests on github to run Espresso tests.'])
 
@@ -90,7 +85,7 @@ catroid("$folder/PullRequest-Espresso") {
     junit()
 }
 
-catroid("$folder/Nightly") {
+catroid.job("Nightly") {
     htmlDescription(['Nightly Catroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -112,7 +107,7 @@ catroid("$folder/Nightly") {
     junit()
 }
 
-catroid("$folder/Continuous") {
+catroid.job("Continuous") {
     htmlDescription(['Job runs continuously on changes.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -130,7 +125,7 @@ catroid("$folder/Continuous") {
     junit()
 }
 
-catroid("$folder/Standalone") {
+catroid.job("Standalone") {
     htmlDescription(['Builds a Catroid APP as a standalone APK.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -169,7 +164,7 @@ catroid("$folder/Standalone") {
     }
 }
 
-catroid("$folder/Standalone-Nightly") {
+catroid.job("Standalone-Nightly") {
     htmlDescription(['Nightly builds of the "Tic-Tac-Toe Master" standalone APP using develop.',
                      'This allows to find issues with standalone builds before the next release.'])
 
