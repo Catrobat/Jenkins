@@ -55,6 +55,25 @@ catroid.job("PullRequest") {
     junit()
 }
 
+catroid.job("PullRequest-Standalone") {
+    htmlDescription(['This job is automatically started when a pull request is created on github.',
+                     'It checks that the creation of standalone APKs (APK for a Pocketcode app) works, ' +
+                     'reducing the risk of breaking gradle changes.',
+                     'The resulting APK is not verified itself.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+    git()
+
+    pullRequest(context: 'Standalone APK')
+
+    // Running this in two steps to find more issues, like CAT-2400
+    gradle('buildStandalone',
+           '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
+    gradle('assembleStandaloneDebug',
+           '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
+}
+
 catroid.job("PullRequest-UniqueApk") {
     htmlDescription(['This job is automatically started when a pull request is created on github.',
                      'It checks that the job builds with the parameters to have unique APKs, ' +
