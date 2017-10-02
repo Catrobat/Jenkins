@@ -32,5 +32,3 @@ internal.job("LocalBackup") {
     git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
     shell('bash -ex ./scripts/backupJenkinsLocally.sh')
 }
-
-println "########################### $JENKINS_HOME/log_parser_rules.groovy"
