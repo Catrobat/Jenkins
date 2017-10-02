@@ -3,7 +3,7 @@ class CatroidData {
     def repo = 'https://github.com/Catrobat/Catroid.git'
     def branch = 'develop'
     def githubUrl = 'https://github.com/Catrobat/Catroid'
-    def androidVersions = 24..19
+    def androidVersions = (24..19).grep{it != 20}
     def testExclusionsFile = 'testexclusions.txt'
     def testResultsPattern = '**/*TEST*.xml'
     def githubOrganizations = ['Catrobat']

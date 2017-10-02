@@ -2,7 +2,7 @@ class PaintroidData {
     def repo = 'https://github.com/Catrobat/Paintroid.git'
     def branch = 'develop'
     def githubUrl = 'https://github.com/Catrobat/Paintroid'
-    def androidVersions = 24..18
+    def androidVersions = (24..18).grep{it != 20}
     def testExclusionsFile = 'testexclusions.txt'
     def testResultsPattern = '**/*TEST*.xml'
     def githubOrganizations = ['Catrobat']
