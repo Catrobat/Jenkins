@@ -21,9 +21,16 @@ class JobsBuilder {
         new JobsBuilder(outerScope, dataCreator, folder, AndroidJobBuilder.class)
     }
 
+    JobsBuilder folder(String name) {
+        String newFolder = folder + name
+        outerScope.folder(newFolder)
+        new JobsBuilder(outerScope, dataCreator, "$newFolder/", jobBuilderClass)
+    }
+
     JobsBuilder folderAndView(String name) {
-        Views.folderAndView(outerScope, name)
-        new JobsBuilder(outerScope, dataCreator, folder + "$name/", jobBuilderClass)
+        String newFolder = folder + name
+        Views.folderAndView(outerScope, newFolder)
+        new JobsBuilder(outerScope, dataCreator, "$newFolder/", jobBuilderClass)
     }
 
     JobsBuilder job(String name, Closure closure) {

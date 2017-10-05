@@ -8,6 +8,7 @@ class JobBuilder extends Delegator {
     protected def outerScope
     protected def data
     private String description
+    protected boolean cleanWorkspace = true
 
     protected Set excludedTests = []
 
@@ -31,6 +32,12 @@ class JobBuilder extends Delegator {
             }
         }
 
+        job.wrappers {
+            if (this.cleanWorkspace) {
+                preBuildCleanup()
+            }
+        }
+
         job
     }
 
@@ -38,7 +45,6 @@ class JobBuilder extends Delegator {
         logRotator(30, 100)
         jdk('java-8-openjdk-amd64')
         job.wrappers {
-            preBuildCleanup()
             timestamps()
             maskPasswords()
         }
@@ -58,6 +64,10 @@ $bulletPointsStr    </ul>\n</div>"""
         this.description = text
 
         htmlDescription();
+    }
+
+    void keepWorkspace() {
+        this.cleanWorkspace = false
     }
 
     void buildName(String template_) {
@@ -116,7 +126,8 @@ $bulletPointsStr    </ul>\n</div>"""
     }
 
     void git(Map params=[:]) {
-        params = [repo: data?.repo, branch: data?.branch] + params
+        params = [repo: data?.repo, branch: data?.branch, reference: data?.referenceRepo] + params
+
         def githubUrl = retrieveGithubUrl(params.repo)
         if (githubUrl) {
             job.properties {
@@ -131,6 +142,14 @@ $bulletPointsStr    </ul>\n</div>"""
                     branch(params.branch)
                     refspec(params.refspec)
                     name(params.name)
+                }
+
+                if (params.reference) {
+                    extensions {
+                        cloneOptions {
+                            reference(params.reference)
+                        }
+                    }
                 }
             }
         }
