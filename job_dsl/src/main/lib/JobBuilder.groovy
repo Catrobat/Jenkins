@@ -116,6 +116,7 @@ $bulletPointsStr    </ul>\n</div>"""
     }
 
     void git(Map params=[:]) {
+        params = [repo: data?.repo, branch: data?.branch] + params
         def githubUrl = retrieveGithubUrl(params.repo)
         if (githubUrl) {
             job.properties {
@@ -136,7 +137,9 @@ $bulletPointsStr    </ul>\n</div>"""
     }
 
     protected String retrieveGithubUrl(String repo) {
-        if (repo.contains('github'))
+        if (data?.githubUrl)
+            return data.githubUrl
+        else if (repo.contains('github'))
             return repo - ~/\.git$/
         else
             return ''
@@ -155,6 +158,16 @@ $bulletPointsStr    </ul>\n</div>"""
         }
     }
 
+    void gradle(String tasks_, String switches_='') {
+        job.steps {
+            gradle {
+                switches(switches_)
+                tasks(tasks_)
+                passAsProperties(false)
+            }
+        }
+    }
+
     void shell(String... commands) {
         job.steps {
             shell(commands.join('\n'))
@@ -168,4 +181,12 @@ $bulletPointsStr    </ul>\n</div>"""
             }
         }
     }
+
+    void junit() {
+        job.publishers {
+                archiveJunit(data.testResultsPattern) {
+            }
+        }
+    }
+
 }

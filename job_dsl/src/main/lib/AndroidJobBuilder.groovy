@@ -19,18 +19,6 @@ class AndroidJobBuilder extends JobBuilder {
         }
     }
 
-    void git(Map params=[:]) {
-        params = [repo: data.repo, branch: data.branch] + params
-        super.git(params)
-    }
-
-    protected String retrieveGithubUrl(String repo) {
-        if (data)
-            return data.githubUrl
-        else
-            return super.retrieveGithubUrl(repo)
-    }
-
     void androidEmulator(Map params=[:]) {
         label('Emulator')
 
@@ -115,16 +103,6 @@ fi
         excludeTestClasses(data.excludedTests)
     }
 
-    void gradle(String tasks_, String switches_='') {
-        job.steps {
-            gradle {
-                switches(switches_)
-                tasks(tasks_)
-                passAsProperties(false)
-            }
-        }
-    }
-
     void parallelTests(String testJobName, int numBatches) {
         job.steps {
             parallelTestExecutor {
@@ -147,13 +125,6 @@ fi
         }
 
         junit()
-    }
-
-    void junit() {
-        job.publishers {
-            archiveJunit(data.testResultsPattern) {
-            }
-        }
     }
 
     void staticAnalysis() {
