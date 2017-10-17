@@ -24,6 +24,7 @@ class JobsBuilder {
     JobsBuilder folder(String name, Closure closure = null) {
 	if (closure == null) {
             closure = {
+		jenkinsUsersPermissions(Permission.JobRead)
                 anonymousUsersPermissions(Permission.JobRead)
             }
         }
