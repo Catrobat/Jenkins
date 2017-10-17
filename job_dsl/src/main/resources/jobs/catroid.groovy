@@ -85,7 +85,7 @@ catroid.job("PullRequest-UniqueApk") {
     git()
 
     pullRequest(context: 'Unique APK')
-    gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
+    gradle('assembleCatroidDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
 }
 
 catroid.job("PullRequest-Espresso") {
