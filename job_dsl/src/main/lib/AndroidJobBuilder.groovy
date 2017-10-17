@@ -160,9 +160,11 @@ fi
         }
     }
 
-    void pullRequest(Map params=[triggerPhrase: /.*test\W+this\W+please.*/,
-                                 onlyTriggerPhrase: false,
-                                 context: 'Unit Tests and Static Analysis']) {
+    void pullRequest(Map params=[:]) {
+        Map defaultParams = [triggerPhrase: /.*test\W+this\W+please.*/,
+                             onlyTriggerPhrase: false,
+                             context: 'Unit Tests and Static Analysis']
+        params = defaultParams + params
         job.concurrentBuild(false)
 
         job.parameters {
