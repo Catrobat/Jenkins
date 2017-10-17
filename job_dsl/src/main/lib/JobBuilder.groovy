@@ -1,5 +1,3 @@
-import javaposse.jobdsl.dsl.Job
-
 /**
  * @see <a href="https://www.cloudbees.com/sites/default/files/2016-jenkins-world-rule_jenkins_with_configuration_as_code_2.pdf">Rule Jenkins with Configuration as Code</a>
  */
@@ -12,14 +10,14 @@ class JobBuilder extends Delegator {
 
     protected Set excludedTests = []
 
-    JobBuilder(Job job, def outerScope, def data=null) {
+    JobBuilder(def job, def outerScope, def data=null) {
         super(job)
         this.job = job
         this.outerScope = outerScope
         this.data = data
     }
 
-    Job make(Closure additionalConfig) {
+    def make(Closure additionalConfig) {
         jobDefaults()
         runClosure(additionalConfig)
 
@@ -38,6 +36,11 @@ class JobBuilder extends Delegator {
             }
         }
 
+        job
+    }
+
+    def makeNoDefaults(Closure config) {
+        runClosure(config)
         job
     }
 

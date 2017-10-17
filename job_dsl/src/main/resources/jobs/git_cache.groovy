@@ -19,10 +19,10 @@ def nodes = ['Slave2_emulator',
 def projects = [new CatroidData(),
                 new PaintroidData(),
 ]
-def gitCache = new JobsBuilder(this).folderAndView('git-cache')
+def gitCache = new JobsBuilder(this).folderAndView('git-cache', {})
 
 nodes.each{ node ->
-    def nodeFolder = gitCache.folder(node)
+    def nodeFolder = gitCache.folder(node, {})
 
     projects.each{ project ->
         nodeFolder.job("$project.name") {

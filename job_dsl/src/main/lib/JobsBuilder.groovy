@@ -21,16 +21,23 @@ class JobsBuilder {
         new JobsBuilder(outerScope, dataCreator, folder, AndroidJobBuilder.class)
     }
 
-    JobsBuilder folder(String name) {
+    JobsBuilder folder(String name, Closure closure = null) {
+	if (closure == null) {
+            closure = {
+                anonymousUsersPermissions(Permission.JobRead)
+            }
+        }
+
         String newFolder = folder + name
-        outerScope.folder(newFolder)
+        def folderJob = outerScope.folder(newFolder)
+        (new JobBuilder(folderJob, outerScope, null)).makeNoDefaults(closure)
+
         new JobsBuilder(outerScope, dataCreator, "$newFolder/", jobBuilderClass)
     }
 
-    JobsBuilder folderAndView(String name) {
-        String newFolder = folder + name
-        Views.folderAndView(outerScope, newFolder)
-        new JobsBuilder(outerScope, dataCreator, "$newFolder/", jobBuilderClass)
+    JobsBuilder folderAndView(String name, Closure closure = null) {
+        Views.basic(outerScope, name, "${folder + name}/.+")
+        folder(name, closure)
     }
 
     JobsBuilder job(String name, Closure closure) {
