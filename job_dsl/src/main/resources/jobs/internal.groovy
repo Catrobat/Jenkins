@@ -6,6 +6,7 @@ internal.job("SeedJob") {
     htmlDescription(['Seed job to create all other jobs.'])
 
     jenkinsUsersPermissions()
+    label('master')
     git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
     continuous()
     nightly('H 23 * * *') // run the job before all other nightlies
