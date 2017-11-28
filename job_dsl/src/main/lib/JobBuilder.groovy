@@ -1,4 +1,11 @@
 /**
+ * Provides convenience DSL elements with Pocketcode specific behavior.
+ * This allows to create complex jobs with just a few function calls, while keeping consistency.
+ * At the same time the functionality of <a href="https://jenkinsci.github.io/job-dsl-plugin/">Job DSL jobs</a> is still accessible.
+ * <p>
+ * Note: Functions are first delegated to JobBuilder to then fall back to the Job DSL.
+ * </p>
+ *
  * @see <a href="https://www.cloudbees.com/sites/default/files/2016-jenkins-world-rule_jenkins_with_configuration_as_code_2.pdf">Rule Jenkins with Configuration as Code</a>
  */
 class JobBuilder extends Delegator {
@@ -10,6 +17,13 @@ class JobBuilder extends Delegator {
 
     protected Set excludedTests = []
 
+    /**
+     * @param job A job created by the <a href="https://jenkinsci.github.io/job-dsl-plugin/">Job DSL</a>.
+     * @param outerScope The outermost scope, which has direct access to the Job DSL
+     *                   <a href="https://jenkinsci.github.io/job-dsl-plugin/">top-level methods</a>.
+     * @param data Data is an object that contains common information of a project, like its git-repository.
+     *             Some methods rely directly on fields of data as default values.
+     */
     JobBuilder(def job, def outerScope, def data=null) {
         super(job)
         this.job = job
@@ -17,6 +31,25 @@ class JobBuilder extends Delegator {
         this.data = data
     }
 
+   /**
+    * Create the configuration based on the handed in closure.
+    * From within the closure you can call methods of this class and its subclasses
+    * as well as methods of the job you handed in the consructor.
+    * For example:
+    * <pre>
+    * <code>jobBuilder.make {
+    *     git(repo: 'git://example.com/example.git', branch: 'master') // git is a method from JobBuilder
+    *     label('GitInstalled')                                        // method from the job
+    *     logRotator {                                                 // method from the job
+    *         daysToKepp(42)
+    *     }
+    * }
+    * </code>
+    * </pre>
+    *
+    * @param additionalConfig Provides additional configuration aside from the defaults.
+    *                         A job without this additional configuration will not be functional.
+    */
     def make(Closure additionalConfig) {
         jobDefaults()
         runClosure(additionalConfig)
