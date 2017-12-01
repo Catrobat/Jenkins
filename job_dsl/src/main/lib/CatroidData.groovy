@@ -1,5 +1,4 @@
 class CatroidData {
-    // TODO check that https://github.com/Catrobat/Catroid/pull/2349 is merged
     def name = 'Catroid'
     def repo = 'https://github.com/Catrobat/Catroid.git'
     def branch = 'develop'
