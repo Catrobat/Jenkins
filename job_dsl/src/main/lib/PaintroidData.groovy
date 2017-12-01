@@ -14,7 +14,6 @@ class PaintroidData {
                                      hardwareProperties: ['hw.ramSize': '800', 'vm.heapSize': '128'],
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'Paintroid/build/outputs/apk/Paintroid-debug.apk'
-    def excludedTests = []
     def staticAnalysisResults = [androidLint: 'Paintroid/build/reports/lint*.xml',
                                  checkstyle: 'Paintroid/build/reports/checkstyle.xml',
                                  pmd: 'Paintroid/build/reports/pmd.xml']

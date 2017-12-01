@@ -19,7 +19,6 @@ class CatroidData {
                                                           'hw.camera.back': 'emulated', 'hw.gps': 'yes'],
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'catroid/build/outputs/apk/catroid-catroid-debug.apk'
-    def excludedTests = []
     def staticAnalysisResults = [androidLint: 'catroid/build/reports/lint*.xml',
                                  checkstyle: 'catroid/build/reports/checkstyle.xml',
                                  pmd: 'catroid/build/reports/pmd.xml']

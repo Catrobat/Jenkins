@@ -12,10 +12,7 @@ class JobBuilder extends Delegator {
     protected def job
     protected def outerScope
     protected def data
-    private String description
     protected boolean cleanWorkspace = true
-
-    protected Set excludedTests = []
 
     /**
      * @param job A job created by the <a href="https://jenkinsci.github.io/job-dsl-plugin/">Job DSL</a>.
@@ -54,15 +51,6 @@ class JobBuilder extends Delegator {
         jobDefaults()
         runClosure(additionalConfig)
 
-        if (data?.testExclusionsFile && excludedTests) {
-            job.steps {
-                shell {
-                    command('# Run is marked unstable since there are exluded tests.\nexit 1')
-                    unstableReturn(1)
-                }
-            }
-        }
-
         job.wrappers {
             if (this.cleanWorkspace) {
                 preBuildCleanup()
@@ -86,10 +74,6 @@ class JobBuilder extends Delegator {
         }
     }
 
-    void htmlDescription() {
-        job.description('<style>\n    @import "/userContent/job_styles.css";\n</style>\n' + description + getExcludedTestClasses())
-    }
-
     void htmlDescription(List bulletPoints, String cssClass='cat-info', String prefix='<p><b>Info:</b></p>') {
         String bulletPointsStr = bulletPoints.sum { ' ' * 8 + '<li>' + it + '</li>\n' }
         String text = """<div class="$cssClass">
@@ -97,9 +81,7 @@ class JobBuilder extends Delegator {
     <ul>
 $bulletPointsStr    </ul>\n</div>"""
 
-        this.description = text
-
-        htmlDescription();
+        job.description('<style>\n    @import "/userContent/job_styles.css";\n</style>\n' + text)
     }
 
     void keepWorkspace() {
@@ -114,35 +96,6 @@ $bulletPointsStr    </ul>\n</div>"""
                 runAtEnd(true)
             }
         }
-    }
-
-    void excludeTestClasses(List testclasses) {
-        if (data?.testExclusionsFile) {
-            excludedTests += testclasses
-            htmlDescription()
-            job.steps {
-                shell {
-                    command(testclasses.collect{"echo \"$it\" >> $data.testExclusionsFile"}.join('\n'))
-                }
-            }
-        }
-    }
-
-    void excludeTestClass(String testclass) {
-        excludeTestClasses([testclass])
-    }
-
-    private String getExcludedTestClasses(String cssClass='cat-note'){
-        if (excludedTests) {
-            String text = """<div class="$cssClass">"""
-            text += "<p><b>Excluded Testcases:\n</b></p><ul>"
-            text += excludedTests.sum { ' ' * 8 + '<li>' + it + '</li>\n' }
-            text += "</ul></div>";
-
-            return text
-        }
-
-        return ''
     }
 
     void anonymousUsersPermissions(Permission... permissions_) {

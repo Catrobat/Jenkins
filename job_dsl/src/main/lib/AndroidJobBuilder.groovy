@@ -99,10 +99,6 @@ fi
 ''')
     }
 
-    void excludeTests() {
-        excludeTestClasses(data.excludedTests)
-    }
-
     void parallelTests(String testJobName, int numBatches) {
         job.steps {
             parallelTestExecutor {
