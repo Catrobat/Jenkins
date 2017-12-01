@@ -58,6 +58,19 @@ paintroid.job("PullRequest") {
     junit()
 }
 
+paintroid.job("PullRequest-StaticAnalysis") {
+    htmlDescription(['Job is automatically started when a pull request is created on github.',
+                     'The job runs static analysis on the code base'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+
+    pullRequest(context: 'Static Analysis')
+    createAndroidSdkLicenses()
+    gradle('pmd checkstyle lint')
+    staticAnalysis()
+}
+
 paintroid.job("Nightly") {
     disabled()
     htmlDescription(['Nightly Paintroid job.'])

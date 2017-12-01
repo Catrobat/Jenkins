@@ -15,5 +15,7 @@ class PaintroidData {
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'Paintroid/build/outputs/apk/Paintroid-debug.apk'
     def excludedTests = []
-    def staticAnalysisResults = [:]
+    def staticAnalysisResults = [androidLint: 'Paintroid/build/reports/lint*.xml',
+                                 checkstyle: 'Paintroid/build/reports/checkstyle.xml',
+                                 pmd: 'Paintroid/build/reports/pmd.xml']
 }
