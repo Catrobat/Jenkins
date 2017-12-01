@@ -11,7 +11,7 @@ class PaintroidData {
     def pullRequestAdmins = ['thmq', '84n4n4', 'ThomasSchwengler']
     def androidEmulatorParameters = [androidApi: '24', screenDensity: 'xhdpi', screenResolution: '768x1280', targetAbi: 'x86_64',
                                      noActivityTimeout: '1200',
-                                     hardwareProperties: ['hw.keyboard': 'yes', 'hw.ramSize': '800', 'vm.heapSize': '128'],
+                                     hardwareProperties: ['hw.ramSize': '800', 'vm.heapSize': '128'],
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'Paintroid/build/outputs/apk/Paintroid-debug.apk'
     def excludedTests = []

@@ -44,17 +44,16 @@ paintroid.job("SinglePackageEmulatorTest") {
     junit()
 }
 
-paintroid.job("PullRequest") {
-    disabled()
-    htmlDescription(['Job is automatically started when a pull request is created on github.'])
+paintroid.job("PullRequest-Tests") {
+    htmlDescription(['Job is automatically started when a pull request is created on github.',
+                     'The job runs ui tests that take ages.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
     anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
 
-    pullRequest()
+    pullRequest(context: "UI-Tests")
     androidEmulator()
-    gradle('connectedDebugAndroidTest',
-           '-Pjenkins -Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.paintroid.test.espresso')
+    gradle('adbDisableAnimationsGlobally connectedDebugAndroidTest ', '-Pjenkins')
     junit()
 }
 
