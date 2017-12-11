@@ -79,7 +79,7 @@ class AndroidJobBuilder extends JobBuilder {
         // Unfortunately the already existing licenses might be overwritten.
         // Thus this function (re)creates the needed licenses.
 
-        shell('''
+        shell('''\
 TOOLS_DIR="$WORKSPACE/../../tools"
 
 if [ -d "$ANDROID_HOME" ]; then
@@ -89,8 +89,8 @@ fi
 if [ -d "$TOOLS_DIR" ]; then
     LICENSES_DIR="$TOOLS_DIR/android-sdk/licenses"
     mkdir -p "$LICENSES_DIR"
-    echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$LICENSES_DIR/android-sdk-license"
-    echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$LICENSES_DIR/android-sdk-preview-license"
+    echo "\\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "${LICENSES_DIR}/android-sdk-license"
+    echo "\\n84831b9409646a918e30573bab4c9c91346d8abd" > "${LICENSES_DIR}/android-sdk-preview-license"
     exit 0
 else
     echo "There is no tools directory accessible from '$WORKSPACE'."
