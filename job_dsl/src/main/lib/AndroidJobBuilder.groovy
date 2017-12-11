@@ -42,6 +42,7 @@ class AndroidJobBuilder extends JobBuilder {
                 osVersion("android-${p.androidApi}")
                 screenDensity(p.screenDensity)
                 screenResolution(p.screenResolution)
+                deviceDefinition('')
                 deviceLocale(p.deviceLocale)
                 sdCardSize(p.sdCardSize)
                 targetAbi(p.targetAbi)
