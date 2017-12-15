@@ -12,7 +12,6 @@ class JobBuilder extends Delegator {
     protected def job
     protected def outerScope
     protected def data
-    protected boolean cleanWorkspace = true
 
     /**
      * @param job A job created by the <a href="https://jenkinsci.github.io/job-dsl-plugin/">Job DSL</a>.
@@ -50,13 +49,6 @@ class JobBuilder extends Delegator {
     def make(Closure additionalConfig) {
         jobDefaults()
         runClosure(additionalConfig)
-
-        job.wrappers {
-            if (this.cleanWorkspace) {
-                preBuildCleanup()
-            }
-        }
-
         job
     }
 
@@ -82,10 +74,6 @@ class JobBuilder extends Delegator {
 $bulletPointsStr    </ul>\n</div>"""
 
         job.description('<style>\n    @import "/userContent/job_styles.css";\n</style>\n' + text)
-    }
-
-    void keepWorkspace() {
-        this.cleanWorkspace = false
     }
 
     void buildName(String template_) {
@@ -115,7 +103,7 @@ $bulletPointsStr    </ul>\n</div>"""
     }
 
     void git(Map params=[:]) {
-        params = [repo: data?.repo, branch: data?.branch, reference: data?.referenceRepo] + params
+        params = [repo: data?.repo, branch: data?.branch] + params
 
         def githubUrl = retrieveGithubUrl(params.repo)
         if (githubUrl) {
@@ -133,12 +121,8 @@ $bulletPointsStr    </ul>\n</div>"""
                     name(params.name)
                 }
 
-                if (params.reference) {
-                    extensions {
-                        cloneOptions {
-                            reference(params.reference)
-                        }
-                    }
+                extensions {
+                    cleanBeforeCheckout()
                 }
             }
         }
