@@ -111,6 +111,7 @@
     - rebuild                   # adds a rebuild button to jobs
     - ssh-slaves                # to connect to slaves via ssh
     - timestamper               # add timestamps in the log automatically
+    - thin-backup               # backs up the global and job config (no archive or workspace)
     - workflow-aggregator       # Support for Jenkins Pipeline
     - ws-cleanup                # Clean the workspace for builds
   when:
