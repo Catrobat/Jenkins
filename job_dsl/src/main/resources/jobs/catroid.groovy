@@ -18,6 +18,8 @@ catroid.job("SingleClassEmulatorTest") {
     gradle('connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.$CLASS')
     junit()
+
+    notifications()
 }
 
 catroid.job("SinglePackageEmulatorTest") {
@@ -38,6 +40,8 @@ catroid.job("SinglePackageEmulatorTest") {
     gradle('connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.$PACKAGE')
     junit()
+
+    notifications()
 }
 
 catroid.job("PullRequest") {
@@ -53,6 +57,8 @@ catroid.job("PullRequest") {
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     staticAnalysis()
     junit()
+
+    notifications()
 }
 
 catroid.job("PullRequest-Standalone") {
@@ -72,6 +78,8 @@ catroid.job("PullRequest-Standalone") {
            '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
     gradle('assembleStandaloneDebug',
            '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
+
+    notifications()
 }
 
 catroid.job("PullRequest-UniqueApk") {
@@ -86,6 +94,8 @@ catroid.job("PullRequest-UniqueApk") {
 
     pullRequest(context: 'Unique APK')
     gradle('assembleCatroidDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
+
+    notifications()
 }
 
 catroid.job("PullRequest-Espresso") {
@@ -102,6 +112,8 @@ catroid.job("PullRequest-Espresso") {
     gradle('connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     junit()
+
+    notifications()
 }
 
 catroid.job("Nightly") {
@@ -124,6 +136,8 @@ catroid.job("Nightly") {
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     staticAnalysis()
     junit()
+
+    notifications()
 }
 
 catroid.job("Continuous") {
@@ -142,6 +156,8 @@ catroid.job("Continuous") {
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     staticAnalysis()
     junit()
+
+    notifications()
 }
 
 catroid.job("Standalone") {
@@ -174,6 +190,7 @@ catroid.job("Standalone") {
            '-Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}"')
     shell('curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug.apk $UPLOAD')
     archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
+
     publishers {
         mailer {
             recipients(mail_recipients)
@@ -181,6 +198,8 @@ catroid.job("Standalone") {
             sendToIndividuals(false)
         }
     }
+
+    notifications(true)
 }
 
 catroid.job("Standalone-Nightly") {
@@ -198,4 +217,6 @@ catroid.job("Standalone-Nightly") {
            '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
 
     archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
+
+    notifications(true)
 }

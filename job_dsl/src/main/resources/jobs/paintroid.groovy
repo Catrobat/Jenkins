@@ -22,6 +22,8 @@ paintroid.job("SingleClassEmulatorTest") {
     gradle('connectedDebugAndroidTest',
            '-Pjenkins -Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.paintroid.$CLASS')
     junit()
+
+    notifications()
 }
 
 paintroid.job("SinglePackageEmulatorTest") {
@@ -42,6 +44,8 @@ paintroid.job("SinglePackageEmulatorTest") {
     gradle('connectedDebugAndroidTest',
            '-Pjenkins -Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.paintroid.$PACKAGE')
     junit()
+
+    notifications()
 }
 
 paintroid.job("PullRequest-Tests") {
@@ -55,6 +59,8 @@ paintroid.job("PullRequest-Tests") {
     androidEmulator()
     gradle('adbDisableAnimationsGlobally connectedDebugAndroidTest ', '-Pjenkins')
     junit()
+
+    notifications()
 }
 
 paintroid.job("PullRequest-StaticAnalysis") {
@@ -68,6 +74,8 @@ paintroid.job("PullRequest-StaticAnalysis") {
     createAndroidSdkLicenses()
     gradle('pmd checkstyle lint')
     staticAnalysis()
+
+    notifications()
 }
 
 paintroid.job("Nightly") {
@@ -86,6 +94,8 @@ paintroid.job("Nightly") {
            '-Pjenkins -Pindependent="Paint Nightly #${BUILD_NUMBER} ' +
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.paintroid.test.espresso')
     junit()
+
+    notifications()
 }
 
 paintroid.job("Continuous") {
@@ -99,4 +109,6 @@ paintroid.job("Continuous") {
     gradle('connectedDebugAndroidTest',
            '-Pjenkins -Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.paintroid.test.espresso')
     junit()
+
+    notifications()
 }

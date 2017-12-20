@@ -109,6 +109,7 @@
     - parallel-test-executor    # Distribute tests onto multiple nodes for better performance
     - pmd                       # Collects PMD static analysis results
     - rebuild                   # adds a rebuild button to jobs
+    - slack                     # allows to send slack notifications
     - ssh-slaves                # to connect to slaves via ssh
     - timestamper               # add timestamps in the log automatically
     - thin-backup               # backs up the global and job config (no archive or workspace)

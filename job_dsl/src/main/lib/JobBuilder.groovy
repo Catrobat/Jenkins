@@ -174,11 +174,50 @@ $bulletPointsStr    </ul>\n</div>"""
         }
     }
 
+    /**
+     * notify about build results
+     *  - Slack: Only first failures and back to normal messages
+     */
+    void notifications(boolean informStandalone = false) {
+        publishers {
+            slackNotifier {
+                startNotification(false)
+                notifyAborted(false)
+                notifyFailure(true)
+                notifyNotBuilt(true)
+                notifySuccess(false)
+                notifyUnstable(true)
+                notifyRegression(false)
+                notifyBackToNormal(true)
+                notifyRepeatedFailure(false)
+
+                includeTestSummary(false)
+                includeCustomMessage(false)
+                customMessage('')
+
+                commitInfoChoice('NONE')               // 'nothing about commits'
+                //commitInfoChoice('AUTHORS')            // 'commit list with authors only'
+                //commitInfoChoice('AUTHORS_AND_TITLES') // 'commit list with authors and titles'
+
+                // channel config
+                String channels = "#ci-status"
+                if (informStandalone) {
+                    channels += ",#ci-status-standalone"
+                }
+                room(channels)
+
+                // use from main config
+                teamDomain('')
+                authTokenCredentialId('')
+                sendAs('')
+            }
+        }
+    }
+
     void junit() {
         job.publishers {
                 archiveJunit(data.testResultsPattern) {
             }
         }
     }
-
 }
