@@ -21,6 +21,8 @@ internal.job("SeedJob") {
             unstableOnDeprecation(true)
         }
     }
+
+    notifications()
 }
 
 internal.job("LocalBackup") {
@@ -32,4 +34,6 @@ internal.job("LocalBackup") {
     label('master')
     git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
     shell('bash -ex ./scripts/backupJenkinsLocally.sh')
+
+    notifications()
 }
