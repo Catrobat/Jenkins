@@ -176,12 +176,11 @@ catroid.job("Standalone") {
         }
     }
 
-    // Both the authentication token and the mail recipients should not be on github.
-    // That means they cannot be hardcode here.
+    // The authentication token should not be on github.
+    // That means it cannot be hardcode here.
     // At the same time this information should be visible in the job itself.
     // A workaround to achieve this is to store the information in global properties on jenkins master.
     def token = GLOBAL_STANDALONE_AUTH_TOKEN
-    def mail_recipients = GLOBAL_STANDALONE_MAIL_RECIPIENTS
 
     authenticationToken(token)
     buildName('#${DOWNLOAD}')
@@ -190,14 +189,6 @@ catroid.job("Standalone") {
            '-Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}"')
     shell('curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug.apk $UPLOAD')
     archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
-
-    publishers {
-        mailer {
-            recipients(mail_recipients)
-            notifyEveryUnstableBuild(true)
-            sendToIndividuals(false)
-        }
-    }
 
     notifications(true)
 }
