@@ -37,6 +37,11 @@ class AndroidJobBuilder extends JobBuilder {
                 timeoutEnvVar('')
             }
 
+            xvnc {
+                takeScreenshot(false)
+                useXauthority(true)
+            }
+
             androidEmulator {
                 avdName(null)
                 osVersion("android-${p.androidApi}")

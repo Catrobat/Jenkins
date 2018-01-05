@@ -115,6 +115,7 @@
     - thin-backup               # backs up the global and job config (no archive or workspace)
     - workflow-aggregator       # Support for Jenkins Pipeline
     - ws-cleanup                # Clean the workspace for builds
+    - xvnc                      # So we do not rely on an active X-Session
   when:
     - install_plugins
 

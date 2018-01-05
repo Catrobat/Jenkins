@@ -22,6 +22,9 @@
     - qemu-kvm
     - libvirt-bin
 
+- name: Install a vncserver to avoid the need of having an active xsession.
+  apt: name=tightvncserver state=present
+
 - name: Add the catroid user to the groups needed by KVM for the emulator.
   user:
     name: catroid
