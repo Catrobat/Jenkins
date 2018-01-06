@@ -95,9 +95,7 @@
     - antisamy-markup-formatter # allows html descriptions for plugins
     - build-name-setter
     - build-timeout
-    - built-on-column           # built on node column in overview
     - checkstyle                # Collects checkstyle static analysis results
-    - extreme-notification      # provides hooks to post (indirectly) to e.g. Discord
     - ghprb                     # github PR support
     - git
     - gradle
