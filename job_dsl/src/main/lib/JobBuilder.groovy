@@ -59,7 +59,7 @@ class JobBuilder extends Delegator {
 
     protected void jobDefaults() {
         logRotator(30, 100)
-        jdk('java-8-openjdk-amd64')
+        jdk('(System)')
         job.wrappers {
             timestamps()
             maskPasswords()
