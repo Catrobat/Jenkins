@@ -152,10 +152,19 @@ $bulletPointsStr    </ul>\n</div>"""
 
     void gradle(String tasks_, String switches_='') {
         job.steps {
-            gradle {
-                switches(switches_)
-                tasks(tasks_)
-                passAsProperties(false)
+            configure {
+                it / builders << 'hudson.plugins.gradle.Gradle' {
+                    switches(switches_)
+                    tasks(tasks_)
+                    rootBuildScriptDir('')
+                    buildFile('')
+                    gradleName('(Default)')
+                    useWrapper(true)
+                    makeExecutable(false)
+                    useWorkspaceAsHome(false)
+                    passAllAsSystemProperties(false)
+                    passAllAsProjectProperties(false)
+                }
             }
         }
     }
