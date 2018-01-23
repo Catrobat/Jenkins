@@ -17,6 +17,10 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
                         repository(projectData.repoName)
                         apiUri('https://api.github.com')
                         credentialsId(projectData.githubOrganizationsJenkinsCredentialsRefId)
+
+                        traits {
+                            cleanBeforeCheckoutTrait()
+                        }
                     }
                 }
             } 
