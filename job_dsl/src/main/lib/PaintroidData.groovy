@@ -9,7 +9,7 @@ class PaintroidData {
     def testExclusionsFile = 'testexclusions.txt'
     def testResultsPattern = '**/*TEST*.xml'
     def githubOrganizations = ['Catrobat']
-    def githubOrganizationsJenkinsCredentialsRefId = 'undefined'
+    def githubOrganizationsJenkinsCredentialsRefId = 'github-organization-catrobatjenkins'
     def pullRequestAdmins = ['thmq', '84n4n4', 'ThomasSchwengler']
     def androidEmulatorParameters = [androidApi: '24', screenDensity: 'xhdpi', screenResolution: '768x1280', targetAbi: 'x86_64',
                                      noActivityTimeout: '1200',
