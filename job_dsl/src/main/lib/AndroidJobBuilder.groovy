@@ -1,9 +1,10 @@
+import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 
 class AndroidJobBuilder extends JobBuilder {
 
-    AndroidJobBuilder(Job job, def outerScope, def data) {
-        super(job, outerScope, data)
+    AndroidJobBuilder(Job job, DslFactory dslFactory, def data) {
+        super(job, dslFactory, data)
     }
 
     protected void jobDefaults() {
@@ -11,7 +12,7 @@ class AndroidJobBuilder extends JobBuilder {
         label('NoDevice')
 
         // Use the globally accessible log-parser-rules.
-        def log_parser_rules_file = outerScope.JENKINS_HOME + '/log_parser_rules.groovy'
+        def log_parser_rules_file = dslFactory.JENKINS_HOME + '/log_parser_rules.groovy'
         publishers {
             consoleParsing {
                 globalRules(log_parser_rules_file)

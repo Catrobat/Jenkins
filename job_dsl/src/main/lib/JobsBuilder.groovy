@@ -1,24 +1,25 @@
+import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 
 class JobsBuilder {
-    private def outerScope
+    private DslFactory dslFactory
     private def dataCreator
     private def folder
     private def jobBuilderClass
 
-    JobsBuilder(def outerScope) {
-        this(outerScope, null, "", null)
+    JobsBuilder(def dslFactory) {
+        this(dslFactory, null, "", null)
     }
 
-    private JobsBuilder(def outerScope, def dataCreator, def folder, def jobBuilderClass) {
-        this.outerScope = outerScope
+    private JobsBuilder(DslFactory dslFactory, def dataCreator, def folder, def jobBuilderClass) {
+        this.dslFactory = dslFactory
         this.dataCreator = dataCreator?.clone() ?: { null }
         this.folder = folder
         this.jobBuilderClass = jobBuilderClass ?: JobBuilder.class
     }
 
     JobsBuilder android(def dataCreator) {
-        new JobsBuilder(outerScope, dataCreator, folder, AndroidJobBuilder.class)
+        new JobsBuilder(dslFactory, dataCreator, folder, AndroidJobBuilder.class)
     }
 
     JobsBuilder folder(String name, Closure closure = null) {
@@ -30,23 +31,23 @@ class JobsBuilder {
         }
 
         String newFolder = folder + name
-        def folderJob = outerScope.folder(newFolder)
-        (new JobBuilder(folderJob, outerScope, null)).makeNoDefaults(closure)
+        def folderJob = dslFactory.folder(newFolder)
+        (new JobBuilder(folderJob, dslFactory, null)).makeNoDefaults(closure)
 
-        new JobsBuilder(outerScope, dataCreator, "$newFolder/", jobBuilderClass)
+        new JobsBuilder(dslFactory, dataCreator, "$newFolder/", jobBuilderClass)
     }
 
     JobsBuilder folderAndView(String name, Closure closure = null) {
-        Views.basic(outerScope, name, "${folder + name}/.+")
+        Views.basic(dslFactory, name, "${folder + name}/.+")
         folder(name, closure)
     }
 
     JobsBuilder job(String name, Closure closure) {
-        job(outerScope.job(folder + name), closure)
+        job(dslFactory.job(folder + name), closure)
         this
     }
 
     def job(Job job, Closure closure) {
-        jobBuilderClass.newInstance([job, outerScope, dataCreator()] as Object[]).make(closure)
+        jobBuilderClass.newInstance([job, dslFactory, dataCreator()] as Object[]).make(closure)
     }
 }

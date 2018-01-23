@@ -1,3 +1,5 @@
+import javaposse.jobdsl.dsl.DslFactory
+
 /**
  * Provides convenience DSL elements with Pocketcode specific behavior.
  * This allows to create complex jobs with just a few function calls, while keeping consistency.
@@ -10,20 +12,20 @@
  */
 class JobBuilder extends Delegator {
     protected def job
-    protected def outerScope
+    protected DslFactory dslFactory
     protected def data
 
     /**
      * @param job A job created by the <a href="https://jenkinsci.github.io/job-dsl-plugin/">Job DSL</a>.
-     * @param outerScope The outermost scope, which has direct access to the Job DSL
+     * @param dslFactory The outermost scope, which has direct access to the Job DSL
      *                   <a href="https://jenkinsci.github.io/job-dsl-plugin/">top-level methods</a>.
      * @param data Data is an object that contains common information of a project, like its git-repository.
      *             Some methods rely directly on fields of data as default values.
      */
-    JobBuilder(def job, def outerScope, def data=null) {
+    JobBuilder(def job, DslFactory dslFactory, def data=null) {
         super(job)
         this.job = job
-        this.outerScope = outerScope
+        this.dslFactory = dslFactory
         this.data = data
     }
 
