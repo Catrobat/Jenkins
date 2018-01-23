@@ -1,5 +1,7 @@
 class CatroidData {
     def name = 'Catroid'
+    def repoOwner = 'Catrobat'
+    def repoName = 'Catroid'
     def repo = 'https://github.com/Catrobat/Catroid.git'
     def branch = 'develop'
     def githubUrl = 'https://github.com/Catrobat/Catroid'
@@ -7,6 +9,7 @@ class CatroidData {
     def testExclusionsFile = 'testexclusions.txt'
     def testResultsPattern = '**/*TEST*.xml'
     def githubOrganizations = ['Catrobat']
+    def githubOrganizationsJenkinsCredentialsRefId = 'undefined'
     def pullRequestAdmins = ['84n4n4', 'bernadettespieler', 'Bioxar', 'cheidenreich', 'ElliHeschl',
                              'joseffilzmaier', 'MightyMendor', 'oliewa92', 'robertpainsi', 'thmq',
                              'thomasmauerhofer']

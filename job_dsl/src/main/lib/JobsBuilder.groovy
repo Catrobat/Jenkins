@@ -22,6 +22,10 @@ class JobsBuilder {
         new JobsBuilder(dslFactory, dataCreator, folder, AndroidJobBuilder.class)
     }
 
+    JobsBuilder gitHubOrganization(def dataCreator) {
+        new JobsBuilder(dslFactory, dataCreator, folder, MultibranchPipelineJobBuilder.class)
+    }
+
     JobsBuilder folder(String name, Closure closure = null) {
 	if (closure == null) {
             closure = {
@@ -43,11 +47,15 @@ class JobsBuilder {
     }
 
     JobsBuilder job(String name, Closure closure) {
-        job(dslFactory.freeStyleJob(folder + name), closure)
+        if (MultibranchPipelineJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
+            job(dslFactory.multibranchPipelineJob(folder + name), closure)
+        } else {
+            job(dslFactory.freeStyleJob(folder + name), closure)
+        }
         this
     }
 
-    def job(Job job, Closure closure) {
+    def job(def job, Closure closure) {
         jobBuilderClass.newInstance([job, dslFactory, dataCreator()] as Object[]).make(closure)
     }
 }

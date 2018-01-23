@@ -60,7 +60,6 @@ class JobBuilder extends Delegator {
     }
 
     protected void jobDefaults() {
-        logRotator(30, 100)
     }
 
     void htmlDescription(List bulletPoints, String cssClass='cat-info', String prefix='<p><b>Info:</b></p>') {

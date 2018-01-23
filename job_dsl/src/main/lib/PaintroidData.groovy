@@ -1,5 +1,7 @@
 class PaintroidData {
     def name = 'Paintroid'
+    def repoOwner = 'Catrobat'
+    def repoName = 'Paintroid'
     def repo = 'https://github.com/Catrobat/Paintroid.git'
     def branch = 'develop'
     def githubUrl = 'https://github.com/Catrobat/Paintroid'
@@ -7,6 +9,7 @@ class PaintroidData {
     def testExclusionsFile = 'testexclusions.txt'
     def testResultsPattern = '**/*TEST*.xml'
     def githubOrganizations = ['Catrobat']
+    def githubOrganizationsJenkinsCredentialsRefId = 'undefined'
     def pullRequestAdmins = ['thmq', '84n4n4', 'ThomasSchwengler']
     def androidEmulatorParameters = [androidApi: '24', screenDensity: 'xhdpi', screenResolution: '768x1280', targetAbi: 'x86_64',
                                      noActivityTimeout: '1200',
