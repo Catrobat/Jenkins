@@ -3,8 +3,8 @@ import javaposse.jobdsl.dsl.Job
 
 class AndroidJobBuilder extends FreeStyleJobBuilder {
 
-    AndroidJobBuilder(Job job, DslFactory dslFactory, def data) {
-        super(job, dslFactory, data)
+    AndroidJobBuilder(Job job, DslFactory dslFactory, def projectData) {
+        super(job, dslFactory, projectData)
     }
 
     protected void jobDefaults() {
@@ -23,7 +23,7 @@ class AndroidJobBuilder extends FreeStyleJobBuilder {
     void androidEmulator(Map params=[:]) {
         label('Emulator')
 
-        def p = new AndroidEmulatorParameters(data.androidEmulatorParameters + params)
+        def p = new AndroidEmulatorParameters(projectData.androidEmulatorParameters + params)
         job.wrappers {
             buildTimeoutWrapper {
                 strategy {
@@ -110,13 +110,13 @@ fi
         job.steps {
             parallelTestExecutor {
                 testJob(testJobName)
-                patternFile(data.testExclusionsFile)
+                patternFile(projectData.testExclusionsFile)
                 parallelism {
                     count {
                         size(numBatches)
                     }
                 }
-                testReportFiles(data.testResultsPattern)
+                testReportFiles(projectData.testResultsPattern)
                 archiveTestResults(true)
                 parameters {
                     currentBuildParameters()
@@ -132,7 +132,7 @@ fi
 
     void staticAnalysis() {
         job.publishers {
-            data.staticAnalysisResults.each{ tool, resultPattern ->
+            projectData.staticAnalysisResults.each{ tool, resultPattern ->
                 "$tool"(resultPattern) {
                     canRunOnFailed(true)
                     thresholds(unstableTotal: [all: 0])
@@ -143,15 +143,15 @@ fi
 
     void parameterizedAndroidVersion() {
         job.parameters {
-            choiceParam('ANDROID_VERSION', data.androidVersions, 'The android version to use by API level \nhttp://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels')
+            choiceParam('ANDROID_VERSION', projectData.androidVersions, 'The android version to use by API level \nhttp://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels')
         }
-        data.androidEmulatorParameters.androidApi = '$ANDROID_VERSION'
+        projectData.androidEmulatorParameters.androidApi = '$ANDROID_VERSION'
     }
 
     void parameterizedGit() {
         job.parameters {
-            stringParam('REPO', data.repo, '')
-            stringParam('BRANCH', data.branch, '')
+            stringParam('REPO', projectData.repo, '')
+            stringParam('BRANCH', projectData.branch, '')
         }
 
         git(repo: '$REPO', branch: '$BRANCH')
@@ -159,7 +159,7 @@ fi
 
     void parameterizedTestExclusionsFile() {
         job.parameters {
-            fileParam(data.testExclusionsFile, 'Optional file listing the tests to exclude (both .java and .class files).\nNeeded for parallel test job execution.')
+            fileParam(projectData.testExclusionsFile, 'Optional file listing the tests to exclude (both .java and .class files).\nNeeded for parallel test job execution.')
         }
     }
 
@@ -171,10 +171,10 @@ fi
         job.concurrentBuild(false)
 
         job.parameters {
-            stringParam('sha1', data.branch,
+            stringParam('sha1', projectData.branch,
                         'Can be used run pull request tests by typing: origin/pr/*pullrequestnumber*/merge')
         }
-        git(repo: data.repo,
+        git(repo: projectData.repo,
             branch: '${sha1}',
             name: 'origin',
             refspec: '+refs/pull/*:refs/remotes/origin/pr/*')
@@ -183,8 +183,8 @@ fi
 
         job.triggers {
             githubPullRequest {
-                admins(data.pullRequestAdmins)
-                orgWhitelist(data.githubOrganizations)
+                admins(projectData.pullRequestAdmins)
+                orgWhitelist(projectData.githubOrganizations)
                 cron('H/2 * * * *')
                 triggerPhrase(params.triggerPhrase)
                 if (params.onlyTriggerPhrase) {
@@ -205,11 +205,11 @@ fi
     void uploadApkToFilesCatrobat() {
         job.steps {
             shell {
-                command("echo put ${data.debugApk} | " +
+                command("echo put ${projectData.debugApk} | " +
                         'sftp -b- -i /home/catroid/.ssh/jenkins-file-upload file-downloads@files.catrob.at:www')
             }
         }
 
-        archiveArtifacts(data.debugApk)
+        archiveArtifacts(projectData.debugApk)
     }
 }

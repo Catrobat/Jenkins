@@ -2,8 +2,8 @@ import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 
 class FreeStyleJobBuilder extends JobBuilder {
-    FreeStyleJobBuilder(Job job, DslFactory dslFactory, def data) {
-        super(job, dslFactory, data)
+    FreeStyleJobBuilder(Job job, DslFactory dslFactory, def projectData) {
+        super(job, dslFactory, projectData)
     }
 
     protected void jobDefaults() {
@@ -26,7 +26,7 @@ class FreeStyleJobBuilder extends JobBuilder {
     }
 
     void git(Map params=[:]) {
-        params = [repo: data?.repo, branch: data?.branch] + params
+        params = [repo: projectData?.repo, branch: projectData?.branch] + params
 
         def githubUrl = retrieveGithubUrl(params.repo)
         if (githubUrl) {
@@ -52,8 +52,8 @@ class FreeStyleJobBuilder extends JobBuilder {
     }
 
     protected String retrieveGithubUrl(String repo) {
-        if (data?.githubUrl)
-            return data.githubUrl
+        if (projectData?.githubUrl)
+            return projectData.githubUrl
         else if (repo.contains('github'))
             return repo - ~/\.git$/
         else
@@ -135,7 +135,7 @@ class FreeStyleJobBuilder extends JobBuilder {
 
     void junit() {
         job.publishers {
-                archiveJunit(data.testResultsPattern) {
+                archiveJunit(projectData.testResultsPattern) {
             }
         }
     }

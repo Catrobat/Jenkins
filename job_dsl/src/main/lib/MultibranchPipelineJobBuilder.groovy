@@ -4,8 +4,8 @@ import javaposse.jobdsl.dsl.jobs.MultibranchWorkflowJob
 
 class MultibranchPipelineJobBuilder extends JobBuilder {
 
-    MultibranchPipelineJobBuilder(MultibranchWorkflowJob job, DslFactory dslFactory, def data) {
-        super(job, dslFactory, data)
+    MultibranchPipelineJobBuilder(MultibranchWorkflowJob job, DslFactory dslFactory, def projectData) {
+        super(job, dslFactory, projectData)
     }
 
     void gitHubOrganization() {
@@ -13,10 +13,10 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
             branchSource {
                 source {
                     github {
-                        repoOwner(data.repoOwner)
-                        repository(data.repoName)
+                        repoOwner(projectData.repoOwner)
+                        repository(projectData.repoName)
                         apiUri('https://api.github.com')
-                        credentialsId(data.githubOrganizationsJenkinsCredentialsRefId)
+                        credentialsId(projectData.githubOrganizationsJenkinsCredentialsRefId)
                     }
                 }
             } 
