@@ -15,7 +15,7 @@ class JobsBuilder {
         this.dslFactory = dslFactory
         this.dataCreator = dataCreator?.clone() ?: { null }
         this.folder = folder
-        this.jobBuilderClass = jobBuilderClass ?: JobBuilder.class
+        this.jobBuilderClass = jobBuilderClass ?: FreeStyleJobBuilder.class
     }
 
     JobsBuilder android(def dataCreator) {
@@ -43,7 +43,7 @@ class JobsBuilder {
     }
 
     JobsBuilder job(String name, Closure closure) {
-        job(dslFactory.job(folder + name), closure)
+        job(dslFactory.freeStyleJob(folder + name), closure)
         this
     }
 

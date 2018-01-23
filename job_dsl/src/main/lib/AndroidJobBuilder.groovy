@@ -1,7 +1,7 @@
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 
-class AndroidJobBuilder extends JobBuilder {
+class AndroidJobBuilder extends FreeStyleJobBuilder {
 
     AndroidJobBuilder(Job job, DslFactory dslFactory, def data) {
         super(job, dslFactory, data)

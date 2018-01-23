@@ -61,11 +61,6 @@ class JobBuilder extends Delegator {
 
     protected void jobDefaults() {
         logRotator(30, 100)
-        jdk('(System)')
-        job.wrappers {
-            timestamps()
-            maskPasswords()
-        }
     }
 
     void htmlDescription(List bulletPoints, String cssClass='cat-info', String prefix='<p><b>Info:</b></p>') {
@@ -76,16 +71,6 @@ class JobBuilder extends Delegator {
 $bulletPointsStr    </ul>\n</div>"""
 
         job.description('<style>\n    @import "/userContent/job_styles.css";\n</style>\n' + text)
-    }
-
-    void buildName(String template_) {
-        job.wrappers {
-            buildNameSetter {
-                template(template_)
-                runAtStart(true)
-                runAtEnd(true)
-            }
-        }
     }
 
     void anonymousUsersPermissions(Permission... permissions_) {
@@ -104,41 +89,6 @@ $bulletPointsStr    </ul>\n</div>"""
         }
     }
 
-    void git(Map params=[:]) {
-        params = [repo: data?.repo, branch: data?.branch] + params
-
-        def githubUrl = retrieveGithubUrl(params.repo)
-        if (githubUrl) {
-            job.properties {
-                githubProjectUrl(githubUrl)
-            }
-        }
-
-        job.scm {
-            git {
-                remote {
-                    url(params.repo)
-                    branch(params.branch)
-                    refspec(params.refspec)
-                    name(params.name)
-                }
-
-                extensions {
-                    cleanBeforeCheckout()
-                }
-            }
-        }
-    }
-
-    protected String retrieveGithubUrl(String repo) {
-        if (data?.githubUrl)
-            return data.githubUrl
-        else if (repo.contains('github'))
-            return repo - ~/\.git$/
-        else
-            return ''
-    }
-
     void nightly(String schedule='H 0 * * *') {
         job.concurrentBuild(false)
         job.triggers {
@@ -149,86 +99,6 @@ $bulletPointsStr    </ul>\n</div>"""
     void continuous(String schedule='H/5 * * * *') {
         job.triggers {
             scm(schedule)
-        }
-    }
-
-    void gradle(String tasks_, String switches_='') {
-        job.steps {
-            configure {
-                it / builders << 'hudson.plugins.gradle.Gradle' {
-                    switches(switches_)
-                    tasks(tasks_)
-                    rootBuildScriptDir('')
-                    buildFile('')
-                    gradleName('(Default)')
-                    useWrapper(true)
-                    makeExecutable(false)
-                    useWorkspaceAsHome(false)
-                    passAllAsSystemProperties(false)
-                    passAllAsProjectProperties(false)
-                }
-            }
-        }
-    }
-
-    void shell(String... commands) {
-        job.steps {
-            shell(commands.join('\n'))
-        }
-    }
-
-    void archiveArtifacts(String pattern_) {
-        publishers {
-            archiveArtifacts {
-                pattern(pattern_)
-            }
-        }
-    }
-
-    /**
-     * notify about build results
-     *  - Slack: Only first failures and back to normal messages
-     */
-    void notifications(boolean informStandalone = false) {
-        publishers {
-            slackNotifier {
-                startNotification(false)
-                notifyAborted(false)
-                notifyFailure(true)
-                notifyNotBuilt(true)
-                notifySuccess(false)
-                notifyUnstable(true)
-                notifyRegression(false)
-                notifyBackToNormal(true)
-                notifyRepeatedFailure(false)
-
-                includeTestSummary(false)
-                includeCustomMessage(false)
-                customMessage('')
-
-                commitInfoChoice('NONE')               // 'nothing about commits'
-                //commitInfoChoice('AUTHORS')            // 'commit list with authors only'
-                //commitInfoChoice('AUTHORS_AND_TITLES') // 'commit list with authors and titles'
-
-                // channel config
-                String channels = "#ci-status"
-                if (informStandalone) {
-                    channels += ",#ci-status-standalone"
-                }
-                room(channels)
-
-                // use from main config
-                teamDomain('')
-                authTokenCredentialId('')
-                sendAs('')
-            }
-        }
-    }
-
-    void junit() {
-        job.publishers {
-                archiveJunit(data.testResultsPattern) {
-            }
         }
     }
 }
