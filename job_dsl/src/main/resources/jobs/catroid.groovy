@@ -207,7 +207,7 @@ catroid.job("Standalone-Nightly") {
     gradle('assembleStandaloneDebug',
            '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
 
-    archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
+    archiveArtifacts('catroid/build/outputs/apk/standalone/debug/catroid-standalone-debug.apk')
 
     notifications(true)
 }
