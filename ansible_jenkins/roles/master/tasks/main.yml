@@ -93,6 +93,7 @@
     - android-emulator
     - android-lint
     - antisamy-markup-formatter # allows html descriptions for plugins
+    - blue                      # blue-ocean
     - build-name-setter
     - build-timeout
     - checkstyle                # Collects checkstyle static analysis results
@@ -103,6 +104,7 @@
     - jenkins-multijob-plugin   # Job that consists of other jobs
     - job-dsl                   # Support for a DSL to describe jobs
     - jobConfigHistory          # diff changes in job config
+    - lockable-resources        # Locking resources on node (eg: manipulate android SDK)
     - mask-passwords            # Hides passwords in the job log
     - parallel-test-executor    # Distribute tests onto multiple nodes for better performance
     - pmd                       # Collects PMD static analysis results
