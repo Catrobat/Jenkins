@@ -26,6 +26,17 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
             } 
         }
 
+        job.orphanedItemStrategy {
+            discardOldItems {
+                numToKeep(30)
+            }
+        }
+
+        job.triggers {
+            // Check every hour, should be triggered anyhow
+            periodic(60)
+        }
+
         job.configure {
             // workaround for JENKINS-46202 (https://issues.jenkins-ci.org/browse/JENKINS-46202)
             def traits = it / sources / data / 'jenkins.branch.BranchSource' / source / traits
