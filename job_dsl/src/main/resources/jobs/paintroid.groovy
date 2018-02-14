@@ -1,10 +1,26 @@
 def paintroid = new JobsBuilder(this).android({new PaintroidData()}).folderAndView('Paintroid')
+def paintroidorg = new JobsBuilder(this).gitHubOrganization({new PaintroidData()}).folderAndView('Paintroid')
 
 def paintroid(String job_name, Closure closure) {
     new AndroidJobBuilder(job(job_name), new PaintroidData()).make(closure)
 }
 
+
+paintroidorg.job("Paintroid") {
+    htmlDescription(['Job is automatically started on a new commit or a new/updated pull request created on github.',
+                     'This job runs the Pipeline defined in the Jenkinsfile inside of the repository.',
+                     'The Pipeline should run the code analyisis, the unit and device tests.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+
+    gitHubOrganization()
+    jenkinsfilePath('Jenkinsfile')
+}
+
 paintroid.job("SingleClassEmulatorTest") {
+    disabled()
+
     htmlDescription(['This job runs the tests of the given REPO/BRANCH and CLASS.',
                      'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
@@ -27,6 +43,8 @@ paintroid.job("SingleClassEmulatorTest") {
 }
 
 paintroid.job("SinglePackageEmulatorTest") {
+    disabled()
+
     htmlDescription(['This job runs the tests of the given REPO/BRANCH and PACKAGE.',
                      'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
@@ -49,6 +67,8 @@ paintroid.job("SinglePackageEmulatorTest") {
 }
 
 paintroid.job("PullRequest-Tests") {
+    disabled()
+
     htmlDescription(['Job is automatically started when a pull request is created on github.',
                      'The job runs ui tests that take ages.'])
 
@@ -64,6 +84,8 @@ paintroid.job("PullRequest-Tests") {
 }
 
 paintroid.job("PullRequest-StaticAnalysis") {
+    disabled()
+
     htmlDescription(['Job is automatically started when a pull request is created on github.',
                      'The job runs static analysis on the code base'])
 
@@ -80,6 +102,7 @@ paintroid.job("PullRequest-StaticAnalysis") {
 
 paintroid.job("Nightly") {
     disabled()
+
     htmlDescription(['Nightly Paintroid job.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
@@ -99,6 +122,8 @@ paintroid.job("Nightly") {
 }
 
 paintroid.job("Continuous") {
+    disabled()
+
     htmlDescription(['Job runs continuously on changes.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
