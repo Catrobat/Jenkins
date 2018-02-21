@@ -1,3 +1,5 @@
+import java.security.MessageDigest
+
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 import javaposse.jobdsl.dsl.jobs.MultibranchWorkflowJob
@@ -13,6 +15,7 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
             branchSource {
                 source {
                     github {
+                        id(md5sum(projectData.githubUrl))
                         repoOwner(projectData.repoOwner)
                         repository(projectData.repoName)
                         apiUri('https://api.github.com')
@@ -64,5 +67,11 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
                 scriptPath(jenkinsfilePath)
             }
         }
+    }
+
+    def md5sum(String input) {
+        MessageDigest digest = MessageDigest.getInstance("MD5")
+        digest.update(input.bytes)
+        return new BigInteger(1, digest.digest()).toString(16).padLeft(32, '0')
     }
 }
