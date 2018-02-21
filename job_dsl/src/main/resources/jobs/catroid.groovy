@@ -1,4 +1,17 @@
 def catroid = new JobsBuilder(this).android({new CatroidData()}).folderAndView('Catroid')
+def catroidorg = new JobsBuilder(this).gitHubOrganization({new CatroidData()}).folderAndView('Catroid')
+
+catroidorg.job("Catroid") {
+    htmlDescription(['Job is automatically started on a new commit or a new/updated pull request created on github.',
+                     'This job runs the Pipeline defined in the Jenkinsfile inside of the repository.',
+                     'The Pipeline should run the code analyisis, the unit and device tests.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+
+    gitHubOrganization()
+    jenkinsfilePath('Jenkinsfile')
+}
 
 catroid.job("SingleClassEmulatorTest") {
     htmlDescription(['This job runs the tests of the given REPO/BRANCH and CLASS.',
