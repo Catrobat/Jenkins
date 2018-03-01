@@ -11,6 +11,7 @@ catroidorg.job("Catroid") {
 
     gitHubOrganization()
     jenkinsfilePath('Jenkinsfile')
+    labelForDockerBuild('Emulator')
 }
 
 catroid.job("SingleClassEmulatorTest") {

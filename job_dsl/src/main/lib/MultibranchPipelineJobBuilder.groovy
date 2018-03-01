@@ -71,6 +71,14 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
         }
     }
 
+    void labelForDockerBuild(String label) {
+        job.configure {
+            it / 'properties' / 'org.jenkinsci.plugins.pipeline.modeldefinition.config.FolderConfig' {
+                dockerLabel(label)
+            }
+        }
+    }
+
     def md5sum(String input) {
         MessageDigest digest = MessageDigest.getInstance("MD5")
         digest.update(input.bytes)

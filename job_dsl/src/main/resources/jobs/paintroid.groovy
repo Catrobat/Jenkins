@@ -16,6 +16,7 @@ paintroidorg.job("Paintroid") {
 
     gitHubOrganization()
     jenkinsfilePath('Jenkinsfile')
+    labelForDockerBuild('Emulator')
 }
 
 paintroid.job("SingleClassEmulatorTest") {
