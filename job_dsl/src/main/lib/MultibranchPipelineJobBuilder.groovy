@@ -48,15 +48,17 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
                 strategyId(3)
             }
             // Discover pull requests from forks
-            //    - Merge PR with current Target
+            //    - No merge, build the PR (With merge we would trigger a complete rebuild of all PRs if develop is updated,
+            //            which can't be handled by current slaves ATM)
             //    - Trust: From Users with Admin or Write permission
             traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
-                strategyId(1)
+                strategyId(2)
                 trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
             }
-            // Discover pull requests from origin: Merge PR with current Target
+            // Discover pull requests from origin: No merge, build the PR (With merge we would trigger a complete
+            //            rebuild of all PRs if develop is updated, which can't be handled by current slaves ATM)
             traits << 'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait' {
-                strategyId(1)
+                strategyId(2)
             }
         }
     }
