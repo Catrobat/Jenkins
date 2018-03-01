@@ -6,7 +6,7 @@ catroidorg.job("Catroid") {
                      'This job runs the Pipeline defined in the Jenkinsfile inside of the repository.',
                      'The Pipeline should run the code analyisis, the unit and device tests.'])
 
-    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobBuild, Permission.JobCancel)
     anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
 
     gitHubOrganization()
