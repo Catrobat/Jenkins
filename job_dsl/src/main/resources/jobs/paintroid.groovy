@@ -1,10 +1,9 @@
-def paintroid = new JobsBuilder(this).android({new PaintroidData()}).folderAndView('Paintroid')
-def paintroidorg = new JobsBuilder(this).gitHubOrganization({new PaintroidData()}).folderAndView('Paintroid')
+def paintroid = new JobsBuilder(this).android({new PaintroidData()}).folderAndView('Paintroid-Legacy')
+def paintroidorg = new JobsBuilder(this).gitHubOrganization({new PaintroidData()})
 
 def paintroid(String job_name, Closure closure) {
     new AndroidJobBuilder(job(job_name), new PaintroidData()).make(closure)
 }
-
 
 paintroidorg.job("Paintroid") {
     htmlDescription(['Job is automatically started on a new commit or a new/updated pull request created on github.',
@@ -18,6 +17,8 @@ paintroidorg.job("Paintroid") {
     jenkinsfilePath('Jenkinsfile')
     labelForDockerBuild('Emulator')
 }
+
+Views.basic(this, "Paintroid", "Paintroid/.+")
 
 paintroid.job("SingleClassEmulatorTest") {
     disabled()

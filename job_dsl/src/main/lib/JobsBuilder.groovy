@@ -48,7 +48,7 @@ class JobsBuilder {
 
     JobsBuilder job(String name, Closure closure) {
         if (MultibranchPipelineJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
-            job(dslFactory.multibranchPipelineJob(folder + name), closure)
+            job(dslFactory.multibranchPipelineJob(name), closure)
         } else {
             job(dslFactory.freeStyleJob(folder + name), closure)
         }
