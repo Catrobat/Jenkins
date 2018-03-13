@@ -179,6 +179,8 @@ catroid.job("Standalone") {
 
     jenkinsUsersPermissions(Permission.JobRead)
 
+    label('Standalone')
+
     parameters {
         stringParam('DOWNLOAD', 'https://pocketcode.org/download/821.catrobat', 'Enter the Project ID you want to build as standalone')
         stringParam('SUFFIX', 'standalone', '')
@@ -199,9 +201,53 @@ catroid.job("Standalone") {
     authenticationToken(token)
     buildName('#${DOWNLOAD}')
     git(branch: 'master')
-    gradle('buildStandalone assembleStandaloneDebug',
-           '-Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}"')
-    shell('curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug.apk $UPLOAD')
+
+    job.steps {
+        shell {
+            command('''#!/bin/sh
+SLEEP_TIME=5
+RETRIES=5
+
+HTTP_STATUS_OK=200
+HTTP_STATUS_INVALID_FILE_UPLOAD=528
+
+## check if program is downloadable from web
+## If we can't load it, we retry it ${RETRIES} times
+## On a 528 status (invalid upload), we return 200 which
+## should get interpreted as UNSTABLE build
+while true; do
+    HTTP_STATUS=`curl --write-out %{http_code} --silent --output /dev/null "${DOWNLOAD}"`
+
+    if [ ${HTTP_STATUS} -eq ${HTTP_STATUS_OK} ]; then
+        break
+    fi
+
+
+    RETRIES=$((RETRIES-1))
+    if [ ${RETRIES} -eq 0 ]; then
+        if [ ${HTTP_STATUS} -eq ${HTTP_STATUS_INVALID_FILE_UPLOAD} ]; then
+            echo "Uploaded file seems to be invalid, request to '${DOWNLOAD}' returned HTTP Status ${HTTP_STATUS}"
+            exit 200
+        else
+            echo "Could not download '${DOWNLOAD}', giving up!"
+            exit 1
+        fi
+    fi
+
+    echo "Could not retrieve '${DOWNLOAD}' (HTTP Status ${HTTP_STATUS}), sleep for ${SLEEP_TIME}s and retry a maximum of ${RETRIES} times"
+    sleep ${SLEEP_TIME}
+done
+
+./gradlew -Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}" buildStandalone assembleStandaloneDebug
+
+## +x, otherwise we would spoil the upload token
+set +x
+curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug.apk "${UPLOAD}"
+''')
+            unstableReturn(200)
+        }
+    }
+
     archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
 
     notifications(true)
