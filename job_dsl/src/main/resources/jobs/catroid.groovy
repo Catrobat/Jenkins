@@ -241,7 +241,9 @@ while true; do
     sleep ${SLEEP_TIME}
 done
 
-./gradlew -Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}" buildStandalone assembleStandaloneDebug
+# Running this in two steps to find more issues, like CAT-2400
+./gradlew -Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}" buildStandalone
+./gradlew -Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}" assembleStandaloneDebug
 
 ## +x, otherwise we would spoil the upload token
 set +x
