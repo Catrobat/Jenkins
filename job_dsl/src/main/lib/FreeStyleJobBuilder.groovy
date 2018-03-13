@@ -96,6 +96,7 @@ class FreeStyleJobBuilder extends JobBuilder {
     /**
      * notify about build results
      *  - Slack: Only first failures and back to normal messages
+     *           except standalone: All failures, no unstable (see: #WEB-460)
      */
     void notifications(boolean informStandalone = false) {
         publishers {
@@ -104,11 +105,18 @@ class FreeStyleJobBuilder extends JobBuilder {
                 notifyAborted(false)
                 notifyFailure(true)
                 notifyNotBuilt(true)
-                notifySuccess(false)
-                notifyUnstable(true)
                 notifyRegression(false)
-                notifyBackToNormal(true)
-                notifyRepeatedFailure(false)
+                notifySuccess(false)
+
+                if (informStandalone) {
+                    notifyUnstable(false)
+                    notifyBackToNormal(false)
+                    notifyRepeatedFailure(true)
+                } else {
+                    notifyUnstable(true)
+                    notifyBackToNormal(true)
+                    notifyRepeatedFailure(false)
+                }
 
                 includeTestSummary(false)
                 includeCustomMessage(false)
