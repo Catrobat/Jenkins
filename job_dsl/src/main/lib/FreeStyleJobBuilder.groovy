@@ -101,10 +101,11 @@ class FreeStyleJobBuilder extends JobBuilder {
         }
     }
 
-    void archiveArtifacts(String pattern_) {
+    void archiveArtifacts(String pattern_, boolean allowEmpty_ = false) {
         publishers {
             archiveArtifacts {
                 pattern(pattern_)
+                allowEmpty(allowEmpty_)
             }
         }
     }

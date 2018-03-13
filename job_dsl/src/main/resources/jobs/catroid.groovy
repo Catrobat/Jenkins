@@ -253,7 +253,7 @@ curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug.
         }
     }
 
-    archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk')
+    archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk', true)
 
     notifications(true)
 }
