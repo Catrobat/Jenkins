@@ -25,6 +25,22 @@ class FreeStyleJobBuilder extends JobBuilder {
         }
     }
 
+    void failBuildAfterNoActivity(String timeoutInSec_) {
+        job.wrappers {
+            buildTimeoutWrapper {
+                strategy {
+                    noActivityTimeOutStrategy {
+                        timeoutSecondsString(timeoutInSec_)
+                    }
+                }
+                operationList {
+                    failOperation()
+                }
+                timeoutEnvVar('')
+            }
+        }
+    }
+
     void git(Map params=[:]) {
         params = [repo: projectData?.repo, branch: projectData?.branch] + params
 

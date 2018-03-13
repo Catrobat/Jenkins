@@ -202,6 +202,8 @@ catroid.job("Standalone") {
     buildName('#${DOWNLOAD}')
     git(branch: 'master')
 
+    failBuildAfterNoActivity('600')
+
     job.steps {
         shell {
             command('''#!/bin/sh
