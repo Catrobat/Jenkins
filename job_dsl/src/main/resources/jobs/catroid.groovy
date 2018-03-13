@@ -1,5 +1,6 @@
 def catroid = new JobsBuilder(this).android({new CatroidData()}).folderAndView('Catroid-Legacy')
 def catroidorg = new JobsBuilder(this).gitHubOrganization({new CatroidData()})
+def catroidroot = new JobsBuilder(this).android({new CatroidData()})
 
 catroidorg.job("Catroid") {
     htmlDescription(['Job is automatically started on a new commit or a new/updated pull request created on github.',
@@ -174,7 +175,7 @@ catroid.job("Continuous") {
     notifications()
 }
 
-catroid.job("Standalone") {
+catroidroot.job("Build-Standalone") {
     htmlDescription(['Builds a Catroid APP as a standalone APK.'])
 
     jenkinsUsersPermissions(Permission.JobRead)
