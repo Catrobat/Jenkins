@@ -26,10 +26,14 @@ class JobsBuilder {
         new JobsBuilder(dslFactory, dataCreator, folder, MultibranchPipelineJobBuilder.class)
     }
 
+    JobsBuilder pipelineFromScript(def dataCreator = null) {
+        new JobsBuilder(dslFactory, dataCreator, folder, PiplineFromScriptJobBuilder.class)
+    }
+
     JobsBuilder folder(String name, Closure closure = null) {
-	if (closure == null) {
+        if (closure == null) {
             closure = {
-		jenkinsUsersPermissions(Permission.JobRead)
+                jenkinsUsersPermissions(Permission.JobRead)
                 anonymousUsersPermissions(Permission.JobRead)
             }
         }
@@ -49,6 +53,8 @@ class JobsBuilder {
     JobsBuilder job(String name, Closure closure) {
         if (MultibranchPipelineJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
             job(dslFactory.multibranchPipelineJob(name), closure)
+        } else if (PiplineFromScriptJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
+            job(dslFactory.pipelineJob(name), closure)
         } else {
             job(dslFactory.freeStyleJob(folder + name), closure)
         }
