@@ -17,7 +17,8 @@ class CatroidData {
                                      noActivityTimeout: '1200',
                                      hardwareProperties: ['hw.camera': 'yes', 'hw.ramSize': '800', 'hw.gpu.enabled': 'yes',
                                                           'hw.camera.front': 'emulated',
-                                                          'hw.camera.back': 'emulated', 'hw.gps': 'yes'],
+                                                          'hw.camera.back': 'emulated', 'hw.gps': 'yes',
+                                                          'disk.dataPartition.size': '512M'],
                                      commandLineOptions: '-no-boot-anim -noaudio -qemu -m 800 -enable-kvm']
     def debugApk = 'catroid/build/outputs/apk/catroid/debug/catroid-catroid-debug.apk'
     def staticAnalysisResults = [androidLint: 'catroid/build/reports/lint*.xml',
