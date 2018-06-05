@@ -32,7 +32,7 @@ catroid.job("SingleClassEmulatorTest") {
     parameterizedAndroidVersion()
     buildName('#${BUILD_NUMBER} | ${ENV, var="CLASS"} ')
     androidEmulator()
-    gradle('connectedCatroidDebugAndroidTest',
+    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.$CLASS')
     junit()
 
@@ -54,7 +54,7 @@ catroid.job("SinglePackageEmulatorTest") {
     parameterizedAndroidVersion()
     buildName('#${BUILD_NUMBER} | ${ENV, var="PACKAGE"}')
     androidEmulator()
-    gradle('connectedCatroidDebugAndroidTest',
+    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.$PACKAGE')
     junit()
 
@@ -70,7 +70,7 @@ catroid.job("PullRequest") {
 
     pullRequest()
     androidEmulator()
-    gradle('clean check test connectedCatroidDebugAndroidTest',
+    gradle('clean check adbDisableAnimationsGlobally test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     staticAnalysis()
     junit()
@@ -126,7 +126,7 @@ catroid.job("PullRequest-Espresso") {
                 onlyTriggerPhrase: true,
                 context: 'Espresso Tests')
     androidEmulator()
-    gradle('connectedCatroidDebugAndroidTest',
+    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     junit()
 
@@ -143,11 +143,11 @@ catroid.job("Nightly") {
     androidEmulator()
     gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
     uploadApkToFilesCatrobat()
-    gradle('check test connectedCatroidDebugAndroidTest',
+    gradle('check adbDisableAnimationsGlobally test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     shell("# ensure that the following test run does not override these results\n" +
           'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
-    gradle('connectedCatroidDebugAndroidTest',
+    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     staticAnalysis()
     junit()
@@ -163,11 +163,11 @@ catroid.job("Continuous") {
     git()
     continuous()
     androidEmulator()
-    gradle('check test connectedCatroidDebugAndroidTest',
+    gradle('check adbDisableAnimationsGlobally test connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
     shell("# ensure that the following test run does not override these results\n" +
           'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
-    gradle('connectedCatroidDebugAndroidTest',
+    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
     staticAnalysis()
     junit()
