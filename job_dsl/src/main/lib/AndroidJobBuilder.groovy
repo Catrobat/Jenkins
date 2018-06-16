@@ -75,10 +75,6 @@ class AndroidJobBuilder extends FreeStyleJobBuilder {
         }
 
         createAndroidSdkLicenses()
-
-        job.publishers {
-            textFinder(/\[android\] Emulator did not appear to start; giving up/, '', true, false, false)
-        }
     }
 
     void createAndroidSdkLicenses() {
