@@ -90,9 +90,6 @@ catroid.job("PullRequest-Standalone") {
 
     pullRequest(context: 'Standalone APK')
 
-    // Running this in two steps to find more issues, like CAT-2400
-    gradle('buildStandalone',
-           '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
     gradle('assembleStandaloneDebug',
            '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
 
@@ -128,48 +125,6 @@ catroid.job("PullRequest-Espresso") {
     androidEmulator()
     gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
            '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
-    junit()
-
-    notifications()
-}
-
-catroid.job("Nightly") {
-    htmlDescription(['Nightly Catroid job.'])
-
-    jenkinsUsersPermissions(Permission.JobRead)
-
-    git()
-    nightly()
-    androidEmulator()
-    gradle('assembleDebug', '-Pindependent="Code Nightly #${BUILD_NUMBER}"')
-    uploadApkToFilesCatrobat()
-    gradle('check adbDisableAnimationsGlobally test connectedCatroidDebugAndroidTest',
-           '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
-    shell("# ensure that the following test run does not override these results\n" +
-          'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
-    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
-           '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
-    staticAnalysis()
-    junit()
-
-    notifications()
-}
-
-catroid.job("Continuous") {
-    htmlDescription(['Job runs continuously on changes.'])
-
-    jenkinsUsersPermissions(Permission.JobRead)
-
-    git()
-    continuous()
-    androidEmulator()
-    gradle('check adbDisableAnimationsGlobally test connectedCatroidDebugAndroidTest',
-           '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.test')
-    shell("# ensure that the following test run does not override these results\n" +
-          'mv catroid/build/outputs/androidTest-results catroid/build/outputs/androidTest-results1')
-    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
-           '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
-    staticAnalysis()
     junit()
 
     notifications()
@@ -241,8 +196,6 @@ while true; do
     sleep ${SLEEP_TIME}
 done
 
-# Running this in two steps to find more issues, like CAT-2400
-./gradlew -Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}" buildStandalone
 ./gradlew -Pdownload="${DOWNLOAD}" -Papk_generator_enabled=true -Psuffix="${SUFFIX}" assembleStandaloneDebug
 
 ## +x, otherwise we would spoil the upload token
@@ -254,25 +207,6 @@ curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug.
     }
 
     archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk', true)
-
-    notifications(true)
-}
-
-catroid.job("Standalone-Nightly") {
-    htmlDescription(['Nightly builds of the "Tic-Tac-Toe Master" standalone APP using develop.',
-                     'This allows to find issues with standalone builds before the next release.'])
-
-    jenkinsUsersPermissions(Permission.JobRead)
-    git()
-    nightly()
-
-    // Running this in two steps to find more issues, like CAT-2400
-    gradle('buildStandalone',
-           '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
-    gradle('assembleStandaloneDebug',
-           '-Pdownload="https://pocketcode.org/download/817.catrobat" -Papk_generator_enabled=true -Psuffix="generated821"')
-
-    archiveArtifacts('catroid/build/outputs/apk/standalone/debug/catroid-standalone-debug.apk')
 
     notifications(true)
 }
