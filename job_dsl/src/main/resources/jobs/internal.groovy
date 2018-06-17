@@ -7,7 +7,7 @@ internal.job("SeedJob") {
 
     jenkinsUsersPermissions()
     label('master')
-    git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
+    git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'pipeline_from_scm')
     continuous()
     nightly('H 23 * * *') // run the job before all other nightlies
     shell('cp configs/log_parser_rules.groovy $JENKINS_HOME/')
@@ -22,7 +22,7 @@ internal.job("SeedJob") {
         }
     }
 
-    notifications()
+//    notifications()
 }
 
 internal.job("LocalBackup") {

@@ -30,6 +30,10 @@ class JobsBuilder {
         new JobsBuilder(dslFactory, dataCreator, folder, PiplineFromScriptJobBuilder.class)
     }
 
+    JobsBuilder pipelineFromSCM(def dataCreator = null) {
+        new JobsBuilder(dslFactory, dataCreator, folder, PiplineFromSCMJobBuilder.class)
+    }
+
     JobsBuilder folder(String name, Closure closure = null) {
         if (closure == null) {
             closure = {
@@ -53,6 +57,8 @@ class JobsBuilder {
     JobsBuilder job(String name, Closure closure) {
         if (MultibranchPipelineJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
             job(dslFactory.multibranchPipelineJob(name), closure)
+        } else if (PiplineFromSCMJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
+            job(dslFactory.pipelineJob(name), closure)
         } else if (PiplineFromScriptJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
             job(dslFactory.pipelineJob(name), closure)
         } else {
