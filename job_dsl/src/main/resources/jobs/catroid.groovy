@@ -112,7 +112,6 @@ catroid.job("PullRequest-UniqueApk") {
 }
 
 catroid.job("PullRequest-Espresso") {
-    disabled()
     htmlDescription(['Job is manually triggered for pull requests on github to run Espresso tests.'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
