@@ -173,7 +173,7 @@ fi
         git(repo: projectData.repo,
             branch: '${sha1}',
             name: 'origin',
-            refspec: '+refs/pull/*:refs/remotes/origin/pr/*')
+            refspec: '+refs/pull/*:refs/remotes/origin/pr/* +refs/heads/*:refs/remotes/origin/*')
 
         buildName('#${BUILD_NUMBER} | ${ENV, var="sha1"}')
 

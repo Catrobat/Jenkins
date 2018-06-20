@@ -106,7 +106,7 @@ class PiplineJobBuilder extends JobBuilder {
         params.repo = projectData.repo
         params.branch = '${sha1}'
         params.name = 'origin'
-        params.refspec = '+refs/pull/*:refs/remotes/origin/pr/*'
+        params.refspec = '+refs/pull/*:refs/remotes/origin/pr/* +refs/heads/*:refs/remotes/origin/*'
 
         git(params)
 
