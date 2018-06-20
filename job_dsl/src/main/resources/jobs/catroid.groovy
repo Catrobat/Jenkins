@@ -133,6 +133,7 @@ catroid.job("PullRequest-Espresso") {
 catroidroot.job("Build-Standalone") {
     htmlDescription(['Builds a Catroid APP as a standalone APK.'])
 
+    // !! DO NOT give Anonymous-Users read permission, otherwise the upload-token would be spoiled
     jenkinsUsersPermissions(Permission.JobRead)
 
     label('Standalone')

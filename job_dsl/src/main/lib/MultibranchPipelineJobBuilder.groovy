@@ -26,7 +26,7 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
                         }
                     }
                 }
-            } 
+            }
         }
 
         job.orphanedItemStrategy {
@@ -36,7 +36,7 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
         }
 
         job.triggers {
-            // Check every hour, should be triggered anyhow
+            // Check every 10 minutes, until trigger works
             periodic(10)
         }
 
