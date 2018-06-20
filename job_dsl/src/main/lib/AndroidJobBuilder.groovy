@@ -167,8 +167,12 @@ fi
         job.concurrentBuild(false)
 
         job.parameters {
-            stringParam('sha1', projectData.branch,
-                        'Can be used run pull request tests by typing: origin/pr/*pullrequestnumber*/merge')
+            stringParam {
+                name('sha1')
+                defaultValue(projectData.branch)
+                description('Can be used run pull request tests by typing: origin/pr/*pullrequestnumber*/merge')
+                trim(true)
+            }
         }
         git(repo: projectData.repo,
             branch: '${sha1}',
@@ -186,6 +190,7 @@ fi
                 if (params.onlyTriggerPhrase) {
                     onlyTriggerPhrase()
                 }
+                useGitHubHooks(true)
                 extensions {
                     commitStatus {
 
@@ -195,6 +200,7 @@ fi
                     }
                 }
             }
+            gitHubPushTrigger()
         }
     }
 

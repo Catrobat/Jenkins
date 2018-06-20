@@ -119,6 +119,7 @@ class PiplineJobBuilder extends JobBuilder {
                 if (params.onlyTriggerPhrase) {
                     onlyTriggerPhrase()
                 }
+                useGitHubHooks(true)
                 extensions {
                     commitStatus {
 
@@ -128,6 +129,7 @@ class PiplineJobBuilder extends JobBuilder {
                     }
                 }
             }
+            gitHubPushTrigger()
         }
     }
 
