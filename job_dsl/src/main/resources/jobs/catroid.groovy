@@ -1,3 +1,4 @@
+def catroid = new JobsBuilder(this).pipeline({new CatroidData()}).folderAndView('Catroid-Legacy')
 def catroidorg = new JobsBuilder(this).gitHubOrganization({new CatroidData()})
 def catroidroot = new JobsBuilder(this).pipeline({new CatroidData()})
 
@@ -59,6 +60,51 @@ device.language=en_US""")
             description('Keep in sync with buildScripts/emulator_config.ini')
         }
     }
+}
+
+catroid.job("PullRequest") {
+    htmlDescription(['Job is automatically started when a pull request is created on github.'])
+
+    jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+
+    pullRequest(jenkinsfile: 'Jenkinsfile.PullRequest')
+}
+
+catroid.job("PullRequest-Standalone") {
+    htmlDescription(['This job is automatically started when a pull request is created on github.',
+                     'It checks that the creation of standalone APKs (APK for a Pocketcode app) works, ' +
+                     'reducing the risk of breaking gradle changes.',
+                     'The resulting APK is not verified itself.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+
+    pullRequest(context: 'Standalone APK', jenkinsfile: 'Jenkinsfile.PullRequestStandaloneAPK')
+}
+
+catroid.job("PullRequest-UniqueApk") {
+    htmlDescription(['This job is automatically started when a pull request is created on github.',
+                     'It checks that the job builds with the parameters to have unique APKs, ' +
+                     'reducing the risk of breaking gradle changes.',
+                     'The resulting APK is not verified on itself.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+
+    pullRequest(context: 'Unique APK', jenkinsfile: 'Jenkinsfile.PullRequestIndependentAPK')
+}
+
+catroid.job("PullRequest-Espresso") {
+    htmlDescription(['Job is manually triggered for pull requests on github to run Espresso tests.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobCancel)
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of PRs to fix their issues
+
+    pullRequest(triggerPhrase: /.*please\W+run\W+espresso\W+tests.*/,
+                onlyTriggerPhrase: true,
+                context: 'Espresso Tests',
+                jenkinsfile: 'Jenkinsfile.PullRequestEspresso')
 }
 
 catroidroot.job("Build-Standalone") {
