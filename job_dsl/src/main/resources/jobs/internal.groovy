@@ -24,16 +24,3 @@ internal.job("SeedJob") {
 
     notifications()
 }
-
-internal.job("LocalBackup") {
-    htmlDescription(['Creates a local backup of jenkins in /home/jenkins/jenkins_created_backups.',
-                     'Useful to run manually before installing updates of plugins.',
-                     'Does not replace other forms of updates!'])
-
-    jenkinsUsersPermissions()
-    label('master')
-    git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
-    shell('bash -ex ./scripts/backupJenkinsLocally.sh')
-
-    notifications()
-}
