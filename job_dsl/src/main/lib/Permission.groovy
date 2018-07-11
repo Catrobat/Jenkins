@@ -9,7 +9,15 @@
 enum Permission {
     JobRead('hudson.model.Item.Read'),
     JobBuild('hudson.model.Item.Build'),
-    JobCancel('hudson.model.Item.Cancel')
+    JobCancel('hudson.model.Item.Cancel'),
+
+    /**
+     * Allows to read the workspace.
+     * Needed among others for showing the source code for code coverage .
+     * The permission should not be given in general, as some workspaces
+     * contain credentials themselves.
+     */
+    JobWorkspace('hudson.model.Item.Workspace')
 
     String permission
 
