@@ -9,6 +9,7 @@ internal.job("SeedJob") {
     label('master')
     git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master')
     continuous()
+    concurrentBuild(false)
     nightly('H 23 * * *') // run the job before all other nightlies
     shell('cp configs/log_parser_rules.groovy $JENKINS_HOME/')
     steps {

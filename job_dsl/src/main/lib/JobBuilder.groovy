@@ -89,7 +89,6 @@ $bulletPointsStr    </ul>\n</div>"""
     }
 
     void nightly(String schedule='H 0 * * *') {
-        job.concurrentBuild(false)
         job.triggers {
             cron(schedule)
         }
