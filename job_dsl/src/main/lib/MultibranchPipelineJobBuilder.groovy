@@ -31,7 +31,7 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
 
         job.orphanedItemStrategy {
             discardOldItems {
-                numToKeep(30)
+                numToKeep(1)
             }
         }
 
