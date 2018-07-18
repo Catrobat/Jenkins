@@ -1,0 +1,31 @@
+#!groovy
+
+/* 
+   Nightly Trigger Job
+   - Catroid Dev
+   - Paintroid Dev
+   - Build-Standalone 
+*/
+
+pipeline {
+    agent none
+
+    stages {
+
+        stage ('Trigger') {
+            
+            steps {         
+            
+                // https://jenkins.catrob.at/job/Catroid/job/develop/
+                build(job: 'Catroid/develop', wait: false)
+
+                // https://jenkins.catrob.at/job/Paintroid/job/develop/
+                build(job: 'Paintroid/develop', wait: false)
+
+                // https://jenkins.catrob.at/job/Build-Standalone/
+                build(job: 'Build-Standalone', wait: false)
+            
+            }    
+        }
+    }
+}
