@@ -11,7 +11,6 @@ class FreeStyleJobBuilder extends JobBuilder {
         jdk('(System)')
         job.wrappers {
             timestamps()
-            maskPasswords()
         }
     }
 
