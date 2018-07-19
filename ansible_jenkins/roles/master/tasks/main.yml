@@ -105,7 +105,6 @@
     - job-dsl                   # Support for a DSL to describe jobs
     - jobConfigHistory          # diff changes in job config
     - lockable-resources        # Locking resources on node (eg: manipulate android SDK)
-    - mask-passwords            # Hides passwords in the job log
     - parallel-test-executor    # Distribute tests onto multiple nodes for better performance
     - pmd                       # Collects PMD static analysis results
     - rebuild                   # adds a rebuild button to jobs
