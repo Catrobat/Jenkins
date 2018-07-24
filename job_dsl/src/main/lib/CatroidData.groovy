@@ -22,6 +22,7 @@ class CatroidData {
                                                           'disk.dataPartition.size': '512M'],
                                      commandLineOptions: '-no-boot-anim -noaudio']
     def debugApk = 'catroid/build/outputs/apk/catroid/debug/catroid-catroid-debug.apk'
+    def standaloneApk = 'catroid/build/outputs/apk/standalone/debug/catroid-standalone-debug.apk'
     def staticAnalysisResults = [androidLint: 'catroid/build/reports/lint*.xml',
                                  checkstyle: 'catroid/build/reports/checkstyle.xml',
                                  pmd: 'catroid/build/reports/pmd.xml']
