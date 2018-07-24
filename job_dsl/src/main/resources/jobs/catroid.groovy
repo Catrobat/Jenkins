@@ -137,7 +137,7 @@ catroidroot.job("Build-Standalone") {
     label('Standalone')
 
     parameters {
-        stringParam('DOWNLOAD', 'https://pocketcode.org/download/821.catrobat', 'Enter the Project ID you want to build as standalone')
+        stringParam('DOWNLOAD', 'https://share.catrob.at/pocketcode/download/821.catrobat', 'Enter the Project ID you want to build as standalone')
         stringParam('SUFFIX', 'standalone', '')
         password {
             name('UPLOAD')
@@ -199,13 +199,13 @@ done
 
 ## +x, otherwise we would spoil the upload token
 set +x
-curl -X POST -k -F upload=@./catroid/build/outputs/apk/catroid-standalone-debug.apk "${UPLOAD}"
+curl -X POST -k -F upload=@./''' + projectData.standaloneApk + ''' "${UPLOAD}"
 ''')
             unstableReturn(200)
         }
     }
 
-    archiveArtifacts('catroid/build/outputs/apk/catroid-standalone-debug.apk', true)
+    archiveArtifacts(projectData.standaloneApk, true)
 
     notifications(true)
 }
