@@ -73,7 +73,7 @@ $bulletPointsStr    </ul>\n</div>"""
     }
 
     void anonymousUsersPermissions(Permission... permissions_) {
-        permissions('Anonymous', *permissions_)
+        permissions('anonymous', *permissions_)
     }
 
     void jenkinsUsersPermissions(Permission... permissions_) {
