@@ -1,4 +1,3 @@
-def catroid = new JobsBuilder(this).android({new CatroidData()}).folderAndView('Catroid-Legacy')
 def catroidorg = new JobsBuilder(this).gitHubOrganization({new CatroidData()})
 def catroidroot = new JobsBuilder(this).pipeline({new CatroidData()})
 
@@ -19,48 +18,47 @@ catroidorg.job("Catroid") {
 
 Views.basic(this, "Catroid", "Catroid/.+")
 
-catroid.job("SingleClassEmulatorTest") {
-    htmlDescription(['This job runs the tests of the given REPO/BRANCH and CLASS.',
+catroidroot.job("Catroid-ManualEmulatorTest") {
+    htmlDescription(['This job runs the tests of the given REPO/BRANCH and CLASS/PACKAGE.',
                      'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
                      'Using that job early in developement can improve your tests, ' +
                      'so that they not only work on your local device but also on the emulator.'])
 
     jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
 
-    parameterizedGit()
+    // allow to build PRs as well with 'origin/pr/<num>/merge'
+    parameterizedGit(jenkinsfile: 'Jenkinsfile.ManualTests', refspec: '+refs/pull/*:refs/remotes/origin/pr/* +refs/heads/*:refs/remotes/origin/*')
     job.parameters {
-        stringParam('CLASS', 'test.common.DefaultProjectHandlerTest', '')
+        stringParam {
+            name('CLASS_PKG_TO_TEST')
+            defaultValue('org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
+            description('Configure a single test-class (without java/class-suffix) or a package to test')
+            trim(true)
+        }
+        textParam {
+            name('EMUALTOR_CONFIG')
+            defaultValue("""# AVD creation
+system_image=system-images;android-24;default;x86_64
+## properties written to the avd config, prefix here with prop, so the script knows where to use them
+prop.hw.camera=yes
+prop.hw.ramSize=2048
+prop.hw.gpu.enabled=yes
+prop.hw.camera.front=emulated
+prop.hw.camera.back=emulated
+prop.hw.gps=yes
+prop.hw.mainKeys=no
+prop.hw.keyboard=yes
+prop.disk.dataPartition.size=512M
+## dpi
+screen.density=xxhdpi
+## sdcard
+sdcard.size=200M
+## AVD startup
+screen.resolution=1080x1920
+device.language=en_US""")
+            description('Keep in sync with buildScripts/emulator_config.ini')
+        }
     }
-    parameterizedAndroidVersion()
-    buildName('#${BUILD_NUMBER} | ${ENV, var="CLASS"} ')
-    androidEmulator()
-    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
-           '-Pandroid.testInstrumentationRunnerArguments.class=org.catrobat.catroid.$CLASS')
-    junit()
-
-    notifications()
-}
-
-catroid.job("SinglePackageEmulatorTest") {
-    htmlDescription(['This job runs the tests of the given REPO/BRANCH and PACKAGE.',
-                     'Use it when you want to build your own branch on Jenkins and run tests on the emulator.',
-                     'Using that job early in developement can improve your tests, ' +
-                     'so that they not only work on your local device but also on the emulator.'])
-
-    jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
-
-    parameterizedGit()
-    job.parameters {
-        stringParam('PACKAGE', 'test', '')
-    }
-    parameterizedAndroidVersion()
-    buildName('#${BUILD_NUMBER} | ${ENV, var="PACKAGE"}')
-    androidEmulator()
-    gradle('adbDisableAnimationsGlobally connectedCatroidDebugAndroidTest',
-           '-Pandroid.testInstrumentationRunnerArguments.package=org.catrobat.catroid.$PACKAGE')
-    junit()
-
-    notifications()
 }
 
 catroidroot.job("Build-Standalone") {
