@@ -16,6 +16,19 @@ catroidorg.job("Catroid") {
     labelForDockerBuild('Emulator')
 }
 
+catroidorg.job("Catroid-SensorBoxTests") {
+    htmlDescription(['Job is automatically started on a new commit or a new/updated pull request created on github.',
+                     'This job runs the the hardware tests on the sensorbox.'])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobBuild, Permission.JobCancel)
+
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of the hardware tests
+
+    gitHubOrganization()
+    jenkinsfilePath('Jenkinsfile.SensorboxTests')
+    labelForDockerBuild('HardwareTest')
+}
+
 Views.basic(this, "Catroid", "Catroid/.+")
 
 catroidroot.job("Catroid-ManualEmulatorTest") {
