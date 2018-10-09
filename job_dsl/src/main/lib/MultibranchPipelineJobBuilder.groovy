@@ -10,7 +10,7 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
         super(job, dslFactory, projectData)
     }
 
-    void gitHubOrganization() {
+    void gitHubOrganization(Map params=[:]) {
         job.branchSources {
             branchSource {
                 source {
@@ -54,13 +54,17 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
             //    - 2: The current pull request revision (No merge)
             //    - 3: Both
             //    - Trust: From Users with Admin or Write permission
-            traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
-                strategyId(1)
-                trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
+            if (params.get('discoverForkPullRequests', true)) {
+                traits << 'org.jenkinsci.plugins.github__branch__source.ForkPullRequestDiscoveryTrait' {
+                    strategyId(1)
+                    trust(class: 'org.jenkinsci.plugins.github_branch_source.ForkPullRequestDiscoveryTrait$TrustPermission')
+                }
             }
             // Discover pull requests from origin: Strategy definitions see 'Discover pull requests from forks'
-            traits << 'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait' {
-                strategyId(1)
+            if (params.get('discoverOriginPullRequests', true)) {
+                traits << 'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait' {
+                    strategyId(1)
+                }
             }
         }
     }

@@ -24,7 +24,7 @@ catroidorg.job("Catroid-SensorBoxTests") {
 
     anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of the hardware tests
 
-    gitHubOrganization()
+    gitHubOrganization(discoverForkPullRequests: false, discoverOriginPullRequests: false)
     jenkinsfilePath('Jenkinsfile.SensorboxTests')
     labelForDockerBuild('HardwareTest')
 }
