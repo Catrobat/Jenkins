@@ -36,8 +36,8 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
         }
 
         job.triggers {
-            // Check every 10 minutes, until trigger works
-            periodic(10)
+            // Scan at most once per day
+            periodic(1 * 24 * 60)
         }
 
         job.configure {
