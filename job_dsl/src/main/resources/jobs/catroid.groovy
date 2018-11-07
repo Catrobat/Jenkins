@@ -42,37 +42,6 @@ catroidroot.job("Catroid-ManualEmulatorTest") {
 
     // allow to build PRs as well with 'origin/pr/<num>/merge'
     parameterizedGit(jenkinsfile: 'Jenkinsfile.ManualTests', refspec: '+refs/pull/*:refs/remotes/origin/pr/* +refs/heads/*:refs/remotes/origin/*')
-    job.parameters {
-        stringParam {
-            name('CLASS_PKG_TO_TEST')
-            defaultValue('org.catrobat.catroid.uiespresso.testsuites.PullRequestTriggerSuite')
-            description('Configure a single test-class (without java/class-suffix) or a package to test')
-            trim(true)
-        }
-        textParam {
-            name('EMUALTOR_CONFIG')
-            defaultValue("""# AVD creation
-system_image=system-images;android-24;default;x86_64
-## properties written to the avd config, prefix here with prop, so the script knows where to use them
-prop.hw.camera=yes
-prop.hw.ramSize=2048
-prop.hw.gpu.enabled=yes
-prop.hw.camera.front=emulated
-prop.hw.camera.back=emulated
-prop.hw.gps=yes
-prop.hw.mainKeys=no
-prop.hw.keyboard=yes
-prop.disk.dataPartition.size=512M
-## dpi
-screen.density=xxhdpi
-## sdcard
-sdcard.size=200M
-## AVD startup
-screen.resolution=1080x1920
-device.language=en_US""")
-            description('Keep in sync with buildScripts/emulator_config.ini')
-        }
-    }
 }
 
 catroidroot.job("Build-Standalone") {
