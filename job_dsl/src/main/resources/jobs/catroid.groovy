@@ -19,7 +19,7 @@ catroidorg.job("Catroid") {
 catroidorg.job("Catroid-SensorBoxTests") {
     htmlDescription(['Job is automatically started on a new commit or a new/updated pull request created on github.',
                      'This job runs the the hardware tests on the sensorbox.',
-                     '<p style="color:red;"><b>HINT! IF TESTS FAIL CHECK IF NEXUS IS UNLOCKED AND CONNECTED TO HIDDEN WLAN robo-arduino</b></p>']) 
+                     '<p style="color:red;"><b>HINT! IF TESTS FAIL CHECK IF NEXUS IS UNLOCKED AND CONNECTED TO HIDDEN WLAN robo-arduino</b></p>'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobBuild, Permission.JobCancel)
 
@@ -42,6 +42,16 @@ catroidroot.job("Catroid-ManualEmulatorTest") {
 
     // allow to build PRs as well with 'origin/pr/<num>/merge'
     parameterizedGit(jenkinsfile: 'Jenkinsfile.ManualTests', refspec: '+refs/pull/*:refs/remotes/origin/pr/* +refs/heads/*:refs/remotes/origin/*')
+    job.parameters {
+        choiceParam('TYPE', ['class', 'package'], 'Are the tests in a package or in a class?')
+        stringParam {
+            name('NAME')
+            defaultValue('org.catrobat.catroid.uiespresso.testsuites.ApiLevel19RegressionTestsSuite')
+            description('The fully qualified name of the test class or test package.')
+            trim(true)
+        }
+        choiceParam('EMULATOR', ['android19', 'android24'], 'The emulator to use, as specified in build.gradle')
+    }
 }
 
 catroidroot.job("Build-Standalone") {
