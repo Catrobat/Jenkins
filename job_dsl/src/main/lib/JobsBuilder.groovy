@@ -15,7 +15,7 @@ class JobsBuilder {
         this.dslFactory = dslFactory
         this.dataCreator = dataCreator?.clone() ?: { null }
         this.folder = folder
-        this.jobBuilderClass = jobBuilderClass ?: FreeStyleJobBuilder.class
+        this.jobBuilderClass = jobBuilderClass ?: PiplineJobBuilder.class
     }
 
     JobsBuilder android(def dataCreator) {
@@ -52,11 +52,11 @@ class JobsBuilder {
 
     JobsBuilder job(String name, Closure closure) {
         if (MultibranchPipelineJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
-            job(dslFactory.multibranchPipelineJob(name), closure)
+            job(dslFactory.multibranchPipelineJob(folder + name), closure)
         } else if (PiplineJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
-            job(dslFactory.pipelineJob(name), closure)
+            job(dslFactory.pipelineJob(folder + name), closure)
         } else {
-            job(dslFactory.freeStyleJob(folder + name), closure)
+            assert false //only pipeline jobs are supported
         }
         this
     }
