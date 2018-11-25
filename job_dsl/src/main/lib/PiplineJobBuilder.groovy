@@ -86,52 +86,6 @@ class PiplineJobBuilder extends JobBuilder {
         git(params)
     }
 
-    // Automatically sets up git to the values provided in the projectData field
-    void pullRequest(Map params=[:]) {
-        Map defaultParams = [triggerPhrase: /.*test\W+this\W+please.*/,
-                             onlyTriggerPhrase: false,
-                             context: 'Unit Tests and Static Analysis']
-        params = defaultParams + params
-
-        job.parameters {
-            stringParam {
-                name('sha1')
-                defaultValue(projectData.branch)
-                description('Can be used run pull request tests by typing: origin/pr/*pullrequestnumber*/merge')
-                trim(true)
-            }
-        }
-
-        // set defaults projectData/pull request info
-        params.repo = projectData.repo
-        params.branch = '${sha1}'
-        params.name = 'origin'
-        params.refspec = '+refs/pull/*:refs/remotes/origin/pr/* +refs/heads/*:refs/remotes/origin/*'
-
-        git(params)
-
-        job.triggers {
-            githubPullRequest {
-                admins(projectData.pullRequestAdmins)
-                orgWhitelist(projectData.githubOrganizations)
-                cron('H/2 * * * *')
-                triggerPhrase(params.triggerPhrase)
-                if (params.onlyTriggerPhrase) {
-                    onlyTriggerPhrase()
-                }
-                useGitHubHooks(true)
-                extensions {
-                    commitStatus {
-
-                        // The context allows to have multiple PR jobs for a single PR.
-                        // To not overwrite each other the job results are then differentiated by the context.
-                        context(params.context)
-                    }
-                }
-            }
-            gitHubPushTrigger()
-        }
-    }
 
     // Since JobDSL version 1.70 the authenticationToken value is WRONGLY marked as deprecated.
     // https://github.com/jenkinsci/job-dsl-plugin/wiki/Migration#migrating-to-170
