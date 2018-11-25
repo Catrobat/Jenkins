@@ -15,7 +15,7 @@ class JobsBuilder {
         this.dslFactory = dslFactory
         this.dataCreator = dataCreator?.clone() ?: { null }
         this.folder = folder
-        this.jobBuilderClass = jobBuilderClass ?: PiplineJobBuilder.class
+        this.jobBuilderClass = jobBuilderClass ?: FreeStyleJobBuilder.class
     }
 
     JobsBuilder gitHubOrganization(def dataCreator) {
@@ -48,11 +48,11 @@ class JobsBuilder {
 
     JobsBuilder job(String name, Closure closure) {
         if (MultibranchPipelineJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
-            job(dslFactory.multibranchPipelineJob(folder + name), closure)
+            job(dslFactory.multibranchPipelineJob(name), closure)
         } else if (PiplineJobBuilder.class.isAssignableFrom(this.jobBuilderClass)) {
-            job(dslFactory.pipelineJob(folder + name), closure)
+            job(dslFactory.pipelineJob(name), closure)
         } else {
-            assert false //only pipeline jobs are supported
+            job(dslFactory.freeStyleJob(folder + name), closure)
         }
         this
     }
