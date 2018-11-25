@@ -1,0 +1,15 @@
+pipeline {
+    agent { label "master"}
+    stages{
+        stage('init'){
+            steps{
+                script{
+                    stage("create Jobs"){
+                            jobDsl targets:['job_dsl/src/main/resources/jobs/*.groovy'].join('\n'),
+							additionalClasspath: 'job_dsl/src/main/lib/'
+                   }
+                }
+            }
+        }
+    }
+}
