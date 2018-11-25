@@ -1,0 +1,29 @@
+pipeline {
+    agent { label "master"}
+
+    triggers{
+       cron('H 23 * * *') // run the job before all other nightlies
+       pollSCM('H/5 * * * *')
+    }
+
+    options {
+        disableConcurrentBuilds()
+    }
+
+    stages{
+        stage('init'){
+            steps{
+                script{
+                    stage("create Jobs"){
+                            jobDsl targets: 'job_dsl/src/main/resources/jobs/*.groovy',
+                            additionalClasspath: 'job_dsl/src/main/lib/',
+                            failOnMissingPlugin: true,
+                            removedJobAction: 'DELETE',
+                            removedViewAction: 'DELETE',
+                            unstableOnDeprecation: true
+                   }
+                }
+            }
+        }
+    }
+}
