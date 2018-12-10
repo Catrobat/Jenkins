@@ -18,10 +18,6 @@ class JobsBuilder {
         this.jobBuilderClass = jobBuilderClass ?: PiplineJobBuilder.class
     }
 
-    JobsBuilder android(def dataCreator) {
-        new JobsBuilder(dslFactory, dataCreator, folder, AndroidJobBuilder.class)
-    }
-
     JobsBuilder gitHubOrganization(def dataCreator) {
         new JobsBuilder(dslFactory, dataCreator, folder, MultibranchPipelineJobBuilder.class)
     }

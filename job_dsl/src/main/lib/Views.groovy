@@ -29,8 +29,4 @@ class Views extends Delegator {
         view
     }
 
-    static def folderAndView(def that, String name) {
-        basic(that, name, "$name/.+")
-        that.folder(name)
-    }
 }

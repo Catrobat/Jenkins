@@ -9,4 +9,3 @@ internal.job("SeedJob") {
     git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master', jenkinsfile: 'jenkinsfile.seedjob')
     notifications()
 }
-
