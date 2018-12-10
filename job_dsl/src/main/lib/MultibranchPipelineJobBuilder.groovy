@@ -1,5 +1,4 @@
 import java.security.MessageDigest
-
 import javaposse.jobdsl.dsl.DslFactory
 import javaposse.jobdsl.dsl.Job
 import javaposse.jobdsl.dsl.jobs.MultibranchWorkflowJob
