@@ -50,7 +50,7 @@ catroidroot.job("Catroid-ManualEmulatorTest") {
             description('The fully qualified name of the test class or test package.')
             trim(true)
         }
-        choiceParam('EMULATOR', ['android19', 'android24'], 'The emulator to use, as specified in build.gradle')
+        choiceParam('EMULATOR', ['android19', 'android24', 'android28'], 'The emulator to use, as specified in build.gradle')
     }
 }
 
