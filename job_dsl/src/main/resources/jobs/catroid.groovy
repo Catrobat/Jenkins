@@ -19,6 +19,7 @@ catroidorg.job("Catroid") {
 catroidorg.job("Catroid-SensorBoxTests") {
     htmlDescription(['Job is automatically started on a new commit or a new/updated pull request created on github.',
                      'This job runs the the hardware tests on the sensorbox.',
+                     'adb server has to run on the host. Start with adb start-server',
                      '<p style="color:red;"><b>HINT! IF TESTS FAIL CHECK IF NEXUS IS UNLOCKED AND CONNECTED TO HIDDEN WLAN robo-arduino</b></p>'])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobBuild, Permission.JobCancel)
