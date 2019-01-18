@@ -8,6 +8,12 @@ internal.job("SeedJob") {
     jenkinsUsersPermissions()
     continuous()
     concurrentBuild(false)
-    nightly('H 23 * * *') // run the job before all other nightlies
+
+    // Run the job every Sunday before the nightlies.
+    // The job should not run as nightly itself. Otherwise multibranch jobs would
+    // start scanning the branches and rebuilding everying on changes.
+    // Irrespective of the settings for them.
+    nightly('H 23 * * 0')
+
     git(repo: 'https://github.com/Catrobat/Jenkins.git', branch: 'master', jenkinsfile: 'jenkinsfile.seedjob')
 }
