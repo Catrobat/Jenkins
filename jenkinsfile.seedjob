@@ -1,15 +1,6 @@
 pipeline {
     agent { label "master"}
 
-    triggers{
-       cron('H 23 * * *') // run the job before all other nightlies
-       pollSCM('H/5 * * * *')
-    }
-
-    options {
-        disableConcurrentBuilds()
-    }
-
     stages{
         stage('init'){
             steps{
