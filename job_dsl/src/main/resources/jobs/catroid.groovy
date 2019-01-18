@@ -55,16 +55,6 @@ catroidroot.job("Catroid-ManualEmulatorTest") {
     }
 }
 
-catroidroot.job("Catroid-IndependentAPKs") {
-    htmlDescription(['This job builds all flavours of Catroid in debug mode.',
-                     'The APKs can be installed independently of released APKs.'])
-
-    jenkinsUsersPermissions(Permission.JobBuild, Permission.JobRead, Permission.JobCancel)
-
-    // allow to build PRs as well with 'origin/pr/<num>/merge'
-    parameterizedGit(jenkinsfile: 'Jenkinsfile.buildDebugApks', refspec: '+refs/pull/*:refs/remotes/origin/pr/* +refs/heads/*:refs/remotes/origin/*')
-}
-
 catroidroot.job("Build-Standalone") {
     htmlDescription(['Builds a Catroid APP as a standalone APK.'])
 
