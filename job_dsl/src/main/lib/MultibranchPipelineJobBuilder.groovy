@@ -48,8 +48,6 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
             }
             // Discover pull requests from forks
             //    - 1: Merging the pull request with the current target branch revision
-            //            INFO: This would trigger a complete rebuild of all PRs if develop is updated,
-            //            which can't be handled by current slaves ATM
             //    - 2: The current pull request revision (No merge)
             //    - 3: Both
             //    - Trust: From Users with Admin or Write permission
