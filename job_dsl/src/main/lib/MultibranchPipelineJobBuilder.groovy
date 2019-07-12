@@ -36,7 +36,9 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
 
         job.triggers {
             // Scan at most once per day
-            periodic(1 * 24 * 60)
+            periodicFolderTrigger {
+                interval('1d')
+            }
         }
 
         job.configure {
