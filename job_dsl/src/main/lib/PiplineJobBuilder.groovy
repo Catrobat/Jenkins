@@ -94,4 +94,37 @@ class PiplineJobBuilder extends JobBuilder {
             }
         }
     }
+
+    void defaultReleasePatameter() {
+
+        parameters {
+            gitParam('gitBranch') {
+                description('Select the branch you want to build e.g. origin/master.')
+                type('BRANCH')
+                defaultValue('origin/master')
+            }
+            password {
+                name('signingKeystorePassword')
+                defaultValue('')
+                description('')
+            }
+            password {
+                name('signingKeyAlias')
+                defaultValue('')
+                description('')
+            }
+            password {
+                name('signingKeyPassword')
+                defaultValue('')
+                description('For current keystore, this is the same as signingKeystorePassword.')
+            }
+            password {
+                name('googlePlayJsonKey')
+                defaultValue('')
+                description('Json file used to connect to the API of the Google Developer Console.\n' +
+                        'Copy the whole content of the file into this password parameter.')
+            }
+        }
+
+    }
 }
