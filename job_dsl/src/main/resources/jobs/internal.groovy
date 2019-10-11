@@ -7,8 +7,9 @@ internal.job("SeedJob") {
 
     jenkinsUsersPermissions()
     continuous()
-    concurrentBuild(false)
-
+    properties {
+        disableConcurrentBuilds()
+    }
     // Run the job every Sunday before the nightlies.
     // The job should not run as nightly itself. Otherwise multibranch jobs would
     // start scanning the branches and rebuilding everying on changes.
