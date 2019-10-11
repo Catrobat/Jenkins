@@ -17,6 +17,8 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
                         id(md5sum(projectData.githubUrl))
                         repoOwner(projectData.repoOwner)
                         repository(projectData.repoName)
+                        repositoryUrl(projectData.githubUrl)
+                        configuredByUrl(false)
                         apiUri('https://api.github.com')
                         credentialsId(projectData.githubOrganizationsJenkinsCredentialsRefId)
 
