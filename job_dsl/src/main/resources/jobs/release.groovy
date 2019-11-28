@@ -63,6 +63,55 @@ catroidReleaseJobBuilder.job("Catroid_to_Google_Play_alpha") {
     }
 }
 
+catroidReleaseJobBuilder.job("Untested - Pipeline Catroid_upload_Metadata_and_promote_APK_to_production") {
+    htmlDescription(['Provides translations from Crowdin for Google Play.','Creates Screenshots.','Promotes APK from Alpha to Production on Google Play.'])
+
+    git(branch: '${gitBranch}', jenkinsfile: 'Jenkinsfile.buildMetadata')
+
+    logRotator(-1, 30)
+
+    properties {
+        rebuild {
+            rebuildDisabled()
+        }
+    }
+
+    permissions('Release-Users', Permission.JobBuild, Permission.JobRead, Permission.JobCancel, Permission.JobWorkspace)
+
+    parameters {
+        choiceParameter {
+            name('flavor')
+            description('Select the flavor you want to build. \'Playground\' is for test purposes to \'org.catrobat.catroid.test\'.')
+            choiceType('PT_SINGLE_SELECT')
+            filterable(false)
+            filterLength(1)
+            randomName('flavor')
+            script {
+                groovyScript {
+                    script {
+                        script('[\'Catroid\': \'Pocket Code\'] + [\'CreateAtSchool (not yet supported)\', \'LunaAndCat\', \'Phiro (not yet supported)\', \'Playground\', \'All\'].collectEntries{[it, it]}')
+                        sandbox(true)
+                    }
+                    fallbackScript {
+                        script('')
+                        sandbox(false)
+                    }
+                }
+            }
+        }
+        password {
+            name('crowdinKey')
+            defaultValue('')
+            description('API key to connect to Crowdin.')
+        }
+        password {
+            name('GOOGLEPLAYJSONKEY')
+            defaultValue('')
+            description('API key to connect to google service console.')
+        }
+    }
+}
+
 paintroidReleaseJobBuilder.job("Paintroid_to_Google_Play_alpha") {
     htmlDescription(['Build releaseable APK, sign and upload it to the Alpha Channel of Google Play.'])
 
