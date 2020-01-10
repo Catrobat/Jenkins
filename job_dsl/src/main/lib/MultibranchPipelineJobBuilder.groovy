@@ -9,6 +9,10 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
         super(job, dslFactory, projectData)
     }
 
+    protected String getHtmlDescription(List bulletPoints, String cssClass, String prefix) {
+        super.getHtmlDescription(bulletPoints,cssClass,prefix)+"<div id=\"jenkins-info\" style=\"display: none;\">multibranch pipeline</div>"
+    }
+
     void gitHubOrganization(Map params=[:]) {
         job.branchSources {
             branchSource {
