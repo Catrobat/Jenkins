@@ -2,7 +2,7 @@ def catroidorg = new JobsBuilder(this).gitHubOrganization({new CatroidData()})
 def catroidroot = new JobsBuilder(this).pipeline({new CatroidData()})
 
 
-catroidorg.job("lab/job/Idlir_Rusi_Shkupi/job/Catroid-OutgoingNetworkCallsTests") {
+catroidorg.job("lab/Idlir_Rusi_Shkupi/Catroid-OutgoingNetworkCallsTests") {
     htmlDescription([' OutgoingNetworkCallsTests '])
 
     jenkinsUsersPermissions(Permission.JobRead, Permission.JobBuild, Permission.JobCancel)
