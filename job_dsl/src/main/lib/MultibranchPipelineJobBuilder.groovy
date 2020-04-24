@@ -31,6 +31,8 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
                                 extension {
                                     deleteUntrackedNestedRepositories(false)
                                 }
+
+                            }
                         }
                     }
                 }
