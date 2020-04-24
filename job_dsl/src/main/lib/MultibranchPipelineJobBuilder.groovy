@@ -27,7 +27,12 @@ class MultibranchPipelineJobBuilder extends JobBuilder {
                         credentialsId(projectData.githubOrganizationsJenkinsCredentialsRefId)
 
                         traits {
-                            cleanBeforeCheckoutTrait()
+                            cleanBeforeCheckoutTrait {
+                                extension {
+                                    deleteUntrackedNestedRepositories(false)
+                                }
+
+                            }
                         }
                     }
                 }
