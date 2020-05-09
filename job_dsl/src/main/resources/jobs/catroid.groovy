@@ -31,6 +31,18 @@ catroidorg.job("Catroid-SensorBoxTests") {
     labelForDockerBuild('HardwareTest')
 }
 
+catroidorg.job("Catroid-OutgoingNetworkCallsTests") {
+    htmlDescription([' OutgoingNetworkCallsTests '])
+
+    jenkinsUsersPermissions(Permission.JobRead, Permission.JobBuild, Permission.JobCancel)
+
+    anonymousUsersPermissions(Permission.JobRead) // allow anonymous users to see the results of the hardware tests
+
+    gitHubOrganization(discoverForkPullRequests: false, discoverOriginPullRequests: false)
+    jenkinsfilePath('Jenkinsfile.OutgoingNetworkCallsTests')
+    labelForDockerBuild('Emulator')
+}
+
 Views.basic(this, "Catroid", "Catroid/.+")
 
 catroidroot.job("Catroid-ManualEmulatorTest") {
