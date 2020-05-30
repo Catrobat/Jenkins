@@ -10,9 +10,9 @@ baseImageJobBuilder.job("Build_Docker_Base_Image") {
         gitParam('gitBranch') {
             description('Select the branch you want to build e.g. origin/master.')
             type('BRANCH')
-            defaultValue('origin/master')
+            defaultValue('origin/develop')
         }
     }
-
+    nightly()
 }
 
