@@ -103,27 +103,11 @@ class PiplineJobBuilder extends JobBuilder {
                 type('BRANCH')
                 defaultValue('origin/master')
             }
-            password {
-                name('signingKeystorePassword')
-                defaultValue('')
-                description('')
-            }
-            password {
-                name('signingKeyAlias')
-                defaultValue('')
-                description('')
-            }
-            password {
-                name('signingKeyPassword')
-                defaultValue('')
-                description('For current keystore, this is the same as signingKeystorePassword.')
-            }
-            password {
-                name('googlePlayJsonKey')
-                defaultValue('')
-                description('Json file used to connect to the API of the Google Developer Console.\n' +
+            nonStoredPasswordParam('signingKeystorePassword', '')
+            nonStoredPasswordParam('signingKeyAlias', '')
+            nonStoredPasswordParam('signingKeyPassword', 'For current keystore, this is the same as signingKeystorePassword.')
+            nonStoredPasswordParam('googlePlayJsonKey', 'Json file used to connect to the API of the Google Developer Console.\n' +
                         'Copy the whole content of the file into this password parameter.')
-            }
         }
 
     }
