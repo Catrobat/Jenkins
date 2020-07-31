@@ -45,21 +45,9 @@ catroidReleaseJobBuilder.job("Catroid_to_Google_Play_alpha") {
     defaultReleasePatameter()
 
     parameters {
-        password {
-            name('firebaseApiKey')
-            defaultValue('')
-            description('')
-        }
-        password {
-            name('fabricApiKey')
-            defaultValue('')
-            description('')
-        }
-        password {
-            name('fabricApiSecret')
-            defaultValue('')
-            description('')
-        }
+        nonStoredPasswordParam('firebaseApiKey', '')
+        nonStoredPasswordParam('fabricApiKey', '')
+        nonStoredPasswordParam('fabricApiSecret', '')
     }
 }
 
@@ -99,16 +87,8 @@ catroidReleaseJobBuilder.job("Untested - Pipeline Catroid_upload_Metadata_and_pr
                 }
             }
         }
-        password {
-            name('crowdinKey')
-            defaultValue('')
-            description('API key to connect to Crowdin.')
-        }
-        password {
-            name('GOOGLEPLAYJSONKEY')
-            defaultValue('')
-            description('API key to connect to google service console.')
-        }
+        nonStoredPasswordParam('crowdinKey', 'API key to connect to Crowdin.')
+        nonStoredPasswordParam('GOOGLEPLAYJSONKEY', 'API key to connect to google service console.')
     }
 }
 
@@ -130,15 +110,7 @@ paintroidReleaseJobBuilder.job("Paintroid_to_Google_Play_alpha") {
     defaultReleasePatameter()
 
     parameters {
-        password {
-            name('bintrayUser')
-            defaultValue('')
-            description('User used for gradle bintrayUpload task')
-        }
-        password {
-            name('bintrayKey')
-            defaultValue('')
-            description('Key used for gradle bintrayUpload task')
-        }
+        nonStoredPasswordParam('bintrayUser', 'User used for gradle bintrayUpload task')
+        nonStoredPasswordParam('bintrayKey', 'Key used for gradle bintrayUpload task')
     }
 }
