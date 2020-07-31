@@ -76,7 +76,7 @@ catroidroot.job("Build-Standalone") {
     parameters {
         stringParam('DOWNLOAD', 'https://share.catrob.at/pocketcode/download/821.catrobat', 'Enter the Project ID you want to build as standalone')
         stringParam('SUFFIX', 'standalone', '')
-        password {
+        nonStoredPasswordParam {
             name('UPLOAD')
             defaultValue('')
             description('upload url for webserver\n\nSyntax of the upload value is of the form\n' +
