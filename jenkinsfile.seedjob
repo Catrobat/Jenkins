@@ -9,6 +9,8 @@ pipeline {
                             jobDsl targets: 'job_dsl/src/main/resources/jobs/*.groovy',
                             additionalClasspath: 'job_dsl/src/main/lib/',
                             failOnMissingPlugin: true,
+                            removedJobAction: 'DELETE',
+                            removedViewAction: 'DELETE',
                             unstableOnDeprecation: true
                    }
                 }
